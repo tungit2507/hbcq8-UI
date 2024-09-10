@@ -1,9 +1,9 @@
-import Header from "./components/user/home/header";
-import "./asets/css/header.css";
+import HomePage from "./components/user/home/homepage";
+
 function App() {
   return (
     <div className="App">
-        <Header />
+        <HomePage/>
     </div>
   );
 }
