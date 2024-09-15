@@ -27,7 +27,7 @@ function ServicesSection() {
               </div>
             </Col>
 
-            <Col lg={4} md={6}>
+            <Col lg={4} md={6}  className='d-flex flex-column align-items-center'>
               <div className="service-item">
                 <div className="service-item-icon">
                   <MulchingIcon></MulchingIcon>
