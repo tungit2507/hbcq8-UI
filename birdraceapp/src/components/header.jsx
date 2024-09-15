@@ -1,23 +1,31 @@
 import React from 'react';
+import AOS from 'aos';
+
 import { List } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-
 import { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css'
+import { useSelector } from 'react-redux';
+import Logout from '../pages/author/logout';
 
-const Header = () => {
+import 'aos/dist/aos.css';
+
+
+const Header = () => 
+  {
   useEffect(() => {
     AOS.init({
       duration: 1000,
     });
   }, []);
+  
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   return (
     <header id="header" className="header position-relative">
       <Navbar expand="lg" className="bg-light">
-        <Container fluid>
-          <Navbar.Brand href="index.html" className="d-flex align-items-center">
+        <Container fluid className='container-xl position-relative d-flex align-items-center justify-content-between'>
+          <Navbar.Brand href="index.html" className="logo d-flex align-items-center">
             <Link to={"/"}><img src="assets/img/logo.png" alt="AgriCulture" /></Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navmenu" className="mobile-nav-toggle d-xl-none">
@@ -40,11 +48,18 @@ const Header = () => {
               <Nav.Item as="li">
                 <Nav.Link as={Link} to="/contact" className="nav-link">Liên Hệ</Nav.Link>
               </Nav.Item>
-              <NavDropdown title="Tài Khoản">
+              <NavDropdown title="Tài Khoản" id="basic-nav-dropdown custom-dropdown-menu" align="start">
+              {isLoggedIn? 
+                <ul>
+                <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/profile"} >Tài Khoản</Link></NavDropdown.Item>
+                <NavDropdown.Item as="li" className="dropdown-item nav-link" ><Logout/></NavDropdown.Item>
+                </ul>
+                :
                 <ul>
                 <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/login"} >Đăng Nhập</Link></NavDropdown.Item>
-                <NavDropdown.Item as="li" to="/register" className="dropdown-item nav-link" ><Link to={"/register"} className="">Đăng Ký</Link></NavDropdown.Item>
+                <NavDropdown.Item as="li" className="dropdown-item nav-link" ><Link to={'/register'}>Đăng Ký</Link></NavDropdown.Item>
                 </ul>
+                }
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>

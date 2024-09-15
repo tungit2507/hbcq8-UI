@@ -1,20 +1,7 @@
-/**
-* Template Name: AgriCulture
-* Template URL: https://bootstrapmade.com/agriculture-bootstrap-website-template/
-* Updated: Aug 07 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
-/*--------------------------------------------------------------
-# Font & Color Variables
-# Help: https://bootstrapmade.com/color-system/
---------------------------------------------------------------*/
-/* Fonts */
 :root {
-  --default-font: "Open Sans",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --heading-font: "Marcellus",  sans-serif;
-  --nav-font: "Marcellus",  sans-serif;
+  --default-font: "Cormorant Garamond",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Noto Serif", system-ui;
+  --nav-font: "Noto Serif", system-ui;
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
@@ -30,11 +17,11 @@
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
   --nav-color: #212529;  /* The default color of the main navmenu links */
-  --nav-hover-color: #116530; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-hover-color: #2d465e; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
   --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #116530; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-dropdown-hover-color: #2d465e; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -65,6 +52,7 @@ body {
   color: var(--default-color);
   background-color: var(--background-color);
   font-family: var(--default-font);
+  font-weight: 400;
 }
 
 a {
@@ -202,11 +190,12 @@ h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /* Navmenu - Desktop */
-/* Navmenu - Desktop */
 @media (min-width: 1200px) {
-  #navmenu {
-    padding: 0 30px;
+
+  #navmenu{
+    padding: 10px 0;
   }
+
 
   #navmenu .nav {
     margin: 0;
@@ -223,9 +212,9 @@ h6 {
   #navmenu .nav-link {
     color: var(--nav-color);
     padding: 18px 15px;
-    font-size: 16px;
+    font-size: 17px;
     font-family: var(--nav-font);
-    font-weight: 400;
+    font-weight: 350;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -256,8 +245,8 @@ h6 {
     display: block;
     position: absolute;
     visibility: hidden;
-    left: 14px;
-    top: 130%;
+    left: -100px;
+    top: 100%;
     opacity: 0;
     transition: 0.3s;
     border-radius: 4px;
@@ -271,7 +260,7 @@ h6 {
 
   #navmenu .dropdown-menu .dropdown-item {
     padding: 10px 20px;
-    font-size: 15px;
+    font-size: 17px;
     text-transform: none;
     color: var(--nav-dropdown-color);
   }
@@ -337,7 +326,7 @@ h6 {
     padding: 10px 20px;
     font-family: var(--nav-font);
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 350;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -346,9 +335,10 @@ h6 {
   }
 
 
-  .padding-10{
+  /* .padding-10{
     padding: 200px;
-  }
+  } */
+
   #navmenu .nav-link i {
     font-size: 12px;
     line-height: 0;
@@ -728,17 +718,23 @@ section,
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
-.hero {
+.hero-carousel {
   padding: 0;
+  min-height: calc(100vh - 100px);
 }
 
-.hero .carousel {
+
+.hero-carousel .carousel {
+  min-height: calc(100vh - 80px);
   width: 100%;
-  min-height: calc(100vh - 100px);
   padding: 0;
   margin: 0;
   background-color: var(--background-color);
   position: relative;
+}
+
+.carousel-item img{
+  opacity: 0.7;
 }
 
 .hero img {
@@ -749,6 +745,7 @@ section,
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  opacity: 0.7;
 }
 
 .hero .carousel-item {
@@ -803,7 +800,7 @@ section,
   }
 }
 
-.hero .btn-get-started {
+.hero-carousel .btn-get-started {
   color: var(--contrast-color);
   background: var(--accent-color);
   font-family: var(--heading-font);
@@ -811,7 +808,7 @@ section,
   font-size: 15px;
   letter-spacing: 1px;
   display: inline-block;
-  padding: 8px 32px;
+  padding: 0px 32px;
   border-radius: 50px;
   transition: 0.5s;
   margin: 10px;
@@ -847,11 +844,12 @@ section,
   }
 }
 
-.hero .carousel-control-next-icon,
-.hero .carousel-control-prev-icon {
+.hero-carousel .carousel-control-next-icon,
+.hero-carousel .carousel-control-prev-icon {
   background: none;
   font-size: 32px;
   line-height: 1;
+  z-index: 10;
 }
 
 .hero .carousel-indicators {
@@ -944,7 +942,7 @@ section,
 }
 
 .services .content .service-item .service-item-content p {
-  font-size: 15px;
+  font-size: 18px;
 }
 
 @media (min-width: 769px) {
@@ -1069,7 +1067,7 @@ section,
 }
 
 .services-2 .service-item .service-item-contents {
-  z-index: 9;
+  z-index: 2;
   position: absolute;
   bottom: 20px;
   left: 20px;
@@ -1171,7 +1169,7 @@ section,
 .testimonials .testimonial blockquote p {
   font-size: 20px;
   color: var(--default-color);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .testimonials .testimonial .client-name {
@@ -2211,7 +2209,22 @@ section,
 
 
 #login-form{
-  max-height: 100vh;
+  max-height: calc(100vh - 100px);
 }
 
+
+
+.error{
+  color: red;
+  font-size: 13px;
+  padding-left: 10px;
+}
 /* login CSS */
+
+/* toastify css */
+.Toastify__toast--success {
+  background-color: var(--accent-color) !important; /* Màu xanh lá cho thông báo thành công */
+
+}
+
+
