@@ -18,8 +18,10 @@ const Header = () =>
       duration: 1000,
     });
   }, []);
-  
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  let isLoggedIn = localStorage.getItem("isLoggedIn");
+
 
   return (
     <header id="header" className="header position-relative">
@@ -51,7 +53,7 @@ const Header = () =>
               <NavDropdown title="Tài Khoản" id="basic-nav-dropdown custom-dropdown-menu" align="start">
               {isLoggedIn? 
                 <ul>
-                <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/profile"} >Tài Khoản</Link></NavDropdown.Item>
+                <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/profile"} >{currentUser.username}</Link></NavDropdown.Item>
                 <NavDropdown.Item as="li" className="dropdown-item nav-link" ><Logout/></NavDropdown.Item>
                 </ul>
                 :

@@ -4,18 +4,16 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { login } from '../../redux/authSlice';
 
 
 
 const LoginForm = () => {
  
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
 
@@ -23,7 +21,11 @@ const LoginForm = () => {
     try {
       const response = await axios.post('http://localhost:8080/api/v1/login', data)
       .then(response => {
-        dispatch(login(response));
+        // save user to local storage
+        let user = response.data;
+        localStorage.setItem("currentUser", JSON.stringify(user) );
+        localStorage.setItem("isLoggedIn", true); 
+        // notify and navigate   
         toast.success("Đăng Nhập Thành Công");
         navigate('/')
       })

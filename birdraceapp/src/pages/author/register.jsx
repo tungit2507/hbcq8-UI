@@ -28,10 +28,10 @@ const RegistrationForm = () => {
           setTimeout(1000, navigate('/'));
         })
       } catch (error) {
-          const errorCode= error.response.data.errorCode;
+          const errorCode = error.response.data.errorCode;
           const errorMessage = error.response.data.errorMessage;
           if(errorCode === '409'){
-            toast.error('Có Lỗi Trong Quá Trình Thêm Vào Database');
+            toast.error(errorMessage);
           }else if(errorCode === '401'){
             toast.error(errorMessage);
           }else{
