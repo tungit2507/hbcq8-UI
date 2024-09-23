@@ -2228,3 +2228,110 @@ section,
 }
 
 
+
+
+
+/* ... existing code ... */
+
+/* Navmenu - Mobile */
+@media (max-width: 1199px) {
+  .navbar-toggler {
+    color: var(--nav-color);
+    font-size: 28px;
+    line-height: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  #navmenu {
+    padding: 0;
+    z-index: 9997;
+  }
+
+  #navmenu .nav {
+    display: none;
+    list-style: none;
+    position: absolute;
+    inset: 60px 20px 20px 20px;
+    padding: 10px 0;
+    margin: 0;
+    border-radius: 6px;
+    background-color: var(--nav-mobile-background-color);
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 9998;
+    box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 90%);
+  }
+
+  #navmenu .nav-link {
+    color: var(--nav-dropdown-color);
+    padding: 10px 20px;
+    font-family: var(--nav-font);
+    font-size: 17px;
+    font-weight: 350;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    transition: 0.3s;
+  }
+
+  #navmenu .nav-link:hover,
+  #navmenu .nav-link.active {
+    color: var(--nav-dropdown-hover-color);
+  }
+
+  #navmenu .dropdown-menu {
+    position: static;
+    display: none;
+    z-index: 99;
+    padding: 10px 0;
+    margin: 10px 20px;
+    background-color: var(--nav-dropdown-background-color);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    box-shadow: none;
+    transition: all 0.5s ease-in-out;
+  }
+
+  #navmenu .dropdown.show > .dropdown-menu {
+    display: block;
+    background-color: rgba(33, 37, 41, 0.03);
+  }
+
+  .mobile-nav-active {
+    overflow: hidden;
+  }
+
+  .mobile-nav-active .navbar-toggler {
+    color: #fff;
+    position: absolute;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
+
+  .mobile-nav-active #navmenu {
+    position: fixed;
+    overflow: hidden;
+    inset: 0;
+    background: rgba(33, 37, 41, 0.8);
+    transition: 0.3s;
+  }
+
+  .mobile-nav-active #navmenu > .nav {
+    display: block;
+  }
+}
+
+.card-body h2 {
+  margin-top: 20px; /* Điều chỉnh khoảng cách trên */
+  margin-bottom: 20px; /* Điều chỉnh khoảng cách dưới */
+  font-size: 24px; /* Điều chỉnh kích thước chữ */
+  text-align: center; /* Căn giữa chữ */
+  color: var(--default-color); /* Màu chữ */
+}
+
+

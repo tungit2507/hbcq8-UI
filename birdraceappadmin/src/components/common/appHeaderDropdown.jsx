@@ -20,13 +20,29 @@ import {
   cilTask,
   cilUser,
 } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
+import { logout } from '../../api/userApi';
+import { useNavigate } from 'react-router-dom';
+
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
+
+
+
+
 const AppHeaderDropdown = () => {
+
+  const navigate = useNavigate(); 
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+  
   return (
     <CDropdown variant="nav-item">
+
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
@@ -84,13 +100,14 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem href="#" onClick={handleLogout}>
           <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+            Đăng xuất
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
   )
+
 }
 
 export default AppHeaderDropdown

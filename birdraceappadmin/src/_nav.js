@@ -27,11 +27,6 @@ const _nav = [
         name: 'Danh Sách Thành Viên',
         to: '/management/user/list',
       },
-      {
-        component: CNavItem,
-        name: 'Thêm Thành Viên',
-        to: '/management/user/add',
-      },
     ],
   },
   {
