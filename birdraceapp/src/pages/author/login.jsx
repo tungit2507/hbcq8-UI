@@ -1,29 +1,26 @@
 import React from 'react';
 import axios from 'axios';
-
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
-
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import { login } from '../../redux/authSlice';
 
 const LoginForm = () => {
- 
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post('http://localhost:8080/api/v1/login', data)
       .then(response => {
-        dispatch(login(response));
+        // save user to local storage
+        let user = response.data;
+        localStorage.setItem("currentUser", JSON.stringify(user) );
+        localStorage.setItem("isLoggedIn", true); 
+        console.log(localStorage.getItem("isLoggedIn"));
+        // notify and navigate   
         toast.success("Đăng Nhập Thành Công");
         navigate('/')
       })
@@ -41,16 +38,11 @@ const LoginForm = () => {
     }
   };
 
-
-
-  
   return (
     <div id='login' className="container d-flex justify-content-center align-items-center vh-100">
       <div className="row w-100">
         <div className="col-md-6 offset-md-3">
-          <h2 className="text-center text-dark mt-5">Đăng Nhập</h2>
           <div className="card my-5">
-
             <form id='login-form' onSubmit={handleSubmit(onSubmit)} className="card-body cardbody-color p-lg-5">
               <div className="text-center">
                 <img
@@ -60,7 +52,7 @@ const LoginForm = () => {
                   alt="profile"
                 />
               </div>
-
+              <h2 className="text-center text-dark mt-3">Đăng Nhập</h2>
               <div className="mb-3">
                 <input
                   type="text"
