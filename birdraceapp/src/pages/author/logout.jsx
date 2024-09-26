@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,7 +11,7 @@ const Logout = () => {
     if (isLoggingOut) return; // Ngăn chặn spam logout
     setIsLoggingOut(true);
     try {
-      // await axios.get('http://localhost:8080/api/v1/logout');
+      await axios.get('http://localhost:8080/api/v1/logout', { withCredentials: true }); // Thêm withCredentials
       localStorage.removeItem('currentUser');
       localStorage.setItem('isLoggedIn', false);
       navigate('/login');
