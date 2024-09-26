@@ -11,6 +11,7 @@ import RaceManagementList from "./pages/race/race_management_list";
 import UserManagementList from "./pages/user/user_management_list";
 import UserManagementUpdate from "./pages/user/user_management_update";
 import PrivateRoute from "./auth/PrivateRouter";
+import RaceRegistrationList from "./pages/race/race_registration_list";
 
 const routes = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ const routes = createBrowserRouter([
             { path: "/management/race/list", element: <RaceManagementList/>, name: "Race List" },
             { path: "/management/race/add", element: <RaceManagementAdd/>, name: "Add Race" },
             { path: "/management/race/update", element: <RaceManagementUpdate/>, name: "Update Race" },
+            { path: "/management/race/registration-list", element: <RaceRegistrationList/>, name: "RaceRegistrationList" },
         ]
     },
     { path: "*", element: <NotFoundPage/>, name: "Not Found" },

@@ -160,6 +160,7 @@ const RaceList = () => {
                 <CTableDataCell>{race.breakTime}</CTableDataCell>
                 <CTableDataCell>{race.creator}</CTableDataCell>
                 <CTableDataCell>
+                  <Link className="btn btn-info mx-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
                   <Link className="btn btn-primary mx-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
                   <CButton className="btn btn-danger text-white mx-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
                 </CTableDataCell>
