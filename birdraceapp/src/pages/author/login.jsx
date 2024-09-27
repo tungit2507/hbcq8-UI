@@ -16,17 +16,12 @@ const LoginForm = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/login', data,
-         { 
-           withCredentials: true, 
-        
-         }
-        );
+      const response = await axios.post('http://localhost:8080/api/v1/login', data,{ withCredentials: true});
       const user = response.data;
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      localStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("currentUser", JSON.stringify(user));
+      sessionStorage.setItem("isLoggedIn", "true");
       toast.success("Đăng Nhập Thành Công");
-      navigate('/');
+      setTimeout( navigate('/'), 1000);
     } catch (error) {
       const errorMessage = error.response?.data?.errorMessage || "Đã xảy ra lỗi";
       if (error.response?.data?.errorCode === "401") {

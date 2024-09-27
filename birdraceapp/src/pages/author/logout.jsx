@@ -12,8 +12,8 @@ const Logout = () => {
     setIsLoggingOut(true);
     try {
       await axios.get('http://localhost:8080/api/v1/logout', { withCredentials: true }); // Thêm withCredentials
-      localStorage.removeItem('currentUser');
-      localStorage.setItem('isLoggedIn', false);
+      sessionStorage.setItem("isLoggedIn", false);
+      sessionStorage.removeItem("currentUser");
       navigate('/login');
     } catch (error) {
       console.error('Logout failed:', error);

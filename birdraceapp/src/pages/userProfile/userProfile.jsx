@@ -7,31 +7,28 @@ import moment from 'moment';
 const Profile = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [imagePreview, setImagePreview] = useState('/assets/img/no-person-placeholder.webp');
-  const [selectedImage, setSelectedImage] = useState(null);
   const [user, setUser] = useState(null); // Khởi tạo user là null
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // Tạo một đối tượng FormData mới
     const formUserData = new FormData();
-    
-    // Thêm các trường dữ liệu vào formUserData, trừ trường image
-    for (const key in data) {
-      if (key !== 'image') {
-        formUserData.append(key, data[key]);
-      }
+
+    // data to send    
+    formUserData.append('phone', data.phone);
+    formUserData.append('address', data.address);
+    formUserData.append('birthday', data.birthday);
+    formUserData.append('userId', user.username);
+    if (data.image[0]) {
+      formUserData.append('image', data.image[0]);
     }
-    formUserData.append('image', "none");
-    
-    
+
+    // call api and handle exception
     try {
-      // Gửi dữ liệu đến server
-      const response = await axios.post('http://localhost:8080/api/v1/user/update', formUserData);
+      const response = await axios.put('http://localhost:8080/api/v1/user/update', formUserData, {
+        withCredentials: true
+      });
       
-      // Xử lý phản hồi từ server
       if (response.data) {
         toast.success('Cập nhật thông tin thành công');
-        // Cập nhật thông tin người dùng trong localStorage
         localStorage.setItem('currentUser', JSON.stringify(response.data));
         setUser(response.data);
       }
@@ -41,12 +38,13 @@ const Profile = () => {
     }
   };
 
+  // initialize current user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("currentUser"));
+        const user = JSON.parse(sessionStorage.getItem("currentUser"));
         console.log(user);
-        setUser(user); // Lưu dữ liệu người dùng vào state
+        setUser(user); 
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -54,23 +52,21 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  // set loading if user is not defined
+  if (!user) {
+    return <div>Loading...</div>; // Hiển thị loading khi dữ liệu chưa được tải
+  }
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
     if (file) {
-      setSelectedImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
-    } else {
-      setImagePreview('/assets/img/no-person-placeholder.webp');
     }
   };
-
-  if (!user) {
-    return <div>Loading...</div>; // Hiển thị loading khi dữ liệu chưa được tải
-  }
 
   return (
     <div className="container-xl px-4 mt-4 py-4">
@@ -86,10 +82,9 @@ const Profile = () => {
                   src={imagePreview} 
                   alt="Profile" 
                   style={{ 
-                    maxWidth: '150px', 
-                    maxHeight: '150px', 
-                    width: '100%', 
-                    height: 'auto', 
+                    width: '150px', 
+                    height: '150px', 
+                    borderRadius: '50%', 
                     objectFit: 'cover' 
                   }} 
                 />
@@ -99,8 +94,7 @@ const Profile = () => {
                 accept="image/*" 
                 hidden 
                 id="user-image"
-                onChange={handleImageChange}
-                {...register('image', { required: 'Vui Lòng Chọn Hình Ảnh' })}
+                {...register('image', { onChange: handleImageChange })}
               />
               <div className="small font-italic text-muted mb-4">
                 {errors.image && <p className="text-danger">{errors.image.message}</p>}
@@ -113,7 +107,7 @@ const Profile = () => {
           <div className="card mb-4">
             <div className="card-header">Thông Tin Chi Tiết</div>
             <div className="card-body">
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(onSubmit)} >
                 <div className="row gx-3 mb-3">
                   <div className="mb-3">
                     <label className="small mb-1" htmlFor="inputEmailAddress">Email</label>
@@ -166,7 +160,7 @@ const Profile = () => {
                       id="inputLocation" 
                       type="text" 
                       placeholder="Enter your location" 
-                      defaultValue={user.address} // Sử dụng defaultValue
+                      defaultValue={user.address}
                       {...register('address', { required: 'Địa chỉ là bắt buộc' })}
                     />
                     {errors.address && <p className="text-danger">{errors.address.message}</p>}
