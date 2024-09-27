@@ -17,9 +17,7 @@ const Profile = () => {
     formUserData.append('address', data.address);
     formUserData.append('birthday', data.birthday);
     formUserData.append('userId', user.username);
-    if (data.image[0]) {
-      formUserData.append('image', data.image[0]);
-    }
+
 
     // call api and handle exception
     try {
@@ -43,7 +41,7 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         const user = JSON.parse(sessionStorage.getItem("currentUser"));
-        console.log(user);
+        console.log(user)
         setUser(user); 
       } catch (error) {
         console.error('Error fetching user data:', error);
