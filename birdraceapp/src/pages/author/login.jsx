@@ -20,6 +20,8 @@ const LoginForm = () => {
       const user = response.data;
       sessionStorage.setItem("currentUser", JSON.stringify(user));
       sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("token", user.token);
+      sessionStorage.setItem("userId", user.id);
       toast.success("Đăng Nhập Thành Công");
       setTimeout( navigate('/'), 1000);
     } catch (error) {

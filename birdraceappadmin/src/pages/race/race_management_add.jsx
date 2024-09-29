@@ -3,6 +3,7 @@ import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, 
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { calculateDistance } from '../../api/raceLocationApi';
 
 const AddRaceForm = () => {
   // image preview init
@@ -11,6 +12,7 @@ const AddRaceForm = () => {
   const { control, register, handleSubmit, formState: { errors }, watch } = useForm();
   // init useFieldArray to handle array of stages
   const { fields, append, remove } = useFieldArray({ control, name: 'stages' });
+  const [value, setValue] = useState('')
 
   // Watch form values
   const startPointCoordinates = watch('startPoint.coordinates');
@@ -46,8 +48,45 @@ const AddRaceForm = () => {
   };
 
 
-  const handleCalculateDistance = () => {
-    alert('Tính khoảng cách');
+  const handleCalculateDistance = async () => {
+  // Lấy tọa độ điểm bắt đầu, điểm kết thúc và các chặng
+  const startCoordinates = watch('startPoint.coordinates');
+  const endCoordinates = watch('endPoint.coordinates');
+  const stageCoordinates = watch('stages').map(stage => stage.coordinates);
+
+  // Tạo mảng chứa tất cả các tọa độ
+  const allCoordinates = [startCoordinates, ...stageCoordinates, endCoordinates].filter(Boolean);
+
+  // Chuẩn bị dữ liệu cho API
+  const calDistanceRequestDto = {
+    coordinates: allCoordinates
+  };
+
+  try {
+    // Gọi API để tính khoảng cách
+    const result = await calculateDistance(calDistanceRequestDto);
+    
+    // Xử lý kết quả
+    if (result && result.distances) {
+      // Cập nhật khoảng cách cho điểm bắt đầu
+      setValue('startPoint.distance', result.distances[0]);
+      
+      // Cập nhật khoảng cách cho các chặng
+      result.distances.slice(1, -1).forEach((distance, index) => {
+        setValue(`stages.${index}.distance`, distance);
+      });
+      
+      // Cập nhật khoảng cách cho điểm kết thúc
+      setValue('endPoint.distance', result.distances[result.distances.length - 1]);
+      
+      toast.success('Đã tính toán và cập nhật khoảng cách thành công.');
+    } else {
+      toast.error('Không nhận được kết quả tính khoảng cách hợp lệ.');
+    }
+  } catch (error) {
+    console.error('Lỗi khi tính khoảng cách:', error);
+    toast.error('Đã xảy ra lỗi khi tính khoảng cách.');
+  }
   }
 
   // Image preview handler
@@ -175,10 +214,10 @@ const AddRaceForm = () => {
                     id="startPointCoordinates"
                     {...register('startPoint.coordinates', { 
                       required: 'Tọa độ điểm bắt đầu là bắt buộc',
-                      pattern: {
-                        value: /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/,
-                        message: 'Tọa độ không hợp lệ. Định dạng đúng: "lat,lng"'
-                      }
+                      // pattern: {
+                      //   value: /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/,
+                      //   message: 'Tọa độ không hợp lệ. Định dạng đúng: "lat,lng"'
+                      // }
                     })}
                     invalid={!!errors.startPoint?.coordinates}
                   />
@@ -215,10 +254,10 @@ const AddRaceForm = () => {
                       id={`stages[${index}].coordinates`}
                       {...register(`stages[${index}].coordinates`, { 
                         required: 'Tọa độ chặng là bắt buộc',
-                        pattern: {
-                          value: /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/,
-                          message: 'Tọa độ không hợp lệ. Định dạng đúng: "lat,lng"'
-                        }
+                        // pattern: {
+                        //   value: /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/,
+                        //   message: 'Tọa độ không hợp lệ. Định dạng đúng: "lat,lng"'
+                        // }
                       })}
                       invalid={!!errors.stages?.[index]?.coordinates}
                     />
@@ -265,10 +304,10 @@ const AddRaceForm = () => {
                     id="endPointCoordinates"
                     {...register('endPoint.coordinates', { 
                       required: 'Tọa độ điểm kết thúc là bắt buộc',
-                      pattern: {
-                        value: /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/,
-                        message: 'Tọa độ không hợp lệ. Định dạng đúng: "lat,lng"'
-                      }
+                      // pattern: {
+                      //   value: /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/,
+                      //   message: 'Tọa độ không hợp lệ. Định dạng đúng: "lat,lng"'
+                      // }
                     })}
                     invalid={!!errors.endPoint?.coordinates}
                   />

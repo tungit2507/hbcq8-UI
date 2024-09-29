@@ -1,9 +1,10 @@
-import axiosInstance from "./api";
+import axiosInstance from "./apiInstance";
 import { showErrorNotification } from "./sweetAlertNotify";
 
 
 const BASE_URL_USERS = '/api/v1/users';
 const BASE_URL_LOGIN = '/api/v1/login';
+const BASE_URL_LOGOUT = '/api/v1/logout';
 
 
 
@@ -88,5 +89,13 @@ export const login = async (loginData) => {
 };
 
 export const logout = async () => {
-   localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser');
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_LOGOUT}`);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi đăng xuất:', error);
+        alert("lỗi khi đăng xuất")
+        throw error;
+    }
 }

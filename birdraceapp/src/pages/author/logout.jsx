@@ -11,7 +11,15 @@ const Logout = () => {
     if (isLoggingOut) return; // Ngăn chặn spam logout
     setIsLoggingOut(true);
     try {
-      await axios.get('http://localhost:8080/api/v1/logout', { withCredentials: true }); // Thêm withCredentials
+      const token = sessionStorage.getItem('token');
+      const userId = sessionStorage.getItem('userId');
+      await axios.get('http://localhost:8080/api/v1/logout', {
+        // withCredentials: true,
+        headers: {
+          'token': token,
+          'userId': userId
+        }
+      });
       sessionStorage.setItem("isLoggedIn", false);
       sessionStorage.removeItem("currentUser");
       navigate('/login');

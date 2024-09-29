@@ -6,23 +6,25 @@ import moment from 'moment';
 
 const Profile = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [imagePreview, setImagePreview] = useState('/assets/img/no-person-placeholder.webp');
   const [user, setUser] = useState(null); // Khởi tạo user là null
+  const [imageName, setImageName] = useState(''); // Khởi tạo imageName là rỗng
 
   const onSubmit = async (data) => {
-    const formUserData = new FormData();
-
-    // data to send    
-    formUserData.append('phone', data.phone);
-    formUserData.append('address', data.address);
-    formUserData.append('birthday', data.birthday);
-    formUserData.append('userId', user.username);
-
+    const userData = {
+      userId: user.userId,
+      phone: data.phone,
+      address: data.address,
+      birthday: data.birthday,
+      imgUrl: imageName // Gửi tên ảnh
+    };
 
     // call api and handle exception
     try {
-      const response = await axios.put('http://localhost:8080/api/v1/user/update', formUserData, {
-        withCredentials: true
+      const response = await axios.put('http://localhost:8080/api/v1/user/update', userData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json' // Đặt Content-Type là application/json
+        }
       });
       
       if (response.data) {
@@ -43,6 +45,7 @@ const Profile = () => {
         const user = JSON.parse(sessionStorage.getItem("currentUser"));
         console.log(user)
         setUser(user); 
+        setImageName(user.imgUrl); // Đặt tên ảnh từ dữ liệu người dùng
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -58,9 +61,13 @@ const Profile = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setImageName(file.name); // Chỉ đặt tên ảnh
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setUser(prevState => ({
+          ...prevState,
+          imgUrl: reader.result
+        }));
       };
       reader.readAsDataURL(file);
     }
@@ -77,7 +84,7 @@ const Profile = () => {
               <label htmlFor="user-image" style={{ cursor: 'pointer' }}>
                 <img 
                   className="img-account-profile rounded-circle mb-2"
-                  src={imagePreview} 
+                  src={user.imgUrl || '/assets/img/no-person-placeholder.webp'} 
                   alt="Profile" 
                   style={{ 
                     width: '150px', 
@@ -144,7 +151,7 @@ const Profile = () => {
                       id="inputBirthday" 
                       type="date" 
                       name="birthday" 
-                      defaultValue={user.birthday ? moment(user.birthday, 'DD-MM-YYYY').format('YYYY-MM-DD') : ''} // Sử dụng defaultValue và kiểm tra null
+                      defaultValue={user.birthday ? moment(user.birthday).format('YYYY-MM-DD') : ''} // Sử dụng defaultValue và kiểm tra null
                       {...register('birthday', { required: 'Ngày sinh là bắt buộc' })}
                     />
                     {errors.birthday && <p className="text-danger">{errors.birthday.message}</p>}

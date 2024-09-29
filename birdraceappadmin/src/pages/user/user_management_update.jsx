@@ -14,7 +14,9 @@ const UserManagementUpdate = () => {
   const [user, setUser] = useState(() =>{
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     if (storedUser) {
+      console.log(storedUser);
       storedUser.birthday = moment(storedUser.birthday).format('YYYY-MM-DD');
+      console.log(storedUser);
       return storedUser;
     }
     return null;
@@ -27,7 +29,7 @@ const UserManagementUpdate = () => {
 
 
   useEffect(()=>{
-  
+    console.log(username);
   })
 
   // Form submission handler
@@ -117,7 +119,7 @@ const UserManagementUpdate = () => {
                   <CFormInput
                     type="date"
                     id="birthday"
-                    value={user?.birthday || ''}
+                    defaultValue={user?.birthday ? moment(user.birthday).format('YYYY-MM-DD') : ''}
                     {...register('birthday', { required: 'Ngày sinh là bắt buộc' })}
                     invalid={!!errors.birthday}
                   />

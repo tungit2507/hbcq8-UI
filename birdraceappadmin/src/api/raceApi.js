@@ -1,6 +1,5 @@
-import axiosInstance from "./api";
-
-const BASE_URL_RACES = '/api/v1/tournament';    
+import axiosInstance from "./apiInstance";
+const BASE_URL_RACES = '/api/v1/admin/tournament';    
 
 
 export const fetchRaces = async () => {
@@ -19,6 +18,17 @@ export const addRace = async (raceData) => {
         return response.data;
     } catch (error) {
         console.error('Error adding race:', error);
+        throw error;
+    }
+};
+
+
+export const fetchRaceById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_RACES}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching race:', error);
         throw error;
     }
 };

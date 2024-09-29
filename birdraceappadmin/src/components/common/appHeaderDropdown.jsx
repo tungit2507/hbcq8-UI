@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { toast } from 'react-toastify';
 
 
 
@@ -36,8 +37,13 @@ const AppHeaderDropdown = () => {
   const navigate = useNavigate(); 
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/login');
+    try{
+      await logout();
+      navigate('/login');
+    }catch{
+      navigate('/login');
+    }
+
   };
   
   return (
