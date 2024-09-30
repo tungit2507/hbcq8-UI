@@ -20,14 +20,17 @@ const Logout = () => {
           'userId': userId
         }
       });
-      sessionStorage.setItem("isLoggedIn", false);
-      sessionStorage.removeItem("currentUser");
+      
       navigate('/login');
     } catch (error) {
       console.error('Logout failed:', error);
       toast.error('Logout failed:', error);
     } finally {
       setIsLoggingOut(false);
+      sessionStorage.setItem("isLoggedIn", false);
+      sessionStorage.removeItem("currentUser");
+      navigate("/login")
+    
     }
   };
 

@@ -4,27 +4,25 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import moment from 'moment';
 
+
 const Profile = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [user, setUser] = useState(null); // Khởi tạo user là null
+  const [user, setUser] = useState(null);
   const [imageName, setImageName] = useState(''); // Khởi tạo imageName là rỗng
 
   const onSubmit = async (data) => {
-    const userData = {
-      userId: user.userId,
-      phone: data.phone,
+    const userUpdateRequestDto = {
+      userId: user.id,
       address: data.address,
-      birthday: data.birthday,
-      imgUrl: imageName // Gửi tên ảnh
+      imgUrl: imageName, 
+      birthday: moment(data.birthday).format('YYYY-MM-DD'),
+      phone: data.phone,
     };
 
     // call api and handle exception
     try {
-      const response = await axios.put('http://localhost:8080/api/v1/user/update', userData, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json' // Đặt Content-Type là application/json
-        }
+      const response = await axios.put('http://localhost:8080/api/v1/user/update', userUpdateRequestDto , {
+        withCredentials: true
       });
       
       if (response.data) {

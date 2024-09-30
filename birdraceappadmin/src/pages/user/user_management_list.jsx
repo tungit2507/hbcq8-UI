@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from "@coreui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import exampleImage from './../../assets/images/avatars/1.jpg';
+import exampleImage1 from './../../assets/images/avatars/1.jpg';
 
 
 
@@ -189,7 +189,7 @@ const UserManagementList = () => {
                 <CTableHeaderCell scope="row">{user.id}</CTableHeaderCell>
                 <CTableDataCell>
                   <img
-                    src={exampleImage}
+                    src={exampleImage1}
                     alt="Profile"
                     style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "50%" }}
                   />

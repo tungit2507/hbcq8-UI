@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coreui/coreui": "^5.1.2",
+    "@coreui/react": "^5.4.0",
     "@ionic/react": "^8.3.0",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.2.7",

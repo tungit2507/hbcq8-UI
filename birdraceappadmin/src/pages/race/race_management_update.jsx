@@ -203,7 +203,7 @@ const UpdateRaceForm = () => {
                   {errors.startPoint?.coordinates && <div className="invalid-feedback">{errors.startPoint.coordinates.message}</div>}
                 </CCol>
                 <CCol md={3}>
-                  <CFormLabel htmlFor="startPointDistance">Khoảng Cách Điểm Bắt Đầu</CFormLabel>
+                  <CFormLabel htmlFor="startPointDistance">Khoảng Cách</CFormLabel>
                   <CFormInput
                     type="number"
                     id="startPointDistance"
@@ -291,7 +291,7 @@ const UpdateRaceForm = () => {
                   {errors.endPoint?.coordinates && <div className="invalid-feedback">{errors.endPoint.coordinates.message}</div>}
                 </CCol>
                 <CCol md={3}>
-                  <CFormLabel htmlFor="endPointDistance">Khoảng Cách Điểm Kết Thúc</CFormLabel>
+                  <CFormLabel htmlFor="endPointDistance">Khoảng Cách</CFormLabel>
                   <CFormInput
                     type="number"
                     id="endPointDistance"

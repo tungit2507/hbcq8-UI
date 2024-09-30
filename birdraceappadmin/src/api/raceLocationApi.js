@@ -1,4 +1,4 @@
-import axiosInstance from "./apiInstance";
+import axiosInstance from "./api";
 import { showErrorNotification } from "./sweetAlertNotify";
 
 const BASE_URL_RACE_LOCATIONS = '/api/v1/admin/tournament-location';
