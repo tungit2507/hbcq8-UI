@@ -25,9 +25,12 @@ const Profile = () => {
         withCredentials: true
       });
       
+      console.log(response);
+
+
       if (response.data) {
         toast.success('Cập nhật thông tin thành công');
-        localStorage.setItem('currentUser', JSON.stringify(response.data));
+        sessionStorage.setItem('currentUser', JSON.stringify(response.data));
         setUser(response.data);
       }
     } catch (error) {
@@ -41,7 +44,6 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         const user = JSON.parse(sessionStorage.getItem("currentUser"));
-        console.log(user)
         setUser(user); 
         setImageName(user.imgUrl); // Đặt tên ảnh từ dữ liệu người dùng
       } catch (error) {
@@ -82,7 +84,9 @@ const Profile = () => {
               <label htmlFor="user-image" style={{ cursor: 'pointer' }}>
                 <img 
                   className="img-account-profile rounded-circle mb-2"
-                  src={user.imgUrl || '/assets/img/no-person-placeholder.webp'} 
+                  src={
+                    // user.imgUrl && user.imgUrl !== '' ? user.imgUrl : 
+                    '/assets/img/no-person-placeholder.webp'}
                   alt="Profile" 
                   style={{ 
                     width: '150px', 

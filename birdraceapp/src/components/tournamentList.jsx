@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck } from "@coreui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-
-const tournamentsData = [
-  { id: 1, name: "Giải đấu mùa xuân", startDate: "2023-03-01", endDate: "2023-03-15", location: "Sân vận động Thống Nhất", status: "Đã kết thúc" },
-  { id: 2, name: "Giải đấu mùa hè", startDate: "2023-06-01", endDate: "2023-06-30", location: "Sân vận động Hoa Lư", status: "Đang diễn ra" },
-  { id: 3, name: "Giải đấu mùa thu", startDate: "2023-09-01", endDate: "2023-09-15", location: "Sân vận động Phú Thọ", status: "Sắp diễn ra" },
-  // Thêm các giải đấu khác vào đây...
-];
+import axios from 'axios'; // Thêm import axios
+import { toast } from 'react-toastify';
 
 const TournamentList = () => {
+
+  const [tournamentsData, setTournamentsData] = useState([]);
+
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -28,6 +26,26 @@ const TournamentList = () => {
 
   const totalPages = Math.ceil(filteredTournaments.length / tournamentsPerPage);
 
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/admin/tournament', {
+          withCredentials : true
+        });
+        setTournamentsData(response.data);
+        const filtered = response.data.filter(tournament =>
+          tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredTournaments(filtered);
+      } catch (error) {
+        console.error('Lỗi khi tải danh sách giải đấu:', error);
+        toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
+      }
+    };
+  
+    fetchTournaments();
+  }, [searchQuery]);
+
   const handlePageChange = (pageNumber) => {
     navigate(`?page=${pageNumber}`);
   };
@@ -43,13 +61,6 @@ const TournamentList = () => {
     setFilteredTournaments(filtered);
     navigate('?page=1');
   };
-
-  useEffect(() => {
-    const filtered = tournamentsData.filter(tournament =>
-      tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredTournaments(filtered);
-  }, [searchQuery]);
 
   const handleOpenPopup = (tournamentId) => {
     setSelectedTournamentId(tournamentId);
@@ -121,7 +132,13 @@ const TournamentList = () => {
                 <CTableDataCell>{tournament.location}</CTableDataCell>
                 <CTableDataCell>{tournament.status}</CTableDataCell>
                 <CTableDataCell>
-                  <CButton color="primary" onClick={() => handleOpenPopup(tournament.id)}>Đăng Ký</CButton>
+                  <CButton color="primary" onClick={() => {
+                    if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                      handleOpenPopup(tournament.id);
+                    } else {
+                      navigate('/login');
+                    }
+                  }}>Đăng Ký</CButton>
                 </CTableDataCell>
               </CTableRow>
             ))}

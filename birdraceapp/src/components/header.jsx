@@ -4,7 +4,6 @@ import { List } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import Logout from '../pages/author/logout';
 import 'aos/dist/aos.css';
 
