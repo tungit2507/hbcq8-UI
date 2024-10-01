@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axioInstance from '../../apiInstance';
 import { toast, ToastContainer } from 'react-toastify';
 
 const Logout = () => {
@@ -13,7 +13,7 @@ const Logout = () => {
     try {
       const token = sessionStorage.getItem('token');
       const userId = sessionStorage.getItem('userId');
-      await axios.get('http://localhost:8080/api/v1/logout', {
+      await axioInstance.get('/logout', {
         // withCredentials: true,
         headers: {
           'token': token,

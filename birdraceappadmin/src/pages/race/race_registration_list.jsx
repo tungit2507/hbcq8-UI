@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CFormCheck } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { approveRaceRegistration, fetchRaceRegistrationByRaceId } from '../../api/raceRegistration';
-import { Await } from 'react-router-dom';
+
 
 const RaceRegistrationList = () => {
   const [searchTerm, setSearchTerm] = useState("");

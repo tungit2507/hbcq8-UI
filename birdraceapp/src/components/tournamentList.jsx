@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck } from "@coreui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from 'axios';
+import axioInstance from '../apiInstance';
 import { toast, ToastContainer} from 'react-toastify';
 import Swal from 'sweetalert2';
 
@@ -30,7 +30,7 @@ const TournamentList = () => {
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/tour/list', {
+        const response = await axioInstance.get('/tour/list', {
           withCredentials : true
         });
         console.log(response);
@@ -58,7 +58,7 @@ const TournamentList = () => {
     
     const fetchUserBirds = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/user/my-birds', {
+        const response = await axioInstance.get('/user/my-birds', {
           withCredentials: true
         });
         if (response.data && Array.isArray(response.data)) {
@@ -125,7 +125,7 @@ const TournamentList = () => {
       birdCode: birdCodes
     };
 
-    axios.post('http://localhost:8080/api/v1/tour-apply', requestData, {
+    axioInstance.post('/tour-apply', requestData, {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
@@ -222,7 +222,7 @@ const TournamentList = () => {
                         }).then(async (result) => {
                           if (result.isConfirmed) {
                             try {
-                              const response = await axios.get('http://localhost:8080/api/v1/tour-apply/cancel', { 
+                              const response = await axioInstance.get('/tour-apply/cancel', { 
                                 params: { tourId: tournament.tourId },
                                 withCredentials: true 
                               });

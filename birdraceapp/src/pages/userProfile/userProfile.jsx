@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import axioInstance from '../../apiInstance';
 import { toast, ToastContainer } from 'react-toastify';
 import moment from 'moment';
 
@@ -21,7 +21,7 @@ const Profile = () => {
 
     // call api and handle exception
     try {
-      const response = await axios.put('http://localhost:8080/api/v1/user/update', userUpdateRequestDto , {
+      const response = await axioInstance.put('/user/update', userUpdateRequestDto , {
         withCredentials: true
       });
       
