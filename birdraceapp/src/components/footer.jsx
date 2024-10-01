@@ -22,11 +22,11 @@ const Footer = () => {
             <div className="col-lg-4 col-md-3 footer-links">
               <h4>Đường Dẫn</h4>
               <ul>
-                <li><Link to="/">Trang Chủ</Link></li>
-                <li><Link to="/about-us">Về Chúng Tôi</Link></li>
-                <li><Link to="/activity">Hoạt Động</Link></li>
-                <li><Link to="/history">Lịch Sử Giải Đua</Link></li>
-                <li><Link to="/contact">Liên Hệ</Link></li>
+                <li><Link to="#">Trang Chủ</Link></li>
+                <li><Link to="#">Về Chúng Tôi</Link></li>
+                <li><Link to="#">Hoạt Động</Link></li>
+                <li><Link to="#">Lịch Sử Giải Đua</Link></li>
+                <li><Link to="#">Liên Hệ</Link></li>
                 
               </ul>
             </div>
@@ -34,11 +34,11 @@ const Footer = () => {
             <div className="col-lg-4 col-md-3 footer-links">
               <h4>Dịch Vụ Của Chúng Tôi</h4>
               <ul>
-                <li><Link to="/web-design">Thiết Kế Web</Link></li>
-                <li><Link to="/web-development">Phát Triển Web</Link></li>
-                <li><Link to="/product-management">Quản Lý Sản Phẩm</Link></li>
-                <li><Link to="/marketing">Tiếp Thị</Link></li>
-                <li><Link to="/graphic-design">Thiết Kế Đồ Họa</Link></li>
+                <li><Link to="#">Thiết Kế Web</Link></li>
+                <li><Link to="#">Phát Triển Web</Link></li>
+                <li><Link to="#">Quản Lý Sản Phẩm</Link></li>
+                <li><Link to="#">Tiếp Thị</Link></li>
+                <li><Link to="#">Thiết Kế Đồ Họa</Link></li>
               </ul>
             </div>
           </div>

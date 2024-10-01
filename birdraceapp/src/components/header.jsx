@@ -41,16 +41,16 @@ const Header = () => {
                 <Nav.Link as={Link} to="/" className="nav-link" onClick={handleNavLinkClick}>Trang Chủ</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="/about-us" className="nav-link" onClick={handleNavLinkClick}>Về Chúng Tôi</Nav.Link>
+                <Nav.Link as={Link} to="#" className="nav-link" onClick={handleNavLinkClick}>Về Chúng Tôi</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="/activity" className="nav-link" onClick={handleNavLinkClick}>Hoạt Động</Nav.Link>
+                <Nav.Link as={Link} to="#" className="nav-link" onClick={handleNavLinkClick}>Hoạt Động</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
                 <Nav.Link as={Link} to="/history" className="nav-link" onClick={handleNavLinkClick}>Lịch Sử Giải Đua</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="/contact" className="nav-link" onClick={handleNavLinkClick}>Liên Hệ</Nav.Link>
+                <Nav.Link as={Link} to="#" className="nav-link" onClick={handleNavLinkClick}>Liên Hệ</Nav.Link>
               </Nav.Item>
               <NavDropdown title="Tài Khoản" id="basic-nav-dropdown custom-dropdown-menu" align="start">
                 {isLoggedIn === "true" ? 
