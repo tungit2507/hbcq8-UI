@@ -15,6 +15,7 @@ const UpdateRaceForm = () => {
   const { control, register, handleSubmit, formState: { errors }, setValue, watch } = useForm();
   const { fields, append, remove } = useFieldArray({ control, name: 'stages' });
   const navigate = useNavigate();
+  const [isActive, setIsActive] = useState(true);
 
   const startPointCoordinates = watch('startPoint.coordinates');
   const endPointCoordinates = watch('endPoint.coordinates');
@@ -51,6 +52,7 @@ const UpdateRaceForm = () => {
         setValue('stages', stagesData);
 
         setImagePreview(raceData.imgUrl);
+        setIsActive(raceData.isActived);
       } catch (error) {
         toast.error('Không thể tải dữ liệu giải đua.');
       }
@@ -68,7 +70,7 @@ const UpdateRaceForm = () => {
       formData.append('startDate', `${data.startDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00')}`);
       formData.append('endDate', `${data.endDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00')}`);
       formData.append('restTimePerDay', data.breakTime);
-      formData.append('isActived', true);
+      formData.append('isActived', isActive);
       // if (data.image[0]) formData.append('imgUrl', data.image[0]);
 
       formData.append('tourLocation.startPoint.name', data.startPoint.name);

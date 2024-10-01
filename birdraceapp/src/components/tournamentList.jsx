@@ -3,6 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { toast, ToastContainer} from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const TournamentList = () => {
 
@@ -133,6 +134,9 @@ const TournamentList = () => {
     .then(response => {
       console.log('Đăng ký giải đấu thành công:', response.data);
       toast.success('Đăng ký giải đấu thành công!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     })
     .catch(error => {
       console.log(error);
@@ -171,7 +175,9 @@ const TournamentList = () => {
               <CTableHeaderCell scope="col">Tên Giải Đấu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Trạng Thái</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Trạng Thái Giải Đua</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Trạng Thái Đơn</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell>
               <CTableHeaderCell scope="col"></CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -182,15 +188,59 @@ const TournamentList = () => {
                 <CTableDataCell>{tournament.tourName}</CTableDataCell>
                 <CTableDataCell>{tournament.startDate}</CTableDataCell>
                 <CTableDataCell>{tournament.endDate}</CTableDataCell>
-                <CTableDataCell>{tournament.status}</CTableDataCell>
+                <CTableDataCell>{tournament.tourStatus}</CTableDataCell>
                 <CTableDataCell>
-                  <CButton color="primary" onClick={() => {
-                    if (sessionStorage.getItem('isLoggedIn') === 'true') {
-                      handleOpenPopup(tournament.tourId);
-                    } else {
-                      navigate('/login');
-                    }
-                  }}>Đăng Ký</CButton>
+                  {tournament.tourApplyStatusCode === 'R' ? 'Đã từ chối' : 
+                   tournament.tourApplyStatusCode === 'A' ? 'Đã được duyệt' : 
+                   tournament.tourApplyStatusCode === 'W' ? 'Đang chờ duyệt' : 
+                   tournament.tourApplyStatusCode}
+                </CTableDataCell>
+                <CTableDataCell>{tournament.memo}</CTableDataCell>
+                <CTableDataCell>
+                  {tournament.isActived && !tournament.tourApplyStatusCode && (
+                    <CButton
+                      color="primary" onClick={() => {
+                        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+                        if (isLoggedIn) {
+                          handleOpenPopup(tournament.tourId);
+                        } else {
+                          navigate('/login');
+                        }
+                      }}>Đăng Ký</CButton>
+                  )}
+                  {tournament.tourApplyStatusCode === 'W' && (
+                    <CButton
+                      color="danger" onClick={() => {
+                        Swal.fire({
+                          title: 'Bạn có chắc chắn muốn hủy đơn?',
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Có, hủy đơn!',
+                          cancelButtonText: 'Không'
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            try {
+                              const response = await axios.get('http://localhost:8080/api/v1/tour-apply/cancel', { 
+                                params: { tourId: tournament.tourId },
+                                withCredentials: true 
+                              });
+                              console.log(response)
+                              toast.success('Hủy đơn thành công.');
+                            setTimeout(() => {
+                              window.location.reload();
+                            }, 1000);
+                            } catch (error) {
+                              const errorMessage = error.response && error.response.data && error.response.data.message 
+                                ? error.response.data.message 
+                                : 'Đã xảy ra lỗi khi hủy đơn.';
+                              toast.error(errorMessage);
+                            }
+                          }
+                        });
+                      }}>Hủy Đơn</CButton>
+                  )}
                 </CTableDataCell>
               </CTableRow>
             ))}

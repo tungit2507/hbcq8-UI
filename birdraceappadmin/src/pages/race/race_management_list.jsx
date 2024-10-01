@@ -5,6 +5,7 @@ import sampleImage from './../../assets/images/avatars/1.jpg'; // Đảm bảo �
 import Swal from 'sweetalert2';
 import { fetchRaces } from '../../api/raceApi';
 import ErrorImage from '../../assets/images/avatars/1.jpg';
+import { deleteRaceRegistration } from '../../api/raceRegistration';
 
 
 const RaceList = () => {
@@ -25,7 +26,19 @@ const RaceList = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+        deleteRaceRegistration(id);
         Swal.fire("Đã xóa!", "Mục của bạn đã bị xóa.", "success");
+        const loadRaces = async () => {
+          try {
+            const fetchedRaces = await fetchRaces();
+            setRaces(fetchedRaces);
+            console.log(races);
+            
+          } catch (error) {
+            console.error('Lỗi khi tải danh sách giải đua:', error);
+          }
+        };
+        loadRaces();
       }
     });
   };
@@ -50,13 +63,9 @@ const RaceList = () => {
     loadRaces();
   }, []);
 
-  const filteredRaces = races.filter(race =>
-    race.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredRaces.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = races.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
@@ -140,7 +149,7 @@ const RaceList = () => {
           >
             Trước
           </CPaginationItem>
-          {[...Array(Math.ceil(filteredRaces.length / itemsPerPage)).keys()].map(number => (
+          {[...Array(Math.ceil(races.length / itemsPerPage)).keys()].map(number => (
             <CPaginationItem
               key={number + 1}
               active={number + 1 === currentPage}
@@ -151,7 +160,7 @@ const RaceList = () => {
           ))}
           <CPaginationItem
             onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === Math.ceil(filteredRaces.length / itemsPerPage)}
+            disabled={currentPage === Math.ceil(races.length / itemsPerPage)}
           >
             Tiếp
           </CPaginationItem>

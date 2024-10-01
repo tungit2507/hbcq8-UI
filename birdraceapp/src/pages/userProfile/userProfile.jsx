@@ -25,11 +25,11 @@ const Profile = () => {
         withCredentials: true
       });
       
-      console.log(response);
 
 
       if (response.data) {
         toast.success('Cập nhật thông tin thành công');
+        console.log(response.data);
         sessionStorage.setItem('currentUser', JSON.stringify(response.data));
         setUser(response.data);
       }
