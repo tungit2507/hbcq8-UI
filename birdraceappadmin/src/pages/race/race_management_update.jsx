@@ -412,7 +412,7 @@ const UpdateRaceForm = () => {
                   <CButton
                     color="primary"
                     onClick={() => handleCalculateDistance()}
-                    disabled={!startPointCoordinates || !endPointCoordinates || stages.some(stage => !stage.coordinates)}
+                    // disabled={!startPointCoordinates || !endPointCoordinates || stages.some(stage => !stage.coordinates)}
                   >
                     Tính Khoảng Cách
                   </CButton>
