@@ -43,7 +43,7 @@ const RegistrationForm = () => {
                 <form id='register-form' className="card-body cardbody-color p-lg-5" onSubmit={handleSubmit(onSubmit)}>
                   <div className="text-center">
                     <img
-                      src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png"
+                      src="./assets/img/logo/logo.jpg"
                       className="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
                       width="70px"
                       alt="profile"
