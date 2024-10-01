@@ -29,6 +29,24 @@ function HeroSection() {
           </p>
         </Carousel.Caption> */}
       </Carousel.Item>
+      <Carousel.Item>
+      <Image src="/assets/img/carousel/carousel-4.jpg" />
+        {/* <Carousel.Caption>
+          <h2 className='text-white'>Good Food For All</h2>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption> */}
+      </Carousel.Item>
+      <Carousel.Item>
+      <Image src="/assets/img/carousel/carousel-5.jpg" />
+        {/* <Carousel.Caption>
+          <h2 className='text-white'>Good Food For All</h2>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption> */}
+      </Carousel.Item>
     </Carousel>
     </div>
   );

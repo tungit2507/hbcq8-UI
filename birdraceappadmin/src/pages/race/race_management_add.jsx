@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer} from 'react-toastify';
 import axios from 'axios';
 import { calculateDistance } from '../../api/raceLocationApi';
-import { showErrorNotification } from '../../api/sweetAlertNotify';
+import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
 import { addRace } from '../../api/raceApi';
+import { useNavigate } from 'react-router-dom';
 
 const AddRaceForm = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -13,6 +14,7 @@ const AddRaceForm = () => {
   const { fields, append, remove } = useFieldArray({ control, name: 'stages' });
   const [endPointDistance, setEndPointDistance] = useState(0);
   const [stageDistances, setStageDistances] = useState([]);
+  const navigate = useNavigate();
 
   const startPointCoordinates = watch('startPoint.coordinates');
   const endPointCoordinates = watch('endPoint.coordinates');
@@ -46,10 +48,13 @@ const AddRaceForm = () => {
       await addRace(formData);
       
       console.log(Object.fromEntries(formData));
-      toast.success('Thêm giải đua thành công!');
+      showSuccessNotification("Thêm Giải Đua Thành Công")
       setImagePreview(null);
+      navigate('/management/race/list');
+      
     } catch (error) {
-      toast.error('Thêm giải đua thất bại.');
+      const errorMessage =  error.response.data.errorMessage? error.response.data.errorMessage : "Lỗi khi thêm giải đua";
+      showErrorNotification(errorMessage);
     }
   };
 
@@ -250,7 +255,7 @@ const AddRaceForm = () => {
                     {...register('startPoint.coordinates', {
                       required: 'Tọa độ điểm bắt đầu là bắt buộc',
                       pattern: {
-                        value: /^\d+(\.\d+)?;\d+(\.\d+)?$/,
+                        value: /^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/,
                         message: 'Tọa độ không hợp lệ. Định dạng đúng: "kinh_độ;vĩ_độ" (ví dụ: 193.000;152.555)'
                       }
                     })}
@@ -290,7 +295,7 @@ const AddRaceForm = () => {
                       {...register(`stages[${index}].coordinates`, {
                         required: 'Tọa độ chặng là bắt buộc',
                         pattern: {
-                          value: /^\d+(\.\d+)?;\d+(\.\d+)?$/,
+                          value: /^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/,
                           message: 'Tọa độ không hợp lệ. Định dạng đúng: "kinh_độ;vĩ_độ" (ví dụ: 193.000;152.555)'
                         }
                       })}
@@ -342,7 +347,7 @@ const AddRaceForm = () => {
                     {...register('endPoint.coordinates', {
                       required: 'Tọa độ điểm kết thúc là bắt buộc',
                       pattern: {
-                        value: /^\d+(\.\d+)?;\d+(\.\d+)?$/,
+                        value: /^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/,
                         message: 'Tọa độ không hợp lệ. Định dạng đúng: "vĩ độ,kinh độ"'
                       }
                     })}

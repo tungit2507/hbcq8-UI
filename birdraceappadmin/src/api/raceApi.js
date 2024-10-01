@@ -39,9 +39,13 @@ export const fetchRaceById = async (id) => {
 
 
 
-export const updateRace = async (id, raceData) => {
+export const updateRace = async (raceData) => {
     try {
-        const response = await axiosInstance.put(`${BASE_URL_RACES}/${id}`, raceData);
+        const response = await axiosInstance.put(`${BASE_URL_RACES}`, raceData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         return response.data;
     } catch (error) {
         console.error('Error updating race:', error);

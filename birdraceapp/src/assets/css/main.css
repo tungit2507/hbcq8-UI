@@ -699,9 +699,9 @@ section,
   position: relative;
 }
 
-.carousel-item img{
+/* .carousel-item img{
   opacity: 0.7;
-}
+} */
 
 .hero img {
   position: absolute;

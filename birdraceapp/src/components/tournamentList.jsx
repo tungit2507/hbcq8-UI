@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck } from "@coreui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from 'axios'; // Thêm import axios
-import { toast } from 'react-toastify';
+import axios from 'axios';
+import { toast, ToastContainer} from 'react-toastify';
 
 const TournamentList = () => {
 
@@ -14,7 +14,6 @@ const TournamentList = () => {
   const currentPage = parseInt(queryParams.get('page') || '1', 10);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredTournaments, setFilteredTournaments] = useState(tournamentsData);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedTournamentId, setSelectedTournamentId] = useState(null);
   const [selectedBirds, setSelectedBirds] = useState([]);
@@ -22,29 +21,59 @@ const TournamentList = () => {
 
   const indexOfLastTournament = currentPage * tournamentsPerPage;
   const indexOfFirstTournament = indexOfLastTournament - tournamentsPerPage;
-  const currentTournaments = filteredTournaments.slice(indexOfFirstTournament, indexOfLastTournament);
+  const currentTournaments = Array.isArray(tournamentsData) ? tournamentsData.slice(indexOfFirstTournament, indexOfLastTournament) : [];
 
-  const totalPages = Math.ceil(filteredTournaments.length / tournamentsPerPage);
+  const totalPages = Math.ceil((Array.isArray(tournamentsData) ? tournamentsData.length : 0) / tournamentsPerPage);
+  const [userBirds, setUserBirds] = useState([]);
 
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/admin/tournament', {
+        const response = await axios.get('http://localhost:8080/api/v1/tour/list', {
           withCredentials : true
         });
-        setTournamentsData(response.data);
-        const filtered = response.data.filter(tournament =>
-          tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredTournaments(filtered);
+        console.log(response);
+        if (response && response.data && Array.isArray(response.data)) {
+          setTournamentsData(response.data);
+          console.log(response.data)
+          handlePageChange(1);
+        } else {
+          console.error('Dữ liệu giải đấu không hợp lệ:', response.data);
+          toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Dữ liệu không hợp lệ.');
+        }
       } catch (error) {
+    
+        const errorCode = error.response.data.status?  error.response.data.status : 'UNKNOWN';
+        console.log(error)
+        if(errorCode == 401){
+          navigate("/login")
+        }
         console.error('Lỗi khi tải danh sách giải đấu:', error);
         toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
       }
     };
   
     fetchTournaments();
-  }, [searchQuery]);
+    
+    const fetchUserBirds = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/user/my-birds', {
+          withCredentials: true
+        });
+        if (response.data && Array.isArray(response.data)) {
+          setUserBirds(response.data);
+        } else {
+          console.error('Dữ liệu chim không hợp lệ:', response.data);
+          toast.error('Đã xảy ra lỗi khi tải danh sách chim. Dữ liệu không hợp lệ.');
+        }
+      } catch (error) {
+        console.error('Lỗi khi tải danh sách chim:', error);
+        toast.error('Đã xảy ra lỗi khi tải danh sách chim. Vui lòng thử lại sau.');
+      }
+    };
+
+    fetchUserBirds();
+  }, []);
 
   const handlePageChange = (pageNumber) => {
     navigate(`?page=${pageNumber}`);
@@ -55,10 +84,6 @@ const TournamentList = () => {
   };
 
   const handleSearch = () => {
-    const filtered = tournamentsData.filter(tournament =>
-      tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredTournaments(filtered);
     navigate('?page=1');
   };
 
@@ -78,18 +103,47 @@ const TournamentList = () => {
   };
 
   const handleRegister = () => {
-    // Xử lý đăng ký ở đây
-    console.log(`Đăng ký giải đấu ${selectedTournamentId} với các chim: ${selectedBirds.join(', ')}`);
+    const currentUser = sessionStorage.getItem('userId');
+    const currentTime = new Date().toISOString();
+    const selectedTournament = tournamentsData.find(tournament => tournament.tourId === selectedTournamentId);
+    
+    const jsonData = { birds: selectedBirds };
+    console.log(jsonData);
+
+    const birdCodes = jsonData.birds;
+    console.log(birdCodes);
+
+    const requestData = {
+      tourId: selectedTournamentId,
+      tourName: selectedTournament ? selectedTournament.tourName : '',
+      tourStartDate: selectedTournament ? selectedTournament.startDate : '',
+      tourEndDate: selectedTournament ? selectedTournament.endDate : '',
+      requesterId: currentUser,
+      createdBy: currentUser,
+      createdAt: currentTime,
+      birdCode: birdCodes
+    };
+
+    axios.post('http://localhost:8080/api/v1/tour-apply', requestData, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      console.log('Đăng ký giải đấu thành công:', response.data);
+      toast.success('Đăng ký giải đấu thành công!');
+    })
+    .catch(error => {
+      console.log(error);
+      const errorMessage = error.response.data.errorMessage;
+      const errorCode = error.response.data.errorCode;
+      console.error('Lỗi khi đăng ký giải đấu:', errorMessage, 'Mã lỗi:', errorCode);
+      toast.error(`${errorMessage}`);
+    });
     setShowPopup(false);
     setSelectedBirds([]);
   };
-
-  // Giả sử danh sách chim của người dùng
-  const userBirds = [
-    { id: 1, name: "Chim 1" },
-    { id: 2, name: "Chim 2" },
-    { id: 3, name: "Chim 3" },
-  ];
 
   return (
     <div className="p-3 rounded">
@@ -117,24 +171,22 @@ const TournamentList = () => {
               <CTableHeaderCell scope="col">Tên Giải Đấu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Địa Điểm</CTableHeaderCell>
               <CTableHeaderCell scope="col">Trạng Thái</CTableHeaderCell>
               <CTableHeaderCell scope="col"></CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
             {currentTournaments.map(tournament => (
-              <CTableRow key={tournament.id}>
-                <CTableHeaderCell scope="row">{tournament.id}</CTableHeaderCell>
-                <CTableDataCell>{tournament.name}</CTableDataCell>
+              <CTableRow key={tournament.tourId}>
+                <CTableHeaderCell scope="row">{tournament.tourId}</CTableHeaderCell>
+                <CTableDataCell>{tournament.tourName}</CTableDataCell>
                 <CTableDataCell>{tournament.startDate}</CTableDataCell>
                 <CTableDataCell>{tournament.endDate}</CTableDataCell>
-                <CTableDataCell>{tournament.location}</CTableDataCell>
                 <CTableDataCell>{tournament.status}</CTableDataCell>
                 <CTableDataCell>
                   <CButton color="primary" onClick={() => {
                     if (sessionStorage.getItem('isLoggedIn') === 'true') {
-                      handleOpenPopup(tournament.id);
+                      handleOpenPopup(tournament.tourId);
                     } else {
                       navigate('/login');
                     }
@@ -183,8 +235,8 @@ const TournamentList = () => {
               key={bird.id}
               id={`bird-${bird.id}`}
               label={bird.name}
-              checked={selectedBirds.includes(bird.id)}
-              onChange={() => handleBirdSelection(bird.id)}
+              checked={selectedBirds.includes(bird.code)}
+              onChange={() => handleBirdSelection(bird.code)}
             />
           ))}
         </CModalBody>
@@ -192,11 +244,22 @@ const TournamentList = () => {
           <CButton color="secondary" onClick={() => setShowPopup(false)}>
             Hủy
           </CButton>
-          <CButton color="primary" onClick={handleRegister}>
+          <CButton color="primary" onClick={handleRegister} disabled={selectedBirds.length === 0}>
             Xác nhận đăng ký
           </CButton>
         </CModalFooter>
       </CModal>
+    <ToastContainer 
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
     </div>
   );
 };

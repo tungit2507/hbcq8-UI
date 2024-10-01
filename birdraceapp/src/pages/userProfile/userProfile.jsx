@@ -34,8 +34,9 @@ const Profile = () => {
         setUser(response.data);
       }
     } catch (error) {
+      const errorMessage =  error.response.data.errorMessage? error.response.data.errorMessage : 'Có Lỗi Xảy ra khi cập nhật thông tin';
       console.error('Lỗi khi cập nhật thông tin:', error);
-      toast.error('Có lỗi xảy ra khi cập nhật thông tin');
+      toast.error(errorMessage);
     }
   };
 
