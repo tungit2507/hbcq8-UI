@@ -78,6 +78,11 @@ h6 {
 
 /* Pulsating Play Button
 ------------------------------*/
+
+.logo-span{
+  font-family: var(--default-font);
+}
+
 .pulsating-play-btn {
   width: 94px;
   height: 94px;

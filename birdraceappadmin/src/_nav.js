@@ -10,25 +10,25 @@ import {
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
-  {
-    component: CNavItem,
-    name: 'Thống Kê',
-    to: '/',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavGroup,
-    name: 'Quản Lý Thành Viên',
-    to: '/management',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Danh Sách Thành Viên',
-        to: '/management/user/list',
-      },
-    ],
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Thống Kê',
+  //   to: '/',
+  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Quản Lý Thành Viên',
+  //   to: '/management',
+  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Danh Sách Thành Viên',
+  //       to: '/management/user/list',
+  //     },
+  //   ],
+  // },
   {
     component: CNavGroup,
     name: 'Quản Lý Giải Đua',

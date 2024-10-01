@@ -15,21 +15,18 @@ const Profile = () => {
       userId: user.id,
       address: data.address,
       imgUrl: imageName, 
-      birthday: moment(data.birthday).format('YYYY-MM-DD'),
+      birthday: moment(data.birthday).format('DD-MM-YYYY'),
       phone: data.phone,
     };
 
     // call api and handle exception
     try {
-      const response = await axioInstance.put('/user/update', userUpdateRequestDto , {
-        withCredentials: true
-      });
+      const response = await axioInstance.put('/user/update', userUpdateRequestDto)
       
 
 
       if (response.data) {
         toast.success('Cập nhật thông tin thành công');
-        console.log(response.data);
         sessionStorage.setItem('currentUser', JSON.stringify(response.data));
         setUser(response.data);
       }
@@ -44,9 +41,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const user = JSON.parse(sessionStorage.getItem("currentUser"));
-        setUser(user); 
-        setImageName(user.imgUrl); // Đặt tên ảnh từ dữ liệu người dùng
+        const respone = await axioInstance.get("user/me");
+        respone.data.birthday = moment(respone.data.birthday, 'DD-MM-YYYY').format('YYYY-MM-DD'); // Định dạng lại ngày sinh
+        setUser(respone.data); 
+        console.log(respone.data);
+        setImageName(user.imgUrl); 
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -154,7 +153,7 @@ const Profile = () => {
                       id="inputBirthday" 
                       type="date" 
                       name="birthday" 
-                      defaultValue={user.birthday ? moment(user.birthday).format('YYYY-MM-DD') : ''} // Sử dụng defaultValue và kiểm tra null
+                      defaultValue={user?.birthday || ''} // Sử dụng defaultValue và kiểm tra null
                       {...register('birthday', { required: 'Ngày sinh là bắt buộc' })}
                     />
                     {errors.birthday && <p className="text-danger">{errors.birthday.message}</p>}
