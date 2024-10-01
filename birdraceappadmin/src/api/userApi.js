@@ -1,8 +1,9 @@
-import axiosInstance from "./apiInstance";
+import { toast } from "react-toastify";
+import axiosInstance from "./api";
 import { showErrorNotification } from "./sweetAlertNotify";
 
 
-const BASE_URL_USERS = '/api/v1/users';
+const BASE_URL_USERS = '/api/v1/user';
 const BASE_URL_LOGIN = '/api/v1/login';
 const BASE_URL_LOGOUT = '/api/v1/logout';
 
@@ -59,8 +60,8 @@ export const updateUser = async (userData) => {
         const response = await axiosInstance.put(`${BASE_URL_USERS}/update`, userData);
         return response.data;
     } catch (error) {
-        console.error('Error updating user:', error);
-        throw error;
+        const errorMessage = error.response?.data?.errorMessage || "Đã xảy ra lỗi";
+        console.log(errorMessage);
     }
 };
 
@@ -84,7 +85,6 @@ export const login = async (loginData) => {
         const errorMessage = error.response.data.errorMessage;
         showErrorNotification(errorMessage);
       }
-      throw error;
     }
 };
 
@@ -94,8 +94,6 @@ export const logout = async () => {
         const response = await axiosInstance.get(`${BASE_URL_LOGOUT}`);
         return response.data;
     } catch (error) {
-        console.error('Lỗi khi đăng xuất:', error);
-        alert("lỗi khi đăng xuất")
-        throw error;
+        showErrorNotification("Lỗi khi đăng xuất");
     }
 }

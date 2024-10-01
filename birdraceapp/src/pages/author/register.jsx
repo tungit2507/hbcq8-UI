@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axioInstance from '../../apiInstance';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,7 +18,7 @@ const RegistrationForm = () => {
   const onSubmit = async (data) => {
     const { confirmPassword, ...formData } = data;
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/register', formData);
+      const response = await axioInstance.post('/register', formData);
       console.log(response);
       dispatch(login(response));
       toast.success("Đăng Ký Thành Công");

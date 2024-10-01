@@ -21,11 +21,13 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     let response = await login(data);
-    if (response.roleId === 2) {
-      showErrorNotification("Rất Tiếc Tài Khoản Của Bạn Không Đủ Quyền Hạn, Vui Lòng Đăng Nhập Tài Khoản Khác");
-    } else {
-      localStorage.setItem("currentUser", JSON.stringify(response));
-      navigate('/');
+    if(response){
+      if (response.roleId === 2) {
+        showErrorNotification("Rất Tiếc Tài Khoản Của Bạn Không Đủ Quyền Hạn, Vui Lòng Đăng Nhập Tài Khoản Khác");
+      } else {
+        localStorage.setItem("currentUser", JSON.stringify(response));
+        navigate('/');
+      }
     }
   };
 

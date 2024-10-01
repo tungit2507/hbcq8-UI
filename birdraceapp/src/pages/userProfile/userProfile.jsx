@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import axioInstance from '../../apiInstance';
 import { toast, ToastContainer } from 'react-toastify';
 import moment from 'moment';
 
+
 const Profile = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [user, setUser] = useState(null); // Khởi tạo user là null
+  const [user, setUser] = useState(null);
   const [imageName, setImageName] = useState(''); // Khởi tạo imageName là rỗng
 
   const onSubmit = async (data) => {
-    const userData = {
-      userId: user.userId,
-      phone: data.phone,
+    const userUpdateRequestDto = {
+      userId: user.id,
       address: data.address,
-      birthday: data.birthday,
-      imgUrl: imageName // Gửi tên ảnh
+      imgUrl: imageName, 
+      birthday: moment(data.birthday).format('YYYY-MM-DD'),
+      phone: data.phone,
     };
 
     // call api and handle exception
     try {
-      const response = await axios.put('http://localhost:8080/api/v1/user/update', userData, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json' // Đặt Content-Type là application/json
-        }
+      const response = await axioInstance.put('/user/update', userUpdateRequestDto , {
+        withCredentials: true
       });
       
+
+
       if (response.data) {
         toast.success('Cập nhật thông tin thành công');
-        localStorage.setItem('currentUser', JSON.stringify(response.data));
+        console.log(response.data);
+        sessionStorage.setItem('currentUser', JSON.stringify(response.data));
         setUser(response.data);
       }
     } catch (error) {
+      const errorMessage =  error.response.data.errorMessage? error.response.data.errorMessage : 'Có Lỗi Xảy ra khi cập nhật thông tin';
       console.error('Lỗi khi cập nhật thông tin:', error);
-      toast.error('Có lỗi xảy ra khi cập nhật thông tin');
+      toast.error(errorMessage);
     }
   };
 
@@ -43,7 +45,6 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         const user = JSON.parse(sessionStorage.getItem("currentUser"));
-        console.log(user)
         setUser(user); 
         setImageName(user.imgUrl); // Đặt tên ảnh từ dữ liệu người dùng
       } catch (error) {
@@ -84,7 +85,9 @@ const Profile = () => {
               <label htmlFor="user-image" style={{ cursor: 'pointer' }}>
                 <img 
                   className="img-account-profile rounded-circle mb-2"
-                  src={user.imgUrl || '/assets/img/no-person-placeholder.webp'} 
+                  src={
+                    // user.imgUrl && user.imgUrl !== '' ? user.imgUrl : 
+                    '/assets/img/no-person-placeholder.webp'}
                   alt="Profile" 
                   style={{ 
                     width: '150px', 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axioInstance from '../../apiInstance';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,7 +16,7 @@ const LoginForm = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/login', data,{ withCredentials: true});
+      const response = await axioInstance.post('/login', data,{ withCredentials: true});
       const user = response.data;
       sessionStorage.setItem("currentUser", JSON.stringify(user));
       sessionStorage.setItem("isLoggedIn", "true");

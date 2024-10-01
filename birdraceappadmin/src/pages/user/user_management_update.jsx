@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { useForm, Controller } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 import { updateUser, getOneUser } from '../../api/userApi';
 import { useLocation } from 'react-router-dom';
-import { current } from '@reduxjs/toolkit';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+import { showErrorNotification } from '../../api/sweetAlertNotify';
 
 const UserManagementUpdate = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -28,30 +27,20 @@ const UserManagementUpdate = () => {
   const username = query.get('username');
 
 
-  useEffect(()=>{
-    console.log(username);
-  })
+  // useEffect(()=>{
+  //  
+  // })
 
   // Form submission handler
   const onSubmit = async (data) => {
-    try {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('numberOfBirds', data.numberOfBirds);
-      formData.append('startDate', data.startDate);
-      formData.append('endDate', data.endDate);
-      formData.append('breakTime', data.breakTime);
-      if (data.image[0]) formData.append('image', data.image[0]);
-
-      // Make API call
-      await axios.post('/api/races', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-
-      toast.success('Cập nhật hội viên thành công!');
-      // Clear image preview
-      setImagePreview(null);
-    } catch (error) {
-      toast.error('Cập nhật giải đua thất bại.');
-    }
+      try {
+        console.log(data);
+        data.imgUrl = "";
+        const response  =  await updateUser(data);
+      } catch (error) {
+        showErrorNotification("Lỗi xảy ra khi cập nhật thành viên");
+        console.log(error);
+      }
   };
 
   // Image preview handler
@@ -80,10 +69,10 @@ const UserManagementUpdate = () => {
                      <CFormLabel htmlFor="id">ID :</CFormLabel>
                      <CFormInput
                         readOnly
-                        type="text"
+                        type="number"
                         id="id"
                         value={user?.id || ''}
-                        {...register('id', { required: 'Id là bắt buộc' })}
+                        {...register('userId', { required: 'Id là bắt buộc' })}
                         invalid={!!errors.id}
                         />
                         {errors.id && <div className="invalid-feedback">{errors.id.message}</div>}
@@ -92,25 +81,25 @@ const UserManagementUpdate = () => {
               {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />}
               <CRow className="mb-3">
                 <CCol>
-                  <CFormLabel htmlFor="image">Ảnh Đại Diện</CFormLabel>
+                  <CFormLabel htmlFor="imgUrl">Ảnh Đại Diện</CFormLabel>
                   <Controller
-                    name="image"
+                    name="imgUrl"
                     control={control}
                     rules={{ required: 'Ảnh đại diện là bắt buộc' }}
                     render={({ field }) => (
                       <CFormInput
                         type="file"
-                        id="image"
+                        id="imgUrl"
                         accept="image/*"
                         onChange={(e) => {
                           field.onChange(e);
                           handleImageChange(e);
                         }}
-                        invalid={!!errors.image}
+                        invalid={!!errors.imgUrl}
                       />
                     )}
                   />
-                  {errors.image && <div className="invalid-feedback">{errors.image.message}</div>}
+                  {errors.imgUrl && <div className="invalid-feedback">{errors.imgUrl.message}</div>}
                 </CCol>
               </CRow>
               <CRow className="mb-3">
@@ -152,7 +141,7 @@ const UserManagementUpdate = () => {
               </CRow>
               <CRow>
                 <CCol>
-                  <CButton type="submit" color="primary">Thêm Giải Đua</CButton>
+                  <CButton type="submit" color="primary">Cập Nhật</CButton>
                 </CCol>
               </CRow>
             </CForm>

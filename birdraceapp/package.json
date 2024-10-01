@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coreui/coreui": "^5.1.2",
+    "@coreui/react": "^5.4.0",
     "@ionic/react": "^8.3.0",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.2.7",
@@ -25,6 +27,7 @@
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "sweetalert2": "^11.14.1",
     "swiper": "^11.1.12",
     "web-vitals": "^2.1.4"
   },

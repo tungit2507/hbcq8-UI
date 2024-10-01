@@ -5,6 +5,7 @@ import LoginForm from "./pages/author/login";
 import RegistrationForm from "./pages/author/register";
 import Page404 from "./pages/Page404";
 import Profile from "./pages/userProfile/userProfile";
+import TournamentList from "./components/tournamentList";
 
 const routes = createBrowserRouter([
     {
@@ -13,7 +14,7 @@ const routes = createBrowserRouter([
             { path: "/", element: <HomePage/>},
             { path: "/about-us", element: <HomePage/> },
             { path: "/activity", element: <Profile/> },
-            { path: "/history", element: <div><Link to={"/home"}>Lịch Sử</Link></div> },
+            { path: "/history", element: <TournamentList/> },
             { path: "/contact", element: <div><Link to={"/home"}>Contact</Link></div> },
             { path: "/profile", element: <Profile/> },
            
