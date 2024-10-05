@@ -164,6 +164,7 @@ const BirdList = () => {
                             type="file"
                             placeholder="Hình Ảnh"
                             label="Chọn hình ảnh chim"
+                            disabled
                             onChange={(e) => setCurrentBird({ ...currentBird, image: e.target.files[0] })}
                         />
                     </CForm>
