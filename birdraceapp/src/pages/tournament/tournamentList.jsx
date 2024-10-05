@@ -72,7 +72,6 @@ const TournamentList = () => {
         toast.error('Đã xảy ra lỗi khi tải danh sách chim. Vui lòng thử lại sau.');
       }
     };
-
     fetchUserBirds();
   }, []);
 

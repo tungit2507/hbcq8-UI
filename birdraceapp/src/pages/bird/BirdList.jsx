@@ -82,7 +82,7 @@ const BirdList = () => {
         }
     };
 
-    const handleDeleteBird = async (birdId) => {
+    const handleDeleteBird = async (birdCode) => {
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa?',
             text: "Hành động này không thể hoàn tác!",
@@ -95,10 +95,10 @@ const BirdList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await axioInstance.delete(`/user/my-birds/${birdId}`, {
+                    await axioInstance.delete(`/bird/${birdCode}`, {
                         withCredentials: true
                     });
-                    setUserBirds(userBirds.filter(bird => bird.id !== birdId));
+                    setUserBirds(userBirds.filter(bird => bird.code !== birdCode));
                     toast.success('Xóa chim đua thành công!');
                 } catch (error) {
                     console.error('Lỗi khi xóa chim đua:', error);
@@ -131,7 +131,7 @@ const BirdList = () => {
                                 <CTableDataCell><img src={bird.image} alt={bird.name} style={{ width: '100px', height: '100px' }} /></CTableDataCell>
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird(bird); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.id)}>Xóa</CButton>
+                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.code)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
                         ))}
