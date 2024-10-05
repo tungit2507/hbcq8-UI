@@ -208,6 +208,7 @@ const UpdateRaceForm = () => {
                     control={control}
                     render={({ field }) => (
                       <CFormInput
+                        disabled
                         type="file"
                         id="image"
                         accept="image/*"

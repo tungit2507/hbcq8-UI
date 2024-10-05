@@ -50,7 +50,7 @@ const Header = () => {
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
-        <CHeaderNav className="d-none d-md-flex">
+        {/* <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
               Dashboard
@@ -62,8 +62,8 @@ const Header = () => {
           <CNavItem>
             <CNavLink href="#">Settings</CNavLink>
           </CNavItem>
-        </CHeaderNav>
-        <CHeaderNav className="ms-auto">
+        </CHeaderNav> */}
+        {/* <CHeaderNav className="ms-auto">
           <CNavItem>
             <CNavLink href="#">
               <CIcon icon={cilBell} size="lg" />
@@ -79,7 +79,7 @@ const Header = () => {
               <CIcon icon={cilEnvelopeOpen} size="lg" />
             </CNavLink>
           </CNavItem>
-        </CHeaderNav>
+        </CHeaderNav> */}
         <CHeaderNav>
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>

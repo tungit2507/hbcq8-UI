@@ -162,9 +162,10 @@ const AddRaceForm = () => {
                   <Controller
                     name="image"
                     control={control}
-                    rules={{ required: 'Hình Ảnh Là Bắt Buộc' }}
+                    // rules={{ required: 'Hình Ảnh Là Bắt Buộc' }}
                     render={({ field }) => (
                       <CFormInput
+                        disabled
                         type="file"
                         id="image"
                         accept="image/*"

@@ -13,19 +13,21 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Thống Kê',
-    to: '/',
+    to: '#',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    onClick: () => alert('Tính năng đang phát triển'),
   },
   {
     component: CNavGroup,
     name: 'Quản Lý Thành Viên',
-    to: '/management',
+    to: '#',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Danh Sách Thành Viên',
-        to: '/management/user/list',
+        to: '#',
+        onClick: () => alert('Tính năng đang phát triển'),
       },
     ],
   },
