@@ -198,6 +198,7 @@ const BirdList = () => {
                             onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
                         />
                         <CFormInput
+                            disabled
                             className='my-2'
                             type="file"
                             placeholder="Hình Ảnh"
