@@ -199,7 +199,7 @@ const UpdateRaceForm = () => {
                   />
                 </CCol>
               </CRow>
-              <img src={imagePreview || ErrorImage} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
+              <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
               <CRow className="mb-3">
                 <CCol>
                   <CFormLabel htmlFor="image">Hình Ảnh</CFormLabel>

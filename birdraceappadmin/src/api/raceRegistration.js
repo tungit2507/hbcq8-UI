@@ -22,13 +22,13 @@ export const approveRaceRegistration = async (dto) => {
                 'Content-Type': 'application/json'
             }
         });
-        console.log("thành công");
         return response.data;
     } catch (error) {
         console.error('Lỗi khi duyệt đăng ký:', error);
         showErrorNotification('Lỗi khi duyệt đăng ký');
     }
 };
+
 
 
 
