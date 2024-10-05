@@ -33,7 +33,7 @@ const Header = () => {
     <header id="header" className="header position-relative">
       <Navbar expand="lg" className="bg-light">
         <Container fluid className='container-xl position-relative d-flex align-items-center justify-content-between'>
-          <Navbar.Brand href="index.html" className="logo d-flex align-items-center">
+          <Navbar.Brand as={Link} to={"/"} className="logo d-flex align-items-center">
             <Link to={"/"}><img src="./assets/img/logo/logo.jpg" alt="AgriCulture" /></Link>
             <span className='logo-span'>Hội Bồ Câu Quận 8</span>
           </Navbar.Brand>
