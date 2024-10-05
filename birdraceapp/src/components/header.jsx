@@ -56,7 +56,7 @@ const Header = () => {
                 {isLoggedIn === "true" ? 
                   <ul>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/birds"}>Quản Lý Chim Đua</Link></NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/profile"}>{currentUser ? currentUser.username : ''}</Link></NavDropdown.Item>
+                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/profile"}>Tài Khoản ({currentUser ? currentUser.username : ''}) </Link></NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link"><Logout /></NavDropdown.Item>
                   </ul>
                   :

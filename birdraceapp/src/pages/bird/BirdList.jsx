@@ -13,9 +13,10 @@ const BirdList = () => {
     useEffect(() => {
         const fetchUserBirds = async () => {
             try {
-                const response = await axioInstance.get('/user/my-birds', {
+                const response = await axioInstance.get('/bird/me', {
                     withCredentials: true
                 });
+                console.log(response);
                 if (response.data && Array.isArray(response.data)) {
                     setUserBirds(response.data);
                 } else {
@@ -32,8 +33,15 @@ const BirdList = () => {
     }, []);
 
     const handleAddBird = async () => {
+        const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
+        
+        const formData = new FormData();
+        formData.append('name', currentBird.name);
+        formData.append('code', currentBird.code);
+        formData.append('imgUrl', "");//đang phát triển img
+        formData.append("userId", currentUser.id);
         try {
-            const response = await axioInstance.post('/user/my-birds', currentBird, {
+            const response = await axioInstance.post('/bird', formData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,8 +58,15 @@ const BirdList = () => {
     };
 
     const handleEditBird = async () => {
+        const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
+        const formData = new FormData();
+        formData.append('name', currentBird.name);
+        formData.append('code', currentBird.code);
+        formData.append('imgUrl', currentBird.image); // đang phát triển img
+        formData.append('id', currentBird.id); // Thêm id của chim vào formData
+        formData.append('userId', currentUser.id);
         try {
-            const response = await axioInstance.put(`/user/my-birds/${currentBird.id}`, currentBird, {
+            const response = await axioInstance.put(`/bird`, formData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json'
