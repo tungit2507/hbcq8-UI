@@ -29,7 +29,7 @@ const AddRaceForm = () => {
       formData.append('endDate', `${data.endDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00')}`);
       formData.append('restTimePerDay', data.breakTime);
       formData.append('isActived', true);
-      if (data.image[0]) formData.append('imgUrl', data.image[0]);
+      // if (data.image[0]) formData.append('imgUrl', data.image[0]);
 
       formData.append('tourLocation.startPoint.name', data.startPoint.name);
       formData.append('tourLocation.startPoint.coor', data.startPoint.coordinates);
@@ -53,6 +53,7 @@ const AddRaceForm = () => {
       navigate('/management/race/list');
       
     } catch (error) {
+      console.log(error)
       const errorMessage =  error.response.data.errorMessage? error.response.data.errorMessage : "Lỗi khi thêm giải đua";
       showErrorNotification(errorMessage);
     }
