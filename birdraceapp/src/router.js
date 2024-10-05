@@ -6,6 +6,8 @@ import RegistrationForm from "./pages/author/register";
 import Page404 from "./pages/Page404";
 import Profile from "./pages/userProfile/userProfile";
 import TournamentList from "./components/tournamentList";
+import BirdList from "./pages/bird/BirdList";
+// import BirdAdd 
 
 const routes = createBrowserRouter([
     {
@@ -17,6 +19,9 @@ const routes = createBrowserRouter([
             { path: "/history", element: <TournamentList/> },
             { path: "/contact", element: <div><Link to={"/home"}>Contact</Link></div> },
             { path: "/profile", element: <Profile/> },
+            { path: "/birds", element: <BirdList/> },
+            // { path: "/birds/edit", element: <BirdUpdate/> },
+            // { path: "/birds/add", element: <BirdAdd/> },
            
         ]
     },

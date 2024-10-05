@@ -181,7 +181,7 @@ const UpdateRaceForm = () => {
 
   return (
     <CRow className="justify-content-center">
-      <CCol md={8}>
+      <CCol md={11}>
         <CCard>
           <CCardHeader>
             <h5>Cập Nhật Giải Đua</h5>
@@ -228,6 +228,7 @@ const UpdateRaceForm = () => {
                   <CFormInput
                     type="text"
                     id="raceName"
+                    placeholder='Tên giải đua' // Thêm placeholder
                     {...register('name', { required: 'Tên giải đua là bắt buộc' })}
                     invalid={!!errors.name}
                   />
@@ -238,6 +239,7 @@ const UpdateRaceForm = () => {
                   <CFormInput
                     type="number"
                     id="numberOfBirds"
+                    placeholder='Nhập Số Chim' // Thêm placeholder
                     step="any"
                     {...register('numberOfBirds', { required: 'Số chim là bắt buộc', min: { value: 1, message: 'Phải có ít nhất 1 chim' } })}
                     invalid={!!errors.numberOfBirds}
@@ -269,10 +271,11 @@ const UpdateRaceForm = () => {
               </CRow>
               <CRow className="mb-3">
                 <CCol>
-                  <CFormLabel htmlFor="breakTime">Thời Gian Nghỉ</CFormLabel>
+                  <CFormLabel htmlFor="breakTime">Thời Gian Nghỉ (Giờ)</CFormLabel>
                   <CFormInput
                     type="number"
                     id="breakTime"
+                    placeholder='Nhập thời gian nghỉ' // Thêm placeholder
                     step="any"
                     {...register('breakTime', { required: 'Thời gian nghỉ là bắt buộc' })}
                     invalid={!!errors.breakTime}
@@ -296,6 +299,7 @@ const UpdateRaceForm = () => {
                   <CFormInput
                     type="text"
                     id="startPointCoordinates"
+                    placeholder="193.000;152.222" // Thêm placeholder
                     {...register('startPoint.coordinates', { 
                       required: 'Tọa độ điểm bắt đầu là bắt buộc',
                       pattern: {
@@ -308,7 +312,7 @@ const UpdateRaceForm = () => {
                   {errors.startPoint?.coordinates && <div className="invalid-feedback">{errors.startPoint.coordinates.message}</div>}
                 </CCol>
                 <CCol md={3}>
-                  <CFormLabel htmlFor="startPointDistance">Khoảng Cách</CFormLabel>
+                  <CFormLabel htmlFor="startPointDistance">Khoảng Cách (Ki lô mét)</CFormLabel>
                   <CFormInput
                     type="number"
                     id="startPointDistance"
@@ -336,6 +340,7 @@ const UpdateRaceForm = () => {
                     <CFormInput
                       type="text"
                       id={`stages[${index}].coordinates`}
+                      placeholder='193.000;152.222' // Thêm placeholder
                       {...register(`stages[${index}].coordinates`, { 
                         required: 'Tọa độ chặng là bắt buộc',
                         pattern: {
@@ -348,7 +353,7 @@ const UpdateRaceForm = () => {
                     {errors.stages?.[index]?.coordinates && <div className="invalid-feedback">{errors.stages[index].coordinates.message}</div>}
                   </CCol>
                   <CCol md={3}>
-                    <CFormLabel htmlFor={`stages[${index}].distance`}>Khoảng Cách</CFormLabel>
+                    <CFormLabel htmlFor={`stages[${index}].distance`}>Khoảng Cách (Ki lô mét)</CFormLabel>
                     <CFormInput
                       type="number"
                       id={`stages[${index}].distance`}
@@ -386,6 +391,7 @@ const UpdateRaceForm = () => {
                   <CFormInput
                     type="text"
                     id="endPointCoordinates"
+                    placeholder='193.000;152.222' // Thêm placeholder
                     {...register('endPoint.coordinates', { 
                       required: 'Tọa độ điểm kết thúc là bắt buộc',
                       pattern: {
@@ -398,7 +404,7 @@ const UpdateRaceForm = () => {
                   {errors.endPoint?.coordinates && <div className="invalid-feedback">{errors.endPoint.coordinates.message}</div>}
                 </CCol>
                 <CCol md={3}>
-                  <CFormLabel htmlFor="endPointDistance">Khoảng Cách</CFormLabel>
+                  <CFormLabel htmlFor="endPointDistance">Khoảng Cách (Ki lô mét)</CFormLabel>
                   <CFormInput
                     type="number"
                     id="endPointDistance"
