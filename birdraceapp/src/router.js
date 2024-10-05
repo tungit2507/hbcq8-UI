@@ -9,23 +9,22 @@ import TournamentList from "./pages/tournament/tournamentList";
 import BirdList from "./pages/bird/BirdList";
 
 const routes = createBrowserRouter([
+    
+    { path: "/login", element: <LoginForm/>},
+    { path: "/register", element: <RegistrationForm/> },
     {
         element: <MainLayout />,
         children: [
             { path: "/", element: <HomePage/>},
-            { path: "/about-us", element: <HomePage/> },
-            { path: "/activity", element: <Profile/> },
+            { path: "/about-us", element: <>Tính Năng Đang Phát Triển</> },
+            { path: "/our-activity", element: <>Tính Năng Đang Phát Triển</> },
             { path: "/history", element: <TournamentList/> },
-            { path: "/contact", element: <div><Link to={"/home"}>Contact</Link></div> },
+            { path: "/contact-us", element: <div>Tính Năng Đang Phát Triển</div> },
             { path: "/profile", element: <Profile/> },
             { path: "/birds", element: <BirdList/> },
            
         ]
     },
     { path: "*", element: <Page404/> },
-    { path: "/login", element: <LoginForm/>},
-    { path: "/register", element: <RegistrationForm/> },
-
-
 ])
 export default routes;

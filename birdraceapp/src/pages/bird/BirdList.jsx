@@ -63,7 +63,7 @@ const BirdList = () => {
         formData.append('name', currentBird.name);
         formData.append('code', currentBird.code);
         formData.append('imgUrl', currentBird.image); // đang phát triển img
-        formData.append('id', currentBird.id); // Thêm id của chim vào formData
+        formData.append('id', currentBird.id);
         formData.append('userId', currentUser.id);
         try {
             const response = await axioInstance.put(`/bird`, formData, {

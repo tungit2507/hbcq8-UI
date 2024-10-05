@@ -24,6 +24,10 @@ const Header = () => {
     }
   };
 
+  const handleFeatureUnderDevelopment = () => {
+    alert('Tính năng đang phát triển');
+  };
+
   return (
     <header id="header" className="header position-relative">
       <Navbar expand="lg" className="bg-light">
@@ -41,23 +45,31 @@ const Header = () => {
                 <Nav.Link as={Link} to="/" className="nav-link" onClick={handleNavLinkClick}>Trang Chủ</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="#" className="nav-link" onClick={handleNavLinkClick}>Về Chúng Tôi</Nav.Link>
+                <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Về Chúng Tôi</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="#" className="nav-link" onClick={handleNavLinkClick}>Hoạt Động</Nav.Link>
+                <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Hoạt Động</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="/history" className="nav-link" onClick={handleNavLinkClick}>Lịch Sử Giải Đua</Nav.Link>
+                <Nav.Link as={Link} 
+                to="/history"
+                 className="nav-link" onClick={handleNavLinkClick}>Lịch Sử Giải Đua</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="#" className="nav-link" onClick={handleNavLinkClick}>Liên Hệ</Nav.Link>
+                <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Liên Hệ</Nav.Link>
               </Nav.Item>
               <NavDropdown title="Tài Khoản" id="basic-nav-dropdown custom-dropdown-menu" align="start">
                 {isLoggedIn === "true" ? 
                   <ul>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/birds"}>Quản Lý Chim Đua</Link></NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/profile"}>Tài Khoản ({currentUser ? currentUser.username : ''}) </Link></NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Logout /></NavDropdown.Item>
+                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
+                      <Link to={"/birds"}>Quản Lý Chim Đua</Link>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
+                      <Link to={"/profile"}>Tài Khoản ({currentUser ? currentUser.username : ''}) </Link>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
+                      <Logout />
+                    </NavDropdown.Item>
                   </ul>
                   :
                   <ul>
