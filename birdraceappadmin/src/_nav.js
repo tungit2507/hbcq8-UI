@@ -8,6 +8,7 @@ import {
   cilUserFollow,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import Swal from 'sweetalert2'
 
 const _nav = [
   {
@@ -15,7 +16,7 @@ const _nav = [
     name: 'Thống Kê',
     to: '#',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    onClick: () => alert('Tính năng đang phát triển'),
+    onClick: () => Swal.fire('Thông báo', 'Tính năng đang phát triển', 'info').then(() => setTimeout(() => Swal.close(), 2000)),
   },
   {
     component: CNavGroup,
@@ -27,7 +28,7 @@ const _nav = [
         component: CNavItem,
         name: 'Danh Sách Thành Viên',
         to: '#',
-        onClick: () => alert('Tính năng đang phát triển'),
+        onClick: () => Swal.fire('Thông báo', 'Tính năng đang phát triển', 'info').then(() => setTimeout(() => Swal.close(), 2000)),
       },
     ],
   },

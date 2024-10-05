@@ -6,6 +6,7 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { useEffect } from 'react';
 import Logout from '../pages/author/logout';
 import 'aos/dist/aos.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Header = () => {
   useEffect(() => {
@@ -25,7 +26,7 @@ const Header = () => {
   };
 
   const handleFeatureUnderDevelopment = () => {
-    alert('Tính năng đang phát triển');
+    toast.info('Tính năng đang phát triển');
   };
 
   return (
@@ -82,6 +83,19 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <ToastContainer 
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      >
+
+      </ToastContainer>
     </header>
   );
 };
