@@ -5,8 +5,7 @@ import sampleImage from './../../assets/images/avatars/1.jpg'; // Đảm bảo �
 import Swal from 'sweetalert2';
 import { fetchRaces } from '../../api/raceApi';
 import ErrorImage from '../../assets/images/avatars/1.jpg';
-import { deleteRaceRegistration } from '../../api/raceRegistration';
-
+import { deleteRace } from '../../api/raceApi';
 
 const RaceList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,16 +23,14 @@ const RaceList = () => {
       confirmButtonText: "Xóa",
       cancelButtonText: "Hủy",
       reverseButtons: true
-    }).then((result) => {
+    }).then( async (result) => {
       if (result.isConfirmed) {
-        deleteRaceRegistration(id);
+        await deleteRace(id);
         Swal.fire("Đã xóa!", "Mục của bạn đã bị xóa.", "success");
         const loadRaces = async () => {
           try {
             const fetchedRaces = await fetchRaces();
-            setRaces(fetchedRaces);
-            console.log(races);
-            
+            setRaces(fetchedRaces);            
           } catch (error) {
             console.error('Lỗi khi tải danh sách giải đua:', error);
           }

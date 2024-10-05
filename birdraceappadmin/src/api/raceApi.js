@@ -1,5 +1,6 @@
 
 import axiosInstance from "./api";
+import Swal from "sweetalert2";
 const BASE_URL_RACES = '/api/v1/admin/tournament';    
 
 
@@ -56,10 +57,10 @@ export const updateRace = async (raceData) => {
 
 export const deleteRace = async (id) => {
     try {
-        const response = await axiosInstance.delete(`${BASE_URL_RACES}/${id}`);
+        const response = await axiosInstance.delete(`${BASE_URL_RACES}/delete?id=${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting race:', error);
-        throw error;
+        Swal.fire('Lỗi', 'Không thể xóa giải đua. Vui lòng thử lại sau.', 'error');
     }
 }

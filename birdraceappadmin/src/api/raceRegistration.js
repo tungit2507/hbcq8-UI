@@ -22,6 +22,7 @@ export const approveRaceRegistration = async (dto) => {
                 'Content-Type': 'application/json'
             }
         });
+        console.log("thành công");
         return response.data;
     } catch (error) {
         console.error('Lỗi khi duyệt đăng ký:', error);
@@ -30,14 +31,4 @@ export const approveRaceRegistration = async (dto) => {
 };
 
 
-export const deleteRaceRegistration = async (id) => {
-    // try {
-    //     const response = await axiosInstance.get(`${BASE_URL_RACE_REGISTRATION_NONE_ADMIN}/cancel`, { params: { tourId: id } });
-    //     return response.data;
-    // } catch (error) {
-        
-    //     console.error('Lỗi khi xóa đăng ký:', error);
-    //     showErrorNotification('Lỗi khi xóa đăng ký');
-    // }
-};
 
