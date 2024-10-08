@@ -5,7 +5,6 @@ import {
   cilSpeedometer,
   cilPeople,
   cilSpreadsheet,
-  cilUserFollow,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 import Swal from 'sweetalert2'
@@ -47,6 +46,23 @@ const _nav = [
         component: CNavItem,
         name: 'Thêm Giải Đua',
         to: '/management/race/add',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Quản Lý Bài Viết',
+    icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Danh Sách Bài Viết',
+        to: '/management/article/list',
+      },
+      {
+        component: CNavItem,
+        name: 'Thêm Bài Viết',
+        to: '/management/article/add',
       },
     ],
   }
