@@ -17,9 +17,9 @@ const routes = createBrowserRouter([
     {
         element: <PrivateRoute><MainLayout/></PrivateRoute>,
         children: [
-            { path: "/", element: <DashBoard/>, name: "Dashboard" },
-            { path: "/management/user/list", element: <UserManagementList/>, name: "User List" },
-            { path: "/management/user/update", element: <UserManagementUpdate/>, name: "Update User" },
+            { path: "/", element: <div>Tính năng đang phát triển</div>, name: "Dashboard" },
+            { path: "/management/user/list", element: <div>Tính năng đang phát triển</div>, name: "User List" },
+            { path: "/management/user/update", element: <div>Tính năng đang phát triển</div>, name: "Update User" },
             { path: "/management/race/list", element: <RaceManagementList/>, name: "Race List" },
             { path: "/management/race/add", element: <RaceManagementAdd/>, name: "Add Race" },
             { path: "/management/race/update", element: <RaceManagementUpdate/>, name: "Update Race" },

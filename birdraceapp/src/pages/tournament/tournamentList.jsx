@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck } from "@coreui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axioInstance from '../apiInstance';
+import axioInstance from '../../apiInstance';
 import { toast, ToastContainer} from 'react-toastify';
 import Swal from 'sweetalert2';
 
@@ -58,7 +58,7 @@ const TournamentList = () => {
     
     const fetchUserBirds = async () => {
       try {
-        const response = await axioInstance.get('/user/my-birds', {
+        const response = await axioInstance.get('/bird/me', {
           withCredentials: true
         });
         if (response.data && Array.isArray(response.data)) {
@@ -72,7 +72,6 @@ const TournamentList = () => {
         toast.error('Đã xảy ra lỗi khi tải danh sách chim. Vui lòng thử lại sau.');
       }
     };
-
     fetchUserBirds();
   }, []);
 

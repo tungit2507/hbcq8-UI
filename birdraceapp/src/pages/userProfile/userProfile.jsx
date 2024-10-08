@@ -22,9 +22,6 @@ const Profile = () => {
     // call api and handle exception
     try {
       const response = await axioInstance.put('/user/update', userUpdateRequestDto)
-      
-
-
       if (response.data) {
         toast.success('Cập nhật thông tin thành công');
         sessionStorage.setItem('currentUser', JSON.stringify(response.data));
@@ -97,6 +94,7 @@ const Profile = () => {
                 />
               </label>
               <input 
+                disabled
                 type="file" 
                 accept="image/*" 
                 hidden 
