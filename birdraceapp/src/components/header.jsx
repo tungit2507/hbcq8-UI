@@ -34,8 +34,8 @@ const Header = () => {
       <Navbar expand="lg" className="bg-light">
         <Container fluid className='container-xl position-relative d-flex align-items-center justify-content-between'>
           <Navbar.Brand as={Link} to={"/"} className="logo d-flex align-items-center">
-            <Link to={"/"}><img src="./assets/img/logo/logo.jpg" alt="AgriCulture" /></Link>
-            <span className='logo-span'>Hội Bồ Câu Quận 8</span>
+            <Link to={"/"}><img src="./assets/img/logo/Logo_CLBBCQ8.png" alt="AgriCulture" /></Link>
+            <span className='logo-span'>CLB Bồ Câu Đua Q8</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navmenu" className="mobile-nav-toggle d-xl-none">
             <List />
