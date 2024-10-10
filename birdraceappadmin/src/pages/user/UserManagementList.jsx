@@ -172,36 +172,39 @@ const UserManagementList = () => {
   }
 
 
-  const handleChangeRole = (id) =>{
-  Swal.fire({
-    title: 'Thay đổi vai trò',
-    text: 'Bạn có chắc chắn muốn thay đổi vai trò của người dùng này không?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Xác nhận',
-    cancelButtonText: 'Hủy'
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        await changeRole({ id, role: 'newRole' });
-        Swal.fire(
-          'Thay đổi thành công!',
-          'Vai trò của người dùng đã được thay đổi.',
-          'success'
-        );
-      } catch (error) {
-        console.error('Error changing user role:', error);
-        Swal.fire(
-          'Lỗi!',
-          'Không thể thay đổi vai trò của người dùng. Vui lòng thử lại.',
-          'error'
-        );
+  const handleChangeRole = (id) => {
+    Swal.fire({
+      title: 'Thay đổi vai trò',
+      text: 'Chọn vai trò mới cho người dùng này:',
+      input: 'select',
+      inputOptions: {
+        'Admin': 'Admin',
+        'User': 'User'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Xác nhận',
+      cancelButtonText: 'Hủy'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const newRole = result.value; // Lấy vai trò mới từ lựa chọn
+        try {
+          await changeRole({ id, role: newRole });
+          Swal.fire(
+            'Thay đổi thành công!',
+            'Vai trò của người dùng đã được thay đổi.',
+            'success'
+          );
+        } catch (error) {
+          console.error('Error changing user role:', error);
+          Swal.fire(
+            'Lỗi!',
+            'Không thể thay đổi vai trò của người dùng. Vui lòng thử lại.',
+            'error'
+          );
+        }
       }
-    }
-  });
-  } 
+    });
+  };
 
   useEffect(() => {
     // Cập nhật filteredUsers khi trang thay đổi
@@ -263,9 +266,9 @@ const UserManagementList = () => {
                 <CTableDataCell>{user.role}</CTableDataCell>
                 <CTableDataCell>
                   <Link className="m-1 btn btn-primary" to={`/management/user/update?username=${user.username}`}>Chỉnh Sửa</Link>
-                  <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>{user.role === 'Admin' ? 'Phân Quyền User' : 'Phân Quyền Admin'}</CButton>
+                  <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>Phân Quyền</CButton>
                   <CButton className='m-1' color="danger" onClick={() => handleDelete(user.id)}>Xóa</CButton>
-                  </CTableDataCell>
+                </CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
