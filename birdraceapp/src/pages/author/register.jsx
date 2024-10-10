@@ -43,9 +43,9 @@ const RegistrationForm = () => {
                 <form id='register-form' className="card-body cardbody-color p-lg-5" onSubmit={handleSubmit(onSubmit)}>
                   <div className="text-center">
                   <img
-                    src="./assets/img/logo/logo.jpg"
+                    src="./assets/img/logo/Logo_CLBBCQ8.png"
                     className="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
-                    width="70px"
+                    width="120px"
                     alt="profile"
                   />
                   </div>
