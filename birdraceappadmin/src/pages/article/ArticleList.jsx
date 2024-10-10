@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import { fetchArticles, deleteArticle } from '../../api/articleApi';
+import { fetchArticles, deleteArticle } from '../../api/ArticleApi';
 
 const ArticleList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -44,9 +44,9 @@ const ArticleList = () => {
       cancelButtonText: 'Hủy',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteArticle(articleId);
+        // await deleteArticle(articleId);
+        // setArticles(articles.filter(article => article.id !== articleId));
         Swal.fire('Đã xóa!', 'Bài viết đã bị xóa.', 'success');
-        setArticles(articles.filter(article => article.id !== articleId));
       }
     });
   };

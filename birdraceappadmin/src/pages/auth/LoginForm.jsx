@@ -10,10 +10,10 @@ import {
   CInputGroup,
   CRow,
 } from '@coreui/react';
-import { login } from '../../api/userApi';
+import { login } from '../../api/UserApi';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
+import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
 
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();

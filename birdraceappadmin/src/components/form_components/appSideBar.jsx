@@ -11,10 +11,8 @@ import {
   CSidebarToggler,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
 import { AppSidebarNav } from './appSiderBarNav'
-import logo from "../../assets/images/logo.png"
-// import { sygnet } from 'src/assets/brand/sygnet'
+import logo from "../../assets/images/Logo_CLBBCQ8.png"
 
 // sidebar nav config
 import navigation from '../../_nav';
@@ -38,8 +36,10 @@ const AppSidebar = () => {
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
           <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <Link to="/"><img src={logo} alt="logo" className="sidebar-brand-full" height={32} /></Link>
-          {/* <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} /> */}
+          <Link to="/" className="custom-link d-flex align-items-center" style={{ textDecoration: 'none', fontSize: '1.5rem', color: 'white' }}>
+            <img src={logo} alt="logo" className="sidebar-brand-full" height={32} style={{ marginRight: '8px' }} />
+            {/* <span style={{textDecoration:"none"}}>CLB Bồ Câu Đua Q8</span> */}
+          </Link>
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"

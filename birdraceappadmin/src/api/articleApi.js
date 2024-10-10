@@ -1,7 +1,7 @@
-import axiosInstance from "./api";
+import axiosInstance from "./Api";
 import Swal from "sweetalert2";
 
-const BASE_URL_ARTICLES = '/api/v1/admin/articles'; // Thay đổi đường dẫn cho phù hợp
+const BASE_URL_ARTICLES = '/api/v1/admin/articles';
 
 // Lấy danh sách bài viết
 export const fetchArticles = async () => {

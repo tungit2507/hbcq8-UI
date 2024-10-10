@@ -26,15 +26,19 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Danh Sách Thành Viên',
-        to: '#',
-        onClick: () => Swal.fire('Thông báo', 'Tính năng đang phát triển', 'info').then(() => setTimeout(() => Swal.close(), 2000)),
+        to: '/management/user/list',
+      },
+      {
+        component: CNavItem,
+        name: 'Thêm Thành Viên',
+        to: '/management/user/add',
       },
     ],
   },
   {
     component: CNavGroup,
     name: 'Quản Lý Giải Đua',
-    to: '/base',
+    to: '',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {

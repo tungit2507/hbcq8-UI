@@ -1,5 +1,5 @@
 
-import axiosInstance from "./api";
+import axiosInstance from "./Api";
 import Swal from "sweetalert2";
 const BASE_URL_RACES = '/api/v1/admin/tournament';    
 
