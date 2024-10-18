@@ -37,9 +37,9 @@ const TournamentResults = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">Hạng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Tên Giải Đấu</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Tên Người Tham Gia</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã Kiềng Chim</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Điểm số</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
