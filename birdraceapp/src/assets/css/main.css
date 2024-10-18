@@ -1533,6 +1533,13 @@ section,
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
+.post-img img{
+  width: 100vw;
+  max-height: 50vh;
+  object-fit: cover;
+  background-repeat: none;
+}
+
 .blog-details .post-img {
   margin: -30px -30px 20px -30px;
   overflow: hidden;
@@ -2304,5 +2311,6 @@ section,
   text-align: center; /* Căn giữa chữ */
   color: var(--default-color); /* Màu chữ */
 }
+
 
 

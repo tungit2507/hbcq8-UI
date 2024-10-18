@@ -4,7 +4,7 @@ import { List } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { useEffect } from 'react';
-import Logout from '../pages/author/logout';
+import Logout from '../pages/author/Logout';
 import 'aos/dist/aos.css';
 import { toast, ToastContainer } from 'react-toastify';
 

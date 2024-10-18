@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const posts = [
   {
@@ -32,7 +33,7 @@ const posts = [
 
 const RecentPosts = () => {
   return (
-    <section id="recent-posts" className="recent-posts section">
+    <section id="recent-posts" className="recent-posts section dark-background">
       <div className="container section-title" data-aos="fade-up">
         <h2>BÀI VIẾT MỚI</h2>
       </div>
@@ -62,9 +63,9 @@ const RecentPosts = () => {
 
                   <hr />
 
-                  <a href={post.link} className="readmore stretched-link">
+                  <Link to={'/blogs'} className="readmore stretched-link">
                     <span>Read More</span><i className="bi bi-arrow-right"></i>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -240,6 +240,12 @@ const TournamentList = () => {
                         });
                       }}>Hủy Đơn</CButton>
                   )}
+                  {tournament.tourStatus === 'Đã kết thúc' && (
+                    <CButton
+                      color="info" onClick={() => {
+                        navigate(`/tournament-result?id=${tournament.tourId}`);
+                      }}>Kết Quả</CButton>
+                  )}
                 </CTableDataCell>
               </CTableRow>
             ))}
@@ -248,7 +254,7 @@ const TournamentList = () => {
       </div>
 
       <hr className="my-4" />
-      <div className="d-flex justify-content-center mt-4">
+      <div className="d-flex justify-content-center align-item-center mt-4">
         <CPagination aria-label="Page navigation example">
           <CPaginationItem 
             onClick={() => handlePageChange(currentPage - 1)}
