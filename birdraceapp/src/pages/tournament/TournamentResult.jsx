@@ -1,6 +1,6 @@
 // src/components/TournamentResults.js
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck } from "@coreui/react";
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem} from "@coreui/react";
 
 
 const TournamentResults = () => {

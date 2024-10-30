@@ -27,38 +27,41 @@ const TournamentList = () => {
   const totalPages = Math.ceil((Array.isArray(tournamentsData) ? tournamentsData.length : 0) / tournamentsPerPage);
   const [userBirds, setUserBirds] = useState([]);
 
-  useEffect(() => {
-    const fetchTournaments = async () => {
-      try {
-        const response = await axioInstance.get('/tour/list', {
-          withCredentials : true
-        });
-        console.log(response);
-        if (response && response.data && Array.isArray(response.data)) {
-          setTournamentsData(response.data);
-          console.log(response.data)
-          handlePageChange(1);
-        } else {
-          console.error('Dữ liệu giải đấu không hợp lệ:', response.data);
-          toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Dữ liệu không hợp lệ.');
-        }
-      } catch (error) {
-    
-        const errorCode = error.response.data.status?  error.response.data.status : 'UNKNOWN';
-        console.log(error)
-        if(errorCode == 401){
-          navigate("/login")
-        }
-        console.error('Lỗi khi tải danh sách giải đấu:', error);
-        toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
+  const fetchTournaments = async () => {
+    try {
+      const response = await axioInstance.get('/tour/list', {
+        withCredentials : true
+      });
+      console.log(response);
+      if (response && response.data && Array.isArray(response.data)) {
+        setTournamentsData(response.data);
+        console.log(response.data)
+        handlePageChange(1);
+      } else {
+        console.error('Dữ liệu giải đấu không hợp lệ:', response.data);
+        toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Dữ liệu không hợp lệ.');
       }
-    };
+    } catch (error) {
+  
+      const errorCode = error.response.data.status?  error.response.data.status : 'UNKNOWN';
+      console.log(error)
+      if(errorCode == 401){
+        navigate("/login")
+      }
+      console.error('Lỗi khi tải danh sách giải đấu:', error);
+      toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
+    }
+  };
+
+
+  useEffect(() => {
+    
   
     fetchTournaments();
     
     const fetchUserBirds = async () => {
       try {
-        const response = await axioInstance.get('/bird/me', {
+        const response = await axioInstance.get('/user/my-birds', {
           withCredentials: true
         });
         if (response.data && Array.isArray(response.data)) {
@@ -134,7 +137,7 @@ const TournamentList = () => {
       console.log('Đăng ký giải đấu thành công:', response.data);
       toast.success('Đăng ký giải đấu thành công!');
       setTimeout(() => {
-        window.location.reload();
+        fetchTournaments();
       }, 1000);
     })
     .catch(error => {
@@ -228,7 +231,7 @@ const TournamentList = () => {
                               console.log(response)
                               toast.success('Hủy đơn thành công.');
                             setTimeout(() => {
-                              window.location.reload();
+                              fetchTournaments();
                             }, 1000);
                             } catch (error) {
                               const errorMessage = error.response && error.response.data && error.response.data.message 

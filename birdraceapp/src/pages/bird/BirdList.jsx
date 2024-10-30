@@ -13,7 +13,7 @@ const BirdList = () => {
     useEffect(() => {
         const fetchUserBirds = async () => {
             try {
-                const response = await axioInstance.get('/bird/me', {
+                const response = await axioInstance.get('/user/my-birds', {
                     withCredentials: true
                 });
                 console.log(response);
