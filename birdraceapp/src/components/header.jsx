@@ -66,6 +66,9 @@ const Header = () => {
                       <Link to={"/birds"}>Quản Lý Chim Đua</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">
+                      <Link to={"/facibilitys"}>Quản Lý Căn Cứ</Link>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
                       <Link to={"/profile"}>Tài Khoản ({currentUser ? currentUser.username : ''}) </Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">

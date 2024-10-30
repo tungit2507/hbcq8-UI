@@ -13,7 +13,14 @@ const TournamentResults = () => {
         const hardcodedResults = [
             { id: 1, name: 'Người Chơi 1', score: 100, rank: 1, birdcode: 'BIRD001' },
             { id: 3, name: 'Người Chơi 2', score: 100, rank: 2, birdcode: 'BIRD002' },
-
+            { id: 4, name: 'Người Chơi 3', score: 90, rank: 3, birdcode: 'BIRD003' },
+            { id: 5, name: 'Người Chơi 4', score: 80, rank: 4, birdcode: 'BIRD004' },
+            { id: 6, name: 'Người Chơi 5', score: 70, rank: 5, birdcode: 'BIRD005' },
+            { id: 7, name: 'Người Chơi 6', score: 60, rank: 6, birdcode: 'BIRD006' },
+            { id: 8, name: 'Người Chơi 7', score: 50, rank: 7, birdcode: 'BIRD007' },
+            { id: 9, name: 'Người  hơi 8', score: 40, rank: 8, birdcode: 'BIRD008' },
+            { id: 10, name: 'Người Chơi 9', score: 30, rank: 9, birdcode: 'BIRD009' },
+            { id: 11, name: 'Người Chơi 10', score: 20, rank: 10, birdcode: 'BIRD010' },
         ];
         setResults(hardcodedResults);
     }, []);

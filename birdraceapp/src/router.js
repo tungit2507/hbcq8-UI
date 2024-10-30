@@ -10,7 +10,7 @@ import Profile from "./pages/userProfile/UserProfile";
 import BlogDetail from "./pages/blog/BlogDetail";
 import BlogList from "./pages/blog/BlogList";
 import TournamentResults from "./pages/tournament/TournamentResult";
-
+import FacibilityManagement from "./pages/facility/FacilityManagement";
 const routes = createBrowserRouter([
     
     { path: "/login", element: <LoginForm/>},
@@ -28,6 +28,7 @@ const routes = createBrowserRouter([
             { path: "/blog-detail", element: <BlogDetail/> },
             { path: "/blogs", element: <BlogList/> },
             { path: "/tournament-result", element: <TournamentResults/> },
+            { path: "/facibilitys", element: <FacibilityManagement/> },
         ]
     },
     { path: "*", element: <Page404/> },
