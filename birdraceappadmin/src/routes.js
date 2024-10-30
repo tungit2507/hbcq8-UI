@@ -22,7 +22,7 @@ import UserManagementAdd from "./pages/user/UserManagementAdd";
 import RaceRegistrationList from "./pages/race/RaceRegistrationList";
 import ArticleList from "./pages/article/ArticleList";
 import ArticleAdd from "./pages/article/ArticleAdd";
-
+import FacilityManagement from "./pages/facility/FacilityList";
 
 const routes = createBrowserRouter([
     {
@@ -39,6 +39,8 @@ const routes = createBrowserRouter([
             { path: "/management/article/list", element: <ArticleList/>, name: "Article List" },
             { path: "/management/article/update", element: <div>Tính năng đang phát triển</div>, name: "Add Article" },
             { path: "/management/article/add", element: <ArticleAdd/>, name: "Update Article" },
+            { path: "/management/facility/list", element: <FacilityManagement/>, name: "Facility Management" },
+
         ]
     },
     { path: "*", element: <NotFoundPage/>, name: "Not Found" },

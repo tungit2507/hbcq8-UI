@@ -5,6 +5,7 @@ import {
   cilSpeedometer,
   cilPeople,
   cilSpreadsheet,
+  cilLocationPin
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 import Swal from 'sweetalert2'
@@ -50,6 +51,11 @@ const _nav = [
         component: CNavItem,
         name: 'Thêm Giải Đua',
         to: '/management/race/add',
+      },
+      {
+        component: CNavItem,
+        name: 'Quản Lý Căn Cứ',
+        to: '/management/facility/list',
       },
     ],
   },
