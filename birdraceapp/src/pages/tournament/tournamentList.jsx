@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck } from "@coreui/react";
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CFormCheck, CFormSelect } from "@coreui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axioInstance from '../../apiInstance';
 import { toast, ToastContainer} from 'react-toastify';
@@ -26,6 +26,14 @@ const TournamentList = () => {
 
   const totalPages = Math.ceil((Array.isArray(tournamentsData) ? tournamentsData.length : 0) / tournamentsPerPage);
   const [userBirds, setUserBirds] = useState([]);
+  const [selectedFacilities, setSelectedFacilities] = useState({});
+
+  // Định nghĩa dữ liệu tạm cho căn cứ
+  const facilities = [
+    { code: 'FC001', name: 'Căn Cứ A' },
+    { code: 'FC002', name: 'Căn Cứ B' },
+    { code: 'FC003', name: 'Căn Cứ C' },
+  ];
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -58,7 +66,7 @@ const TournamentList = () => {
     
     const fetchUserBirds = async () => {
       try {
-        const response = await axioInstance.get('/bird/me', {
+        const response = await axioInstance.get('/user/my-birds', {
           withCredentials: true
         });
         if (response.data && Array.isArray(response.data)) {
@@ -102,12 +110,19 @@ const TournamentList = () => {
     });
   };
 
+  const handleFacilitySelection = (birdId, facilityCode) => {
+    setSelectedFacilities(prev => ({
+      ...prev,
+      [birdId]: facilityCode
+    }));
+  };
+
   const handleRegister = () => {
     const currentUser = sessionStorage.getItem('userId');
     const currentTime = new Date().toISOString();
     const selectedTournament = tournamentsData.find(tournament => tournament.tourId === selectedTournamentId);
     
-    const jsonData = { birds: selectedBirds };
+    const jsonData = { birds: selectedBirds.map(bird => ({ id: bird, facility: selectedFacilities[bird] })) };
     console.log(jsonData);
 
     const birdCodes = jsonData.birds;
@@ -282,17 +297,30 @@ const TournamentList = () => {
 
       <CModal visible={showPopup} onClose={() => setShowPopup(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Chọn chim để đăng ký</CModalTitle>
+          <CModalTitle>Chọn chim và căn cứ để đăng ký</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {userBirds.map(bird => (
-            <CFormCheck
-              key={bird.id}
-              id={`bird-${bird.id}`}
-              label={bird.name}
-              checked={selectedBirds.includes(bird.code)}
-              onChange={() => handleBirdSelection(bird.code)}
-            />
+            <div key={bird.id}>
+              <CFormCheck
+                id={`bird-${bird.id}`}
+                label={bird.name}
+                checked={selectedBirds.includes(bird.code)}
+                onChange={() => handleBirdSelection(bird.code)}
+              />
+              {selectedBirds.includes(bird.code) && (
+                <CFormSelect
+                  onChange={(e) => handleFacilitySelection(bird.code, e.target.value)}
+                >
+                  <option value="">Chọn căn cứ</option>
+                  {facilities.map(facility => (
+                    <option key={facility.code} value={facility.code}>
+                      {facility.name}
+                    </option>
+                  ))}
+                </CFormSelect>
+              )}
+            </div>
           ))}
         </CModalBody>
         <CModalFooter>
