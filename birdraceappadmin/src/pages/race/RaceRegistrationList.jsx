@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CFormCheck } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { approveRaceRegistration, fetchRaceRegistrationByRaceId } from '../../api/RaceRegistration';
-
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const RaceRegistrationList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,11 +11,10 @@ const RaceRegistrationList = () => {
   const [itemsPerPage] = useState(10);
   const [selectedRegistrations, setSelectedRegistrations] = useState([]);
   const [registrations, setRegistrations] = useState([]);
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const raceId = new URLSearchParams(window.location.search).get('id');
-    // Giả lập dữ liệu đăng ký
     fetchRaceRegistrationByRaceId(raceId)
       .then(data => {
         setRegistrations(data);
@@ -44,34 +44,34 @@ const RaceRegistrationList = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handleApprove = (requesterId) => {
-    const raceId = new URLSearchParams(window.location.search).get('id');
-    Swal.fire({
-      title: 'Bạn có chắc muốn duyệt đăng ký này?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Duyệt',
-      cancelButtonText: 'Hủy',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const formData = new FormData();
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"))
-        formData.append('tourId', raceId);
-        formData.append('requesterId', requesterId);
-        formData.append('approverId', currentUser.id); 
-        formData.append('statusCode', 'A');
-        formData.append('memo', '');
-        const response = await approveRaceRegistration(formData)
-        console.log(response);
-        Swal.fire('Đã duyệt!', 'Đăng ký đã được duyệt.', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      }
-    });
-  };
+  // const handleApprove = (requesterId) => {
+  //   const raceId = new URLSearchParams(window.location.search).get('id');
+  //   Swal.fire({
+  //     title: 'Bạn có chắc muốn duyệt đăng ký này?',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Duyệt',
+  //     cancelButtonText: 'Hủy',
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       const formData = new FormData();
+  //       const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+  //       formData.append('tourId', raceId);
+  //       formData.append('requesterId', requesterId);
+  //       formData.append('approverId', currentUser.id); 
+  //       formData.append('statusCode', 'A');
+  //       formData.append('memo', '');
+  //       const response = await approveRaceRegistration(formData)
+  //       console.log(response);
+  //       Swal.fire('Đã duyệt!', 'Đăng ký đã được duyệt.', 'success');
+  //       setTimeout(() => {
+  //         window.location.reload();
+  //       }, 1000);
+  //     }
+  //   });
+  // };
 
   const handleReject = (requesterId) => {
     const raceId = new URLSearchParams(window.location.search).get('id');
@@ -153,27 +153,6 @@ const RaceRegistrationList = () => {
     <div className="p-3 rounded">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h3 className="mb-2 mb-md-0">Danh Sách Đăng Ký</h3>
-        <CForm className="d-flex flex-grow-1" style={{ maxWidth: "500px" }}>
-          <CFormInput
-            type="text"
-            placeholder="Tìm kiếm theo tên người đăng ký..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="me-2"
-            style={{ 
-              flexGrow: 1, 
-              padding: "0.25rem 0.5rem", 
-              fontSize: "1rem", 
-              borderWidth: "1px", 
-              lineHeight: "1.5"
-            }}
-          />
-          <CButton color="primary" style={{ 
-            padding: "0.25rem 0.5rem", 
-            fontSize: "1rem", 
-            borderWidth: "1px"
-          }}>Tìm Kiếm</CButton> 
-        </CForm>
       </div>
       <hr />
 
@@ -222,27 +201,9 @@ const RaceRegistrationList = () => {
                 <CTableDataCell>
                   {registration.statusCode  === 'W' && (
                     <>
-                      <CButton
-                        color="success"
-                        onClick={() => handleApprove(registration.requesterId)}
-                        className="me-2 mb-2 mb-md-0"
-                        style={{
-                          marginTop: '0.5rem',
-                          '@media (min-width: 768px)': {
-                            marginTop: '0'
-                          }
-                        }}
-                      >
-                        Duyệt
-                      </CButton>
+                      <Link to={`/management/race/registration-list/approve?id=${registration.requesterId}`} className="btn btn-success me-2 mb-2 mb-md-0">Duyệt</Link>
                       <CButton color="danger" onClick={() => handleReject(registration.requesterId)}
                         className="me-2 mb-2 mb-md-0"
-                        style={{
-                          marginTop: '0.5rem',
-                          '@media (min-width: 768px)': {
-                            marginTop: '0'
-                          }
-                        }}
                       >Từ Chối</CButton>
                     </>
                   )}

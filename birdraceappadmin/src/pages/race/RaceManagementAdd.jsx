@@ -327,13 +327,13 @@ const AddRaceForm = () => {
                   </CCol>
                 </CRow>
               ))}
-              <CRow className="mb-3">
+              {/* <CRow className="mb-3">
                 <CCol>
                   {fields.length < 5 && (
                     <CButton type="button" color="secondary" onClick={() => append({ name: '', coordinates: '', distance: '' })}>Thêm Chặng</CButton>
                   )}
                 </CCol>
-              </CRow>
+              </CRow> */}
               <CRow className="mb-3">
                 <CCol md={3}>
                   <CFormLabel htmlFor="endPointName">Tên Điểm Kết Thúc</CFormLabel>

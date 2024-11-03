@@ -3,15 +3,22 @@ import Swal from "sweetalert2";
 
 const BASE_URL_FACILITIES = '/api/v1/admin/facilities';
 
-// Lấy danh sách facility
+// Dữ liệu mẫu cho các căn cứ
+const facilities = [
+    { id: 1, name: 'Căn Cứ A' },
+    { id: 2, name: 'Căn Cứ B' },
+    { id: 3, name: 'Căn Cứ C' },
+    { id: 4, name: 'Căn Cứ D' },
+    { id: 5, name: 'Căn Cứ E' },
+];
+
+// Hàm giả lập để lấy danh sách căn cứ
 export const fetchFacilities = async () => {
-    try {
-        const response = await axiosInstance.get(`${BASE_URL_FACILITIES}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching facilities:', error);
-        Swal.fire('Lỗi', 'Không thể lấy danh sách cơ sở. Vui lòng thử lại sau.', 'error');
-    }
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(facilities);
+        }, 1000);
+    });
 };
 
 // Thêm facility

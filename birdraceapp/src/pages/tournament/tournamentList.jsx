@@ -164,7 +164,7 @@ const TournamentList = () => {
             style={{ borderRadius: '0.25rem', border: '1px solid #ced4da', padding: '0.375rem 0.75rem' }}
             className="me-2 flex-grow-1"
           />
-          <CButton color="primary" onClick={handleSearch} style={{ borderRadius: '0.25rem', padding: '0.375rem 0.75rem' }}>Tìm Kiếm</CButton>
+          {/* <CButton color="primary" onClick={handleSearch} style={{ borderRadius: '0.25rem', padding: '0.375rem 0.75rem' }}>Tìm Kiếm</CButton> */}
         </CForm>
       </div>
       <hr className="my-4" />

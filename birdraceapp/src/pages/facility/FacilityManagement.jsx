@@ -1,79 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import axioInstance from '../../apiInstance';
 import { ToastContainer, toast } from 'react-toastify';
 
-
 const FacilityManagement = () => {
-    const [facilities, setFacilities] = useState([
-        { code: 'FC001', name: 'Căn Cứ A', pointCoor: '10.123, 20.456', createdDate: '2023-01-01', createdBy: 'Nguyễn Văn A' },
-        { code: 'FC002', name: 'Căn Cứ B', pointCoor: '11.123, 21.456', createdDate: '2023-02-01', createdBy: 'Trần Thị B' },
-        { code: 'FC003', name: 'Căn Cứ C', pointCoor: '12.123, 22.456', createdDate: '2023-03-01', createdBy: 'Lê Văn C' },
-    ]);
+    const [facilities, setFacilities] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [currentFacility, setCurrentFacility] = useState({ code: '', name: '', pointCoor: '', createdDate: '', createdBy: '' });
+    const [currentFacility, setCurrentFacility] = useState({ code: '', pointCoor: '' });
+
+    useEffect(() => {
+        fetchFacilities();
+    }, []);
+
+
+    const fetchFacilities = async () => {
+        try {
+            const response = await axioInstance.get('/user-location/me', {
+                withCredentials: true
+            });
+            console.log(response);
+            if (response.data && Array.isArray(response.data)) {
+                setFacilities(response.data);
+            } else {
+                fetchFacilities();
+                console.error('Dữ liệu căn cứ không hợp lệ:', response.data);
+                toast.error('Đã xảy ra lỗi khi tải danh sách căn cứ. Dữ liệu không hợp lệ.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tải danh sách căn cứ:', error);
+            toast.error('Đã xảy ra lỗi khi tải danh sách căn cứ. Vui lòng thử lại sau.');
+        }
+    };
 
     const addFacility = () => {
         const formData = new FormData();
         formData.append('code', currentFacility.code);
-        formData.append('name', currentFacility.name);
         formData.append('pointCoor', currentFacility.pointCoor);
-        formData.append('createdDate', currentFacility.createdDate);
-        formData.append('createdBy', currentFacility.createdBy);
 
-        axioInstance.post('/facility/add', formData, {
+        axioInstance.post('/user-location', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
         })
         .then(response => {
-            console.log(response);
-            // Xử lý thành công
+            fetchFacilities();
+            toast.success('Thêm căn cứ thành công!');
+            setShowAddModal(false); // Đóng modal sau khi thêm thành công
         })
         .catch(error => {
             console.error(error);
-            toast.error('Đã xảy ra lỗi khi thêm căn cứ. Vui lòng thử lại sau.');
+            const errorMessage = error.response.data.errorMessage;
+            toast.error(errorMessage);
         });
     };
 
     const editFacility = () => {
         const formData = new FormData();
         formData.append('code', currentFacility.code);
-        formData.append('name', currentFacility.name);
         formData.append('pointCoor', currentFacility.pointCoor);
-        formData.append('createdDate', currentFacility.createdDate);
-        formData.append('createdBy', currentFacility.createdBy);
 
-        axioInstance.post('/facility/edit', formData, {
+        axioInstance.put(`/user-location/${currentFacility.id}`, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
         })
         .then(response => {
-            console.log(response);
-            // Xử lý thành công
+            fetchFacilities();
+            toast.success('Chỉnh sửa căn cứ thành công!');
+            setShowEditModal(false);
         })
         .catch(error => {
             console.error(error);
-            toast.error('Đã xảy ra lỗi khi chỉnh sửa căn cứ. Vui lòng thử lại sau.');
+            const errorMessage = error.response.data.errorMessage;
+            toast.error(errorMessage);
         });
     };
 
-    const deleteFacility = (code) => {
-        axioInstance.delete(`/facility/delete/${code}`)
+    const deleteFacility = (id) => {
+        axioInstance.delete(`/user-location/${id}`)
         .then(response => {
+            fetchFacilities();
             console.log(response);
-            // Xử lý thành công
+            toast.success('Xóa căn cứ thành công!');
+            
         })
         .catch(error => {
             console.error(error);
-            toast.error('Đã xảy ra lỗi khi xóa căn cứ. Vui lòng thử lại sau.');
+            const errorMessage = error.response.data.errorMessage;
+            toast.error(errorMessage);
         });
     };
 
-    const handleDeleteModal = (code) => {
+    const handleDeleteModal = (id) => {
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa?',
             icon: 'warning',
@@ -84,7 +104,7 @@ const FacilityManagement = () => {
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteFacility(code);
+                deleteFacility(id);
             }
         });
     };
@@ -98,24 +118,22 @@ const FacilityManagement = () => {
                     <CTableHead>
                         <CTableRow>
                             <CTableHeaderCell scope="col">Mã Căn Cứ</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Tên Căn Cứ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell> */}
                             <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
                         {facilities.map(facility => (
-                            <CTableRow key={facility.code}>
+                            <CTableRow key={facility.id}>
                                 <CTableDataCell>{facility.code}</CTableDataCell>
-                                <CTableDataCell>{facility.name}</CTableDataCell>
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
-                                <CTableDataCell>{facility.createdDate}</CTableDataCell>
-                                <CTableDataCell>{facility.createdBy}</CTableDataCell>
+                                <CTableDataCell>{facility.createdAt}</CTableDataCell>
+                                {/* <CTableDataCell>{facility.createdBy}</CTableDataCell> */}
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility(facility); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
+                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.id)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
                         ))}
@@ -136,13 +154,6 @@ const FacilityManagement = () => {
                             placeholder="Nhập Mã Căn Cứ"
                             label="Mã Căn Cứ"
                             onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                        />
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Tên Căn Cứ"
-                            label="Tên Căn Cứ"
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
                         />
                         <CFormInput
                             className='my-1'
@@ -173,14 +184,6 @@ const FacilityManagement = () => {
                             label="Mã Căn Cứ"
                             value={currentFacility.code}
                             onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                        />
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Tên Căn Cứ"
-                            label="Tên Căn Cứ"
-                            value={currentFacility.name}
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
                         />
                         <CFormInput
                             className='my-1'
