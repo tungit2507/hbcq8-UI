@@ -61,7 +61,7 @@ const TournamentList = () => {
     
     const fetchUserBirds = async () => {
       try {
-        const response = await axioInstance.get('/user/my-birds', {
+        const response = await axioInstance.get('/bird/me', {
           withCredentials: true
         });
         if (response.data && Array.isArray(response.data)) {

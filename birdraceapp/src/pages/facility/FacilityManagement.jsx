@@ -47,7 +47,7 @@ const FacilityManagement = () => {
         .then(response => {
             fetchFacilities();
             toast.success('Thêm căn cứ thành công!');
-            setShowAddModal(false); // Đóng modal sau khi thêm thành công
+            setShowAddModal(false); 
         })
         .catch(error => {
             console.error(error);
