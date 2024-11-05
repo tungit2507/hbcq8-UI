@@ -64,7 +64,7 @@ export const deleteRaceLocation = async (id) => {
 
 export const calculateDistance = async (calDistanceRequestDto) => {
   try {
-    const response = await axiosInstance.post(`${BASE_URL_RACE_LOCATIONS}/calculate-distance`, calDistanceRequestDto);
+    const response = await axiosInstance.post(`/api/v1/admin/tour-apply/calculate-distance`, calDistanceRequestDto);
     return response.data;
   } catch (error) {
     console.error('Lỗi khi tính khoảng cách:', error);

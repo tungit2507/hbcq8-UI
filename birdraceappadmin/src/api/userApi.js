@@ -3,26 +3,11 @@ import axiosInstance from "./Api";
 import { showErrorNotification } from "./SweetAlertNotify";
 
 
-const BASE_URL_USERS = '/api/v1/user';
+const BASE_URL_USERS = '/api/v1/admin/user';
 const BASE_URL_LOGIN = '/api/v1/login';
 const BASE_URL_LOGOUT = '/api/v1/logout';
 
-
-
-
-
-export const uploadImage = async (fileImageUpload) => {
-    try {
-        const response = await axiosInstance.get(`${BASE_URL_USERS}/img`, fileImageUpload);
-        return response.data;
-    } catch (error) {
-        console.error('Error upload image:', error);
-        throw error;
-    }
-}
-
-
-export const fetchUsers = async () => {
+export const getListUser = async () => {
     try {
         const response = await axiosInstance.get(`${BASE_URL_USERS}`);
         return response.data;
@@ -32,20 +17,9 @@ export const fetchUsers = async () => {
     }
 };
 
-export const addOneUser = async (userData) => {
+export const getOneUser = async (id) => {
     try {
-        const response = await axiosInstance.post(`${BASE_URL_USERS}`, userData);
-        return response.data;
-    } catch (error) {
-        console.error('Error adding user:', error);
-        throw error;
-    }
-};
-
-
-export const getOneUser = async (username) => {
-    try {
-        const response = await axiosInstance.post(`${BASE_URL_USERS}/${username}`);
+        const response = await axiosInstance.get(`${BASE_URL_USERS}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching user:', error);
@@ -54,10 +28,31 @@ export const getOneUser = async (username) => {
 }
 
 
-
-export const updateUser = async (userData) => {
+export const addOneUser = async (userData) => {
     try {
-        const response = await axiosInstance.put(`${BASE_URL_USERS}/update`, userData);
+        const response = await axiosInstance.post(`${BASE_URL_USERS}`, userData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding user:', error);
+        throw error;
+    }
+};
+
+
+
+
+
+export const updateUser = async (id,userData) => {
+    try {
+        const response = await axiosInstance.put(`${BASE_URL_USERS}/${id}`, userData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         return response.data;
     } catch (error) {
         const errorMessage = error.response?.data?.errorMessage || "Đã xảy ra lỗi";

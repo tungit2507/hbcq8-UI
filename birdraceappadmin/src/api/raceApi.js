@@ -40,9 +40,9 @@ export const fetchRaceById = async (id) => {
 
 
 
-export const updateRace = async (raceData) => {
+export const updateRace = async (raceId ,raceData) => {
     try {
-        const response = await axiosInstance.put(`${BASE_URL_RACES}`, raceData, {
+        const response = await axiosInstance.put(`${BASE_URL_RACES}/${raceId}`, raceData, {
             headers: {
                 'Content-Type': 'application/json'
             }

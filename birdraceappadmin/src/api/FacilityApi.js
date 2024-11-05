@@ -1,24 +1,19 @@
 import axiosInstance from "./Api";
 import Swal from "sweetalert2";
 
-const BASE_URL_FACILITIES = '/api/v1/admin/facilities';
-
-// Dữ liệu mẫu cho các căn cứ
-const facilities = [
-    { id: 1, name: 'Căn Cứ A' },
-    { id: 2, name: 'Căn Cứ B' },
-    { id: 3, name: 'Căn Cứ C' },
-    { id: 4, name: 'Căn Cứ D' },
-    { id: 5, name: 'Căn Cứ E' },
-];
+const BASE_URL_FACILITIES = '/api/v1/admin/user-location';
 
 // Hàm giả lập để lấy danh sách căn cứ
-export const fetchFacilities = async () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(facilities);
-        }, 1000);
-    });
+export const fetchFacilities = async (user) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_FACILITIES}?user=${user}`);
+        console.log(response);
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching facilities:', error);
+        Swal.fire('Lỗi', 'Không thể lấy danh sách cơ sở. Vui lòng thử lại sau.', 'error');
+    }
 };
 
 // Thêm facility
@@ -32,7 +27,7 @@ export const addFacility = async (facilityData) => {
         return response.data;
     } catch (error) {
         console.error('Error adding facility:', error);
-        Swal.fire('Lỗi', 'Không thể thêm cơ sở. Vui lòng thử lại sau.', 'error');
+        throw error;
     }
 };
 

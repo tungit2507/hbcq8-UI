@@ -24,6 +24,8 @@ import ArticleList from "./pages/article/ArticleList";
 import ArticleAdd from "./pages/article/ArticleAdd";
 import FacilityManagement from "./pages/facility/FacilityList";
 import RaceRegistrationAddFacility from "./pages/race/RaceRegistrationAddFacility";
+import FacilityManagementAdmin from "./pages/facility/FacilityListAdmin";
+
 
 const routes = createBrowserRouter([
     {
@@ -42,6 +44,7 @@ const routes = createBrowserRouter([
             { path: "/management/article/update", element: <div>Tính năng đang phát triển</div>, name: "Add Article" },
             { path: "/management/article/add", element: <ArticleAdd/>, name: "Update Article" },
             { path: "/management/facility/list", element: <FacilityManagement/>, name: "Facility Management" },
+            { path: "/management/facility/list/admin", element: <FacilityManagementAdmin/>, name: "Facility Management" },
 
         ]
     },

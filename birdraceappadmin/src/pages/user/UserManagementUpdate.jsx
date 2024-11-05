@@ -1,46 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
+import moment from 'moment';
 import { updateUser, getOneUser } from '../../api/UserApi';
 import { useLocation } from 'react-router-dom';
-import moment from 'moment';
-import { toast } from 'react-toastify';
-import { showErrorNotification } from '../../api/SweetAlertNotify';
 
 const UserManagementUpdate = () => {
   const [imagePreview, setImagePreview] = useState(null);
-  const { control, register, handleSubmit, formState: { errors } } = useForm();
-  const [user, setUser] = useState(() =>{
-    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (storedUser) {
-      console.log(storedUser);
-      storedUser.birthday = moment(storedUser.birthday).format('YYYY-MM-DD');
-      console.log(storedUser);
-      return storedUser;
-    }
-    return null;
-  });
+  const { control, register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const [user, setUser] = useState(null);
 
   // Get id from URL
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const username = query.get('username');
+  const userId = query.get('id');
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const fetchedUser = await getOneUser(userId);
+        fetchedUser.birthday = moment(fetchedUser.birthday).format('MM/DD/YYYY'); // Định dạng lại ngày sinh để render lên màn hình
+        setUser(fetchedUser);
+        setValue('username', fetchedUser.username);
+        setValue('email', fetchedUser.email);
+        setValue('address', fetchedUser.address);
+        setValue('phone', fetchedUser.phone);
+        setValue('birthday', moment(fetchedUser.birthday).format('YYYY-MM-DD'));
+      } catch (error) {
+        showErrorNotification("Lỗi xảy ra khi lấy thông tin thành viên");
+        console.log(error);
+      }
+    };
 
-  // useEffect(()=>{
-  //  
-  // })
+    fetchUser();
+  }, [userId]);
 
   // Form submission handler
   const onSubmit = async (data) => {
-      try {
-        console.log(data);
-        data.imgUrl = "";
-        const response  =  await updateUser(data);
-      } catch (error) {
-        showErrorNotification("Lỗi xảy ra khi cập nhật thành viên");
-        console.log(error);
-      }
+    try {
+      const formData = new FormData();
+      formData.append('userId', user.id);
+      formData.append('username', data.username);
+      formData.append('address', data.address);
+      formData.append('phone', data.phone);
+      console.log(formData);
+      await updateUser(userId,formData); 
+    } catch (error) {
+      showErrorNotification("Lỗi xảy ra khi cập nhật thành viên");
+      console.log(error);
+    }
   };
 
   // Image preview handler
@@ -64,79 +74,73 @@ const UserManagementUpdate = () => {
           </CCardHeader>
           <CCardBody>
             <CForm onSubmit={handleSubmit(onSubmit)}>
-              <CRow>
-                  <CCol md={2}>
-                     <CFormLabel htmlFor="id">ID :</CFormLabel>
-                     <CFormInput
-                        readOnly
-                        type="number"
-                        id="id"
-                        value={user?.id || ''}
-                        {...register('userId', { required: 'Id là bắt buộc' })}
-                        invalid={!!errors.id}
-                        />
-                        {errors.id && <div className="invalid-feedback">{errors.id.message}</div>}
-                     </CCol>
-              </CRow>
               {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />}
               <CRow className="mb-3">
-                <CCol>
-                  <CFormLabel htmlFor="imgUrl">Ảnh Đại Diện</CFormLabel>
-                  <Controller
-                    name="imgUrl"
-                    control={control}
-                    rules={{ required: 'Ảnh đại diện là bắt buộc' }}
-                    render={({ field }) => (
-                      <CFormInput
-                        type="file"
-                        id="imgUrl"
-                        accept="image/*"
-                        onChange={(e) => {
-                          field.onChange(e);
-                          handleImageChange(e);
-                        }}
-                        invalid={!!errors.imgUrl}
-                      />
-                    )}
+                <CCol md={6}>
+                  <CFormLabel htmlFor="username">Tên Đăng Nhập</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="username"
+                    {...register('username', { required: 'Tên đăng nhập là bắt buộc' })}
+                    invalid={!!errors.username}
+                    disabled
                   />
-                  {errors.imgUrl && <div className="invalid-feedback">{errors.imgUrl.message}</div>}
+                  {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+                </CCol>
+                <CCol md={6}>
+                  <CFormLabel htmlFor="email">Email</CFormLabel>
+                  <CFormInput
+                    type="email"
+                    id="email"
+                    {...register('email', { required: 'Email là bắt buộc' })}
+                    invalid={!!errors.email}
+                    disabled
+                  />
+                  {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+                </CCol>
+              </CRow>
+              <CRow className="mb-3">
+                <CCol md={12}>
+                  <CRow>
+                    <CCol md={6}>
+                      <CFormLabel htmlFor="address">Địa chỉ</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        id="address"
+                        {...register('address', { required: 'Địa chỉ là bắt buộc' })}
+                        invalid={!!errors.address}
+                      />
+                      {errors.address && <div className="invalid-feedback">{errors.address.message}</div>}
+                    </CCol>
+                    <CCol md={6}>
+                      <CFormLabel htmlFor="phone">Số điện thoại</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        id="phone"
+                        {...register('phone', { 
+                          required: 'Số điện thoại là bắt buộc', 
+                          pattern: {
+                            value: /^\d{10}$/,
+                            message: 'Số điện thoại không hợp lệ'
+                          }
+                        })}
+                        invalid={!!errors.phone}
+                      />
+                      {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
+                    </CCol>
+                  </CRow>
                 </CCol>
               </CRow>
               <CRow className="mb-3">
                 <CCol md={6}>
-                  <CFormLabel htmlFor="email">Ngày Sinh</CFormLabel>
+                  <CFormLabel htmlFor="birthday">Ngày Sinh</CFormLabel>
                   <CFormInput
                     type="date"
                     id="birthday"
-                    defaultValue={user?.birthday ? moment(user.birthday).format('YYYY-MM-DD') : ''}
                     {...register('birthday', { required: 'Ngày sinh là bắt buộc' })}
                     invalid={!!errors.birthday}
                   />
                   {errors.birthday && <div className="invalid-feedback">{errors.birthday.message}</div>}
-                </CCol>
-                <CCol md={6}>
-                  <CFormLabel htmlFor="email">Số điện thoại</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="phone"
-                    value={user?.phone || ''}
-                    {...register('phone', { required: 'Số điện thoại là bắt buộc' })}
-                    invalid={!!errors.phone}
-                  />
-                  {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
-                </CCol>
-              </CRow>
-              <CRow className="mb-3">
-                <CCol>
-                  <CFormLabel htmlFor="breakTime">Địa chỉ</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="address"
-                    value={user?.address || ''}
-                    {...register('address', { required: 'Địa chỉ là bắt buộc' })}
-                    invalid={!!errors.address}
-                  />
-                  {errors.address && <div className="invalid-feedback">{errors.address.message}</div>}
                 </CCol>
               </CRow>
               <CRow>

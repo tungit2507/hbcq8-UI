@@ -6,14 +6,14 @@ import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '..
 import { useLocation } from 'react-router-dom';
 import { showErrorNotification } from '../../api/SweetAlertNotify';
 
-const FacilityManagement = () => {
+const FacilityManagementAdmin = () => {
     const [facilities, setFacilities] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [currentFacility, setCurrentFacility] = useState({ code: '', name: '', pointCoor: '', createdDate: '', createdBy: '', id: '' });
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const userId = queryParams.get('user');
+    const currentUser = localStorage.getItem('currentUser');
+    const userId = currentUser ? JSON.parse(currentUser).id : '';
 
     useEffect(() => {        
         fetchData();
@@ -187,4 +187,4 @@ const FacilityManagement = () => {
     );
 };
 
-export default FacilityManagement;
+export default FacilityManagementAdmin;
