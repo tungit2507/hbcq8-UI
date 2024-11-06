@@ -25,7 +25,7 @@ const routes = createBrowserRouter([
             { path: "/contact-us", element: <div>Tính Năng Đang Phát Triển</div> },
             { path: "/profile", element: <Profile/> },
             { path: "/birds", element: <BirdList/> },
-            { path: "/blog-detail", element: <BlogDetail/> },
+            { path: "/blog-detail/:slug", element: <BlogDetail/> },
             { path: "/blogs", element: <BlogList/> },
             { path: "/tournament-result", element: <TournamentResults/> },
             { path: "/facibilitys", element: <FacibilityManagement/> },

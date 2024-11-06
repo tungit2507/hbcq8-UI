@@ -76,10 +76,8 @@ export const login = async (loginData) => {
       const response = await axiosInstance.post(`${BASE_URL_LOGIN}`, loginData);
       return response.data;
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage = error.response.data.errorMessage;
-        showErrorNotification(errorMessage);
-      }
+        const errorMessage = null;
+        showErrorNotification(errorMessage || "Lỗi khi đăng nhập");
     }
 };
 
