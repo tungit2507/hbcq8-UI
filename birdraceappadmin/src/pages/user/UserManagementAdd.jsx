@@ -5,10 +5,12 @@ import { toast } from 'react-toastify';
 import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
 import moment from 'moment';
 import { addOneUser } from '../../api/UserApi';
+import { useNavigate } from 'react-router-dom';
 
 const UserManagementAdd = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const { control, register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
   // Form submission handler
   const onSubmit = async (data) => {
@@ -16,12 +18,12 @@ const UserManagementAdd = () => {
       const formData = new FormData();
       formData.append('username', data.username);
       formData.append('email', data.email);
-      formData.append('address', data.address);
       formData.append('phone', data.phone);
       formData.append('birthday', data.birthday);
       formData.append('password', data.password);
       await addOneUser(formData);
-      showSuccessNotification("Thêm thành công thành viên")
+      showSuccessNotification("Thêm thành công thành viên");
+      navigate('/user-list');
     } catch (error) {
       const errorMessage = error.response.data.errorMessage;
       showErrorNotification(errorMessage || "Lỗi! Không thể thêm người dùng.")
@@ -73,38 +75,22 @@ const UserManagementAdd = () => {
                 </CCol>
               </CRow>
               <CRow className="mb-3">
-                <CCol md={12}>
-                  <CRow>
-                    <CCol md={6}>
-                      <CFormLabel htmlFor="address">Địa chỉ</CFormLabel>
-                      <CFormInput
-                        type="text"
-                        id="address"
-                        {...register('address', { required: 'Địa chỉ là bắt buộc' })}
-                        invalid={!!errors.address}
-                      />
-                      {errors.address && <div className="invalid-feedback">{errors.address.message}</div>}
-                    </CCol>
-                    <CCol md={6}>
-                      <CFormLabel htmlFor="phone">Số điện thoại</CFormLabel>
-                      <CFormInput
-                        type="text"
-                        id="phone"
-                        {...register('phone', { 
-                          required: 'Số điện thoại là bắt buộc', 
-                          pattern: {
-                            value: /^\d{10}$/,
-                            message: 'Số điện thoại không hợp lệ'
-                          }
-                        })}
-                        invalid={!!errors.phone}
-                      />
-                      {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
-                    </CCol>
-                  </CRow>
+                <CCol md={6}>
+                  <CFormLabel htmlFor="phone">Số điện thoại</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="phone"
+                    {...register('phone', { 
+                      required: 'Số điện thoại là bắt buộc', 
+                      pattern: {
+                        value: /^\d{10}$/,
+                        message: 'Số điện thoại không hợp lệ'
+                      }
+                    })}
+                    invalid={!!errors.phone}
+                  />
+                  {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
                 </CCol>
-              </CRow>
-              <CRow className="mb-3">
                 <CCol md={6}>
                   <CFormLabel htmlFor="birthday">Ngày Sinh</CFormLabel>
                   <CFormInput
@@ -115,6 +101,8 @@ const UserManagementAdd = () => {
                   />
                   {errors.birthday && <div className="invalid-feedback">{errors.birthday.message}</div>}
                 </CCol>
+              </CRow>
+              <CRow className="mb-3">
                 <CCol md={6}>
                   <CFormLabel htmlFor="password">Mật Khẩu</CFormLabel>
                   <CFormInput
