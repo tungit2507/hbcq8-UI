@@ -23,7 +23,7 @@ const UserManagementAdd = () => {
       formData.append('password', data.password);
       await addOneUser(formData);
       showSuccessNotification("Thêm thành công thành viên");
-      navigate('/user-list');
+      navigate('/management/user/list');
     } catch (error) {
       const errorMessage = error.response.data.errorMessage;
       showErrorNotification(errorMessage || "Lỗi! Không thể thêm người dùng.")

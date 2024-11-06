@@ -43,7 +43,6 @@ const AppHeaderDropdown = () => {
     }catch{
       navigate('/login');
     }
-
   };
   
   return (

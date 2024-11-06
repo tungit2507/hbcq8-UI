@@ -25,7 +25,7 @@ const LoginForm = () => {
       if (response.roleId === 2) {
         showErrorNotification("Rất Tiếc Tài Khoản Của Bạn Không Đủ Quyền Hạn, Vui Lòng Đăng Nhập Tài Khoản Khác");
       } else {
-        localStorage.setItem("currentUser", JSON.stringify(response));
+        sessionStorage.setItem("currentUser", JSON.stringify(response));
         navigate('/');
       }
     }

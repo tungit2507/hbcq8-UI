@@ -17,7 +17,7 @@ const AddRaceForm = () => {
   const [facilities, setFacilities] = useState([]);
   const navigate = useNavigate();
 
-  const currentUser = localStorage.getItem('currentUser');
+  const currentUser = sessionStorage.getItem('currentUser');
   const userId = currentUser ? JSON.parse(currentUser).id : '';
 
   useEffect(() => {

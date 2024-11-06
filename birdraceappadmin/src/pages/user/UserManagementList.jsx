@@ -128,7 +128,7 @@ const UserManagementList = () => {
         <CTable className="table-bordered rounded table-striped text-center">
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">ID</CTableHeaderCell>
+              <CTableHeaderCell scope="col">STT</CTableHeaderCell>
               <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tên Đăng Nhập</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -139,9 +139,9 @@ const UserManagementList = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {currentUsers.map(user => (
+            {currentUsers.map((user, index) => (
               <CTableRow key={user.id}>
-                <CTableHeaderCell scope="row">{user.id}</CTableHeaderCell>
+                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                 <CTableDataCell>
                   <img
                     src={exampleImage1}
@@ -155,7 +155,7 @@ const UserManagementList = () => {
                 <CTableDataCell>{user.address}</CTableDataCell>
                 <CTableDataCell>{user.roleId=== 1?"Admin":"User"}</CTableDataCell>
                 <CTableDataCell>
-                  <Link className="m-1 btn btn-success" to={`/management/facility/list?user=${user.id}`}>Quản Lý Căn Cứ</Link>
+                  <Link className="m-1 btn btn-success" to={`/management/facility/list?user=${user.id}`}>QL Căn Cứ</Link>
                   <Link className="m-1 btn btn-primary" to={`/management/user/update?id=${user.id}`}>Chỉnh Sửa</Link>
                   <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>Phân Quyền</CButton>
                   <CButton className='m-1' color="danger" onClick={() => handleDelete(user.id)}>Xóa</CButton>

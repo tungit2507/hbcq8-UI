@@ -12,7 +12,7 @@ const FacilityManagementAdmin = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [currentFacility, setCurrentFacility] = useState({ code: '', name: '', pointCoor: '', createdDate: '', createdBy: '', id: '' });
     const location = useLocation();
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = sessionStorage.getItem('currentUser');
     const userId = currentUser ? JSON.parse(currentUser).id : '';
 
     useEffect(() => {        

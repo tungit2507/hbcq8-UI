@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import axiosInstance from "./Api";
 import { showErrorNotification } from "./SweetAlertNotify";
 
@@ -76,13 +75,13 @@ export const login = async (loginData) => {
       const response = await axiosInstance.post(`${BASE_URL_LOGIN}`, loginData);
       return response.data;
     } catch (error) {
-        const errorMessage = null;
-        showErrorNotification(errorMessage || "Lỗi khi đăng nhập");
+        const errorMessage = error.response?.data?.errorMessage || "Sai Tên Tài Khoản Hoặc Mật Khẩu";
+        showErrorNotification(errorMessage);
     }
 };
 
 export const logout = async () => {
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     try {
         const response = await axiosInstance.get(`${BASE_URL_LOGOUT}`);
         return response.data;

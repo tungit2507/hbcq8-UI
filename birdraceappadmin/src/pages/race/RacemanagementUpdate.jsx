@@ -19,7 +19,7 @@ const UpdateRaceForm = () => {
   const [endPointDistance, setEndPointDistance] = useState(0);
   const [stageDistances, setStageDistances] = useState([]);
 
-  const currentUser = localStorage.getItem('currentUser');
+  const currentUser = sessionStorage.getItem('currentUser');
   const userId = currentUser ? JSON.parse(currentUser).id : '';
 
   useEffect(() => {
