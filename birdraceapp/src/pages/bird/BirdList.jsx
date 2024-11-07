@@ -118,17 +118,17 @@ const BirdList = () => {
                             <CTableHeaderCell scope="col">ID</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
                             <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        {userBirds.map(bird => (
+                        {userBirds.map((bird, index) => (
                             <CTableRow key={bird.id}>
-                                <CTableHeaderCell scope="row">{bird.id}</CTableHeaderCell>
+                                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                                 <CTableDataCell>{bird.name}</CTableDataCell>
                                 <CTableDataCell>{bird.code}</CTableDataCell>
-                                <CTableDataCell><img src={bird.image} alt={bird.name} style={{ width: '100px', height: '100px' }} /></CTableDataCell>
+                                {/* <CTableDataCell><img src={bird.image} alt={bird.name} style={{ width: '100px', height: '100px' }} /></CTableDataCell> */}
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird(bird); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                     <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.code)}>Xóa</CButton>

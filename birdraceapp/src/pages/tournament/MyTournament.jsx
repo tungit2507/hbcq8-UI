@@ -79,7 +79,7 @@ const MyTournament = () => {
                         </CTableBody>
                     </CTable>
                 ) : (
-                    <p>No tournaments found.</p>
+                    <h4 className='text-center'>Hiện Không Có Giải Đua</h4>
                 )}
             </div>
         </div>

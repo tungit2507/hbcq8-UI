@@ -135,7 +135,7 @@ const FacilityManagement = () => {
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 <CTableDataCell>{facility.createdBy}</CTableDataCell>
                                 <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                     <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
@@ -151,7 +151,7 @@ const FacilityManagement = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                    <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
+                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
                         <CInputGroup className="mb-3">
                             <CInputGroupText id="basic-addon3">Z</CInputGroupText>
                             <CFormInput
@@ -183,14 +183,17 @@ const FacilityManagement = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Mã Căn Cứ"
-                            label="Mã Căn Cứ"
-                            value={currentFacility.code}
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                        />
+                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
+                            <CFormInput
+                                value={currentFacility.code}
+                                className='my-1'
+                                type="text"
+                                placeholder="Nhập Mã Căn Cứ"
+                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                            />
+                        </CInputGroup>
                         <CFormInput
                             className='my-1'
                             type="text"
