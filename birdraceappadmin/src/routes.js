@@ -25,6 +25,7 @@ import ArticleAdd from "./pages/article/ArticleAdd";
 import FacilityManagement from "./pages/facility/FacilityList";
 import FacilityManagementAdmin from "./pages/facility/FacilityListAdmin";
 import RaceRegistrationAddFacility from "./pages/race/RaceRegistrationAddFacility";
+import TourResultSet from "./pages/race/TourResultSet";
 
 const routes = createBrowserRouter([
     {
@@ -38,6 +39,7 @@ const routes = createBrowserRouter([
             { path: "/management/race/add", element: <RaceManagementAdd/>, name: "Add Race" },
             { path: "/management/race/update", element: <RaceManagementUpdate/>, name: "Update Race" },
             { path: "/management/race/registration-list", element: <RaceRegistrationList/>, name: "RaceRegistrationList" },
+            { path: "/management/race/tour-result-set", element: <TourResultSet/>, name: "RaceRegistrationList" },
             { path: "/management/race/registration-list/approve", element: <RaceRegistrationAddFacility/>, name: "RaceRegistrationList" },
             { path: "/management/article/list", element: <ArticleList/>, name: "Article List" },
             { path: "/management/article/update", element: <div>Tính năng đang phát triển</div>, name: "Add Article" },

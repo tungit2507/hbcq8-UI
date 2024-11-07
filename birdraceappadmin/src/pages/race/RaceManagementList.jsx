@@ -3,7 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import { Link } from "react-router-dom";
 import sampleImage from './../../assets/images/avatars/1.jpg'; // Đảm bảo đường dẫn chính xác
 import Swal from 'sweetalert2';
-import { fetchRaces } from '../../api/RaceApi';
+import { fetchRaces, SortRank } from '../../api/RaceApi';
 import ErrorImage from '../../assets/images/avatars/1.jpg';
 import { deleteRace } from '../../api/RaceApi';
 
@@ -39,6 +39,29 @@ const RaceList = () => {
       }
     });
   };
+
+
+  const handleSortRank = (id) => {
+    Swal.fire({
+      title: "Bạn có chắc muốn duyệt xếp hạng cho giải đua này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Duyệt",
+      cancelButtonText: "Hủy",
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await SortRank(id);
+          Swal.fire("Đã duyệt!", "Xếp hạng đã được duyệt.", "success");
+        } catch (error) {
+          Swal.fire("Lỗi", "Không thể duyệt xếp hạng. Vui lòng thử lại sau.", "error");
+        }
+      }
+    });
+  }
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -129,6 +152,7 @@ const RaceList = () => {
                   <Link className="btn btn-info mx-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
                   <Link className="btn btn-primary mx-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
                   <CButton className="btn btn-danger text-white mx-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
+                  <CButton className="btn btn-success text-white mx-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton>
                 </CTableDataCell>
               </CTableRow>
             ))}

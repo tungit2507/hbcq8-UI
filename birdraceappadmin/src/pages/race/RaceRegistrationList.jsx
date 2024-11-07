@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CFormCheck } from '@coreui/react';
 import Swal from 'sweetalert2';
-import { approveRaceRegistration, fetchRaceRegistrationByRaceId } from '../../api/RaceRegistration';
+import { approveRaceRegistration, fetchRaceRegistrationByRaceId, rejectRaceRegistration } from '../../api/RaceRegistration';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -100,14 +100,10 @@ const RaceRegistrationList = () => {
             formData.append('tourId', raceId);
             formData.append('requesterId', requesterId);
             formData.append('approverId', currentUser.id); 
-            formData.append('statusCode', 'R');
             formData.append('memo', reasonResult.value);
-            const response = await approveRaceRegistration(formData)
-            console.log(response);
+            const response = await rejectRaceRegistration(formData)
             Swal.fire('Đã từ chối!', 'Đăng ký đã bị từ chối.', 'success');
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            setRegistrations(await fetchRaceRegistrationByRaceId(raceId));
           }
         });
       }

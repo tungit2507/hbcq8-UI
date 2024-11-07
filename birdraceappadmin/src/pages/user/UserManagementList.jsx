@@ -157,7 +157,7 @@ const UserManagementList = () => {
                 <CTableDataCell>
                   <Link className="m-1 btn btn-success" to={`/management/facility/list?user=${user.id}`}>QL Căn Cứ</Link>
                   <Link className="m-1 btn btn-primary" to={`/management/user/update?id=${user.id}`}>Chỉnh Sửa</Link>
-                  <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>Phân Quyền</CButton>
+                  {/* <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>Phân Quyền</CButton> */}
                   <CButton className='m-1' color="danger" onClick={() => handleDelete(user.id)}>Xóa</CButton>
                 </CTableDataCell>
               </CTableRow>

@@ -69,7 +69,7 @@ const Header = () => {
                       <Link to={"/facibilitys"}>Quản Lý Căn Cứ</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Link to={"/facibilitys"}>Giải Đua Của Tôi</Link>
+                      <Link to={"/my-tour"}>Giải Đua Của Tôi</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">
                       <Link to={"/profile"}>Tài Khoản ({currentUser ? currentUser.username : ''}) </Link>

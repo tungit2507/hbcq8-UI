@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { approveRaceRegistration } from '../../api/RaceRegistration';
 import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
 import { current } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router-dom';
 
 const RaceRegistrationAddFacility = () => {
   const location = useLocation();
@@ -26,6 +27,8 @@ const RaceRegistrationAddFacility = () => {
   const [race, setRace] = useState(null);
   const [stageDistances, setStageDistances] = useState([]);
   const [endPointDistance, setEndPointDistance] = useState(0);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +54,14 @@ const RaceRegistrationAddFacility = () => {
   }, [raceId, requesterId, setValue]);
 
   const handleCalculateDistance = async () => {
+    const selectedFacilities = watch('selectedFacilities');
+    const unselectedFacility = selectedFacilities.find(facility => !facility.code);
+
+    if (unselectedFacility) {
+      toast.error('Vui lòng chọn tất cả các căn cứ trước khi tính khoảng cách.');
+      return;
+    }
+
     const stageCoordinates = watch('selectedFacilities').map(stage => stage.code);
     // const coordinatePattern = /^\d+(\.\d+)?;\d+(\.\d+)?$/;
     
@@ -102,6 +113,8 @@ const RaceRegistrationAddFacility = () => {
     }
   }
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
 
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -140,6 +153,7 @@ const RaceRegistrationAddFacility = () => {
       } catch (error) {
         showErrorNotification("Lỗi khi duyệt đơn đăng ký");
       }
+      navigate(`/management/race/registration-list?id=${raceId}`);
   };
 
   return (

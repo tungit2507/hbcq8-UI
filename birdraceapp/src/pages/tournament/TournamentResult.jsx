@@ -1,6 +1,8 @@
 // src/components/TournamentResults.js
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem} from "@coreui/react";
+import axioInstance from '../../apiInstance';
+import { useLocation } from 'react-router-dom';
 
 
 const TournamentResults = () => {
@@ -8,21 +10,22 @@ const TournamentResults = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const resultsPerPage = 10;
 
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const tourId = query.get('tourId');
+
 
     useEffect(() => {
-        const hardcodedResults = [
-            { id: 1, name: 'Người Chơi 1', score: 100, rank: 1, birdcode: 'BIRD001' },
-            { id: 3, name: 'Người Chơi 2', score: 100, rank: 2, birdcode: 'BIRD002' },
-            { id: 4, name: 'Người Chơi 3', score: 90, rank: 3, birdcode: 'BIRD003' },
-            { id: 5, name: 'Người Chơi 4', score: 80, rank: 4, birdcode: 'BIRD004' },
-            { id: 6, name: 'Người Chơi 5', score: 70, rank: 5, birdcode: 'BIRD005' },
-            { id: 7, name: 'Người Chơi 6', score: 60, rank: 6, birdcode: 'BIRD006' },
-            { id: 8, name: 'Người Chơi 7', score: 50, rank: 7, birdcode: 'BIRD007' },
-            { id: 9, name: 'Người  hơi 8', score: 40, rank: 8, birdcode: 'BIRD008' },
-            { id: 10, name: 'Người Chơi 9', score: 30, rank: 9, birdcode: 'BIRD009' },
-            { id: 11, name: 'Người Chơi 10', score: 20, rank: 10, birdcode: 'BIRD010' },
-        ];
-        setResults(hardcodedResults);
+        const fetchResults = async () => {
+            try {
+            const response = await axioInstance.get(`/tour/view-rank?tourId=${tourId}`);
+            setResults(response.data);
+            } catch (error) {
+            console.error('Error fetching tournament results:', error);
+            }
+        };
+
+        fetchResults();
     }, []);
 
     const indexOfLastResult = currentPage * resultsPerPage;
@@ -44,18 +47,17 @@ const TournamentResults = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">Hạng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Tên Người Tham Gia</CTableHeaderCell>
               <CTableHeaderCell scope="col">Mã Kiềng Chim</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Điểm số</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Tốc Độ Trung Bình</CTableHeaderCell>
+
             </CTableRow>
           </CTableHead>
           <CTableBody>
             {results.map(ranker => (
               <CTableRow key={ranker.id}>
                 <CTableHeaderCell scope="row">{ranker.rank}</CTableHeaderCell>
-                <CTableDataCell>{ranker.name}</CTableDataCell>
                 <CTableDataCell>{ranker.birdcode}</CTableDataCell>
-                <CTableDataCell>{ranker.score}</CTableDataCell>
+                <CTableDataCell>{ranker.avgSpeed}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>

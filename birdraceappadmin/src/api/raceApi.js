@@ -64,3 +64,42 @@ export const deleteRace = async (id) => {
         Swal.fire('Lỗi', 'Không thể xóa giải đua. Vui lòng thử lại sau.', 'error');
     }
 }
+
+
+
+export const fetchRaceDetail = async (tourId) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_RACES}/approve?tourId=${tourId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting race:', error);
+        Swal.fire('Lỗi', 'Không thể xóa giải đua. Vui lòng thử lại sau.', 'error');
+    }
+}
+
+
+export const approveResult = async (dto) => {
+     try {
+        const response = await axiosInstance.post(`${BASE_URL_RACES}/approve-result`, dto, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+        } catch (error) {
+        console.error('Error approve race result :', error);
+        Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+        }
+}
+
+
+
+export const SortRank = async (tourId) => {
+    try {
+       const response = await axiosInstance.get(`${BASE_URL_RACES}/sort?tourId=${tourId}`);
+       return response.data;
+       } catch (error) {
+       console.error('Error approve race result :', error);
+       Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+       }
+}

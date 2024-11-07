@@ -11,6 +11,9 @@ import BlogDetail from "./pages/blog/BlogDetail";
 import BlogList from "./pages/blog/BlogList";
 import TournamentResults from "./pages/tournament/TournamentResult";
 import FacibilityManagement from "./pages/facility/FacilityManagement";
+import Mytournament from "./pages/tournament/MyTournament";
+import ReachDestination from "./pages/tournament/ReachDestination";
+
 const routes = createBrowserRouter([
     
     { path: "/login", element: <LoginForm/>},
@@ -29,7 +32,8 @@ const routes = createBrowserRouter([
             { path: "/blogs", element: <BlogList/> },
             { path: "/tournament-result", element: <TournamentResults/> },
             { path: "/facibilitys", element: <FacibilityManagement/> },
-            { path: "/my-tour", element: <FacibilityManagement/> },
+            { path: "/my-tour", element: <Mytournament/> },
+            { path: "/tour-detail", element: <ReachDestination/> },
         ]
     },
     { path: "*", element: <Page404/> },

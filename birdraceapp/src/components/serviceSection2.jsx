@@ -66,78 +66,89 @@ const ServicesSection2 = () => {
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Planting</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_1.jpg" alt="Planting" className="img-fluid" />
+                <img src="/assets/img/noibat_1.jpg" alt="Planting" className="img-fluid" />
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Mulching</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_3.jpg" alt="Mulching" className="img-fluid" />
+                <img src="/assets/img/noibat_2.jpg" alt="Mulching" className="img-fluid" />
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Watering</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_8.jpg" alt="Watering" className="img-fluid" />
+                <img src="/assets/img/noibat3.jpg" alt="Watering" className="img-fluid" />
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Fertilizing</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_4.jpg" alt="Fertilizing" className="img-fluid" />
+                <img src="/assets/img/noibat4.jpg" alt="Fertilizing" className="img-fluid" />
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Harvesting</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_5.jpg" alt="Harvesting" className="img-fluid" />
+                <img src="/assets/img/noibat5.jpg" alt="Harvesting" className="img-fluid" />
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Mowing</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_6.jpg" alt="Mowing" className="img-fluid" />
+                <img src="/assets/img/noibat6.jpg" alt="Mowing" className="img-fluid" />
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="service-item">
                 <div className="service-item-contents">
-                  <a href="#">
+                  {/* <a href="#">
                     <span className="service-item-category">We do</span>
                     <h2 className="service-item-title">Seeding Plants</h2>
-                  </a>
+                  </a> */}
                 </div>
-                <img src="/assets/img/img_sq_8.jpg" alt="Seeding Plants" className="img-fluid" />
+                <img src="/assets/img/noibat8.jpg" alt="Seeding Plants" className="img-fluid" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="service-item">
+                <div className="service-item-contents">
+                  {/* <a href="#">
+                    <span className="service-item-category">We do</span>
+                    <h2 className="service-item-title">Seeding Plants</h2>
+                  </a> */}
+                </div>
+                <img src="/assets/img/noibat9.jpg" alt="Seeding Plants" className="img-fluid" />
               </div>
             </SwiperSlide>
             <div className="swiper-pagination"></div>

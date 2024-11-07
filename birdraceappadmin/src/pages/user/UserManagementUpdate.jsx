@@ -21,13 +21,12 @@ const UserManagementUpdate = () => {
     const fetchUser = async () => {
       try {
         const fetchedUser = await getOneUser(userId);
-        fetchedUser.birthday = moment(fetchedUser.birthday).format('MM/DD/YYYY');
         setUser(fetchedUser);
         setValue('username', fetchedUser.username);
         setValue('email', fetchedUser.email);
         setValue('address', fetchedUser.address);
         setValue('phone', fetchedUser.phone);
-        setValue('birthday', moment(fetchedUser.birthday).format('YYYY-MM-DD'));
+        setValue('birthday', moment(fetchedUser.birthday, ['MM/DD/YYYY', 'YYYY-MM-DD', 'DD/MM/YYYY']).format('YYYY-MM-DD'));
       } catch (error) {
         showErrorNotification("Lỗi xảy ra khi lấy thông tin thành viên");
         console.log(error);
@@ -45,6 +44,7 @@ const UserManagementUpdate = () => {
       formData.append('username', data.username);
       formData.append('address', data.address);
       formData.append('phone', data.phone);
+      formData.append('birthday', moment(data.birthday).format('DD-MM-YYYY'));
       console.log(formData);
       await updateUser(userId,formData); 
       showSuccessNotification("Cập nhật thành viên thành công");

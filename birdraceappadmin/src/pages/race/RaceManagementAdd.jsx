@@ -65,6 +65,17 @@ const AddRaceForm = () => {
   };
 
   const handleCalculateDistance = async () => {
+
+    if (!watch('startPointCode')) {
+      showErrorNotification('Chưa nhập mã căn cứ bắt đầu');
+      return;
+    }
+
+    if (!watch('endPointCode')) {
+      showErrorNotification('Chưa nhập mã căn cứ đích');
+      return;
+    }
+
     const startCoordinates = facilities.find(facility => facility.code === watch('startPointCode')).pointCoor;
     const endCoordinates = facilities.find(facility => facility.code === watch('endPointCode')).pointCoor;
     const stageCoordinates = watch('stages').map(stage => stage.coordinates);
@@ -260,6 +271,7 @@ const AddRaceForm = () => {
                     type="number"
                     id="startPointDistance"
                     defaultValue={0}
+                    readOnly
                     {...register('startPoint.distance', { required: 'Số mét điểm bắt đầu là bắt buộc' })}
                     invalid={!!errors.startPoint?.distance}
                   />
