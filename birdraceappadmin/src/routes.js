@@ -19,7 +19,7 @@ import UserManagementUpdate from "./pages/user/UserManagementUpdate";
 import UserManagementAdd from "./pages/user/UserManagementAdd";
 
 import RaceRegistrationList from "./pages/race/RaceRegistrationList";
-import RaceManagementAdd from "./pages/race/RaceRegistrationList";
+import RaceManagementAdd from "./pages/race/RaceManagementAdd";
 import ArticleList from "./pages/article/ArticleList";
 import ArticleAdd from "./pages/article/ArticleAdd";
 import FacilityManagement from "./pages/facility/FacilityList";

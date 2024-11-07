@@ -6,7 +6,7 @@ import RegistrationForm from "./pages/author/register";
 import Page404 from "./pages/Page404"
 import TournamentList from "./pages/tournament/tournamentList";
 import BirdList from "./pages/bird/BirdList";
-import Profile from "./pages/userProfile/UserProfile";
+import Profile from "./pages/userProfile/userProfile";
 import BlogDetail from "./pages/blog/BlogDetail";
 import BlogList from "./pages/blog/BlogList";
 import TournamentResults from "./pages/tournament/TournamentResult";

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow, CFormSelect } from '@coreui/react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { toast, ToastContainer} from 'react-toastify';
-import { calculateDistance } from '../../api/RaceLocationApi';
-import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
-import { addRace } from '../../api/RaceApi';
+import { calculateDistance } from '../../api/raceLocationApi';
+import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
+import { addRace } from '../../api/raceApi';
 import { useNavigate } from 'react-router-dom';
 import { fetchFacilities } from '../../api/FacilityApi';
 
