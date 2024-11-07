@@ -57,7 +57,7 @@ const MyTournament = () => {
                                     <CTableDataCell>{tournament.birdsNum}</CTableDataCell>
                                     <CTableDataCell>{tournament.tourStatus}</CTableDataCell>
                                     <CTableDataCell>
-                                        {tournament.isFinished === true ? (
+                                        {/* {tournament.isFinished === true ? (
                                             <Link to={`/tour-detail?tourId=${tournament.tourId}`} className="btn btn-primary">
                                                 Báo Về Đích
                                             </Link>
@@ -65,7 +65,14 @@ const MyTournament = () => {
                                             <Link to={`/tournament-result?tourId=${tournament.tourId}`} className="btn btn-primary">
                                                 Xem Kết Quả
                                             </Link>
-                                        )}
+                                        )} */}
+
+                                            <Link to={`/tour-detail?tourId=${tournament.tourId}`} className="btn btn-primary m-1">
+                                                Báo Về Đích
+                                            </Link>
+                                            <Link to={`/tournament-result?tourId=${tournament.tourId}`} className="btn btn-primary m-1">
+                                                Xem Kết Quả
+                                            </Link>
                                     </CTableDataCell>
                                 </CTableRow>
                             ))}
