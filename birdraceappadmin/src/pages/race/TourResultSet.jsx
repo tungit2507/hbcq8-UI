@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton } from "@coreui/react";
 import { useLocation } from "react-router-dom";
-import { fetchRaceDetail, approveResult } from '../../api/raceApi';
+import { fetchRaceDetail, approveResult, rejectResult } from '../../api/raceApi';
 import Swal from 'sweetalert2';
 
 const TourResultSet = () => {
@@ -48,8 +48,24 @@ const TourResultSet = () => {
         });
     };
 
-    const handleReject = (id) => {
-        Swal.fire('Rejected', `Race with ID ${id} rejected.`, 'error');
+    const handleReject = (birdCode) => {
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: `Bạn có muốn từ chối kết quả cho chim có mã ${birdCode}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Từ chối!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let formData = new FormData();
+                formData.append('birdCode', birdCode);
+                formData.append('tourId', tourId);
+                rejectResult(formData);
+                Swal.fire('Thành công', `Đã từ chối kết quả cho chim có mã ${birdCode}`, 'success');
+            }
+        });
     };
 
     const formatDateTime = (dateTime) => {

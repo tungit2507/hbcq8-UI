@@ -93,6 +93,20 @@ export const approveResult = async (dto) => {
 }
 
 
+export const rejectResult = async (dto) => {
+    try {
+       const response = await axiosInstance.post(`${BASE_URL_RACES}/reject-result`, dto, {
+           headers: {
+            'Content-Type': 'application/json'
+           }
+       });
+       return response.data;
+       } catch (error) {
+            console.error('Error approve race result :', error);
+            Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+       }
+}
+
 
 export const SortRank = async (tourId) => {
     try {
