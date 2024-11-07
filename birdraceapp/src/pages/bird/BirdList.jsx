@@ -33,8 +33,18 @@ const BirdList = () => {
     }, []);
 
     const handleAddBird = async () => {
+
+        if(currentBird.name === '' || currentBird.code === ''){
+            toast.error('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+
+        if (!/^\d{3}$/.test(currentBird.code)) {
+            toast.error('Mã Kiềng phải bao gồm 3 chữ số');
+            return;
+        }
+
         const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
-        
         const formData = new FormData();
         formData.append('name', currentBird.name);
         formData.append('code', currentBird.code);
@@ -53,11 +63,27 @@ const BirdList = () => {
             setCurrentBird({ id: '', name: '', code: '', image: '' });
         } catch (error) {
             console.error('Lỗi khi thêm chim đua:', error);
-            toast.error('Đã xảy ra lỗi khi thêm chim đua. Vui lòng thử lại sau.');
+            if(error.response.data.errorMessage){
+                toast.error(error.response.data.errorMessage);
+            }else{
+                toast.error('Đã xảy ra lỗi khi thêm chim đua. Vui lòng thử lại sau.');
+            }
         }
     };
 
     const handleEditBird = async () => {
+
+
+        if(currentBird.name === '' || currentBird.code === ''){
+            toast.error('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+
+        if (!/^\d{3}$/.test(currentBird.code)) {
+            toast.error('Mã Kiềng phải bao gồm 3 chữ số');
+            return;
+        }
+
         const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
         const formData = new FormData();
         formData.append('name', currentBird.name);
@@ -118,17 +144,15 @@ const BirdList = () => {
                             <CTableHeaderCell scope="col">ID</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-                            {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
                             <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
                         {userBirds.map((bird, index) => (
                             <CTableRow key={bird.id}>
-                                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                                <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
                                 <CTableDataCell>{bird.name}</CTableDataCell>
                                 <CTableDataCell>{bird.code}</CTableDataCell>
-                                {/* <CTableDataCell><img src={bird.image} alt={bird.name} style={{ width: '100px', height: '100px' }} /></CTableDataCell> */}
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird(bird); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                     <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.code)}>Xóa</CButton>
@@ -159,14 +183,14 @@ const BirdList = () => {
                             label="Mã Kiềng"
                             onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
                         />
-                        <CFormInput
+                        {/* <CFormInput
                             className='my-1'
                             type="file"
                             placeholder="Hình Ảnh"
                             label="Chọn hình ảnh chim"
                             disabled
                             onChange={(e) => setCurrentBird({ ...currentBird, image: e.target.files[0] })}
-                        />
+                        /> */}
                     </CForm>
                 </CModalBody>
                 <CModalFooter>
@@ -175,7 +199,7 @@ const BirdList = () => {
                 </CModalFooter>
             </CModal>
 
-            <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
+            <CModal visible={showEditModal} onClose={() => {setCurrentBird({id:"",code:"", name:""});  setShowEditModal(false)}}>
                 <CModalHeader closeButton>
                     <CModalTitle>Chỉnh Sửa Chim Đua</CModalTitle>
                 </CModalHeader>
@@ -194,17 +218,17 @@ const BirdList = () => {
                             type="text"
                             placeholder="Nhập Mã Kiềng"
                             value={currentBird.code}
-                            label="Mã Kiềng"
+                            label="Mã Kiềng (Ví Dụ: 001)"
                             onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
                         />
-                        <CFormInput
+                        {/* <CFormInput
                             disabled
                             className='my-2'
                             type="file"
                             placeholder="Hình Ảnh"
                             label="Chọn hình ảnh chim"
                             onChange={(e) => setCurrentBird({ ...currentBird, image: e.target.files[0] })}
-                        />
+                        /> */}
                     </CForm>
                 </CModalBody>
                 <CModalFooter>
