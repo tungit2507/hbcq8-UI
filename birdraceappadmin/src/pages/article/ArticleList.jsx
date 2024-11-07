@@ -77,7 +77,7 @@ const ArticleList = () => {
               <CTableHeaderCell scope="col">Tiêu Đề</CTableHeaderCell>
               {/* <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Trạng Thái</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tác Giả</CTableHeaderCell>
               <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
@@ -89,7 +89,7 @@ const ArticleList = () => {
                 <CTableDataCell>{article.title}</CTableDataCell>
                 {/* <CTableDataCell>{article.content}</CTableDataCell> */}
                 <CTableDataCell>{article.isDeleted ? 'Không hoạt động' : 'Hoạt động'}</CTableDataCell>
-                <CTableDataCell><img src={article.imgUrl || 'https://example.com/default.jpg'} alt={`Hình ảnh của ${article.title}`} style={{ width: '50px', height: '50px', borderRadius: '50%' }} /></CTableDataCell>
+                {/* <CTableDataCell><img src={article.imgUrl || 'https://example.com/default.jpg'} alt={`Hình ảnh của ${article.title}`} style={{ width: '50px', height: '50px', borderRadius: '50%' }} /></CTableDataCell> */}
                 <CTableDataCell>{new Date(article.createdAt).toLocaleString('vi-VN')}</CTableDataCell>
                 <CTableDataCell>{article.authorUserName}</CTableDataCell>
                 <CTableDataCell>

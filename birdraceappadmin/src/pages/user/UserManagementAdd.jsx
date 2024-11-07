@@ -58,7 +58,7 @@ const UserManagementAdd = () => {
                   <CFormInput
                     type="text"
                     id="username"
-                    {...register('username', { required: 'Tên đăng nhp là bắt buộc' })}
+                    {...register('username', { required: 'Tên đăng nhập là bắt buộc' })}
                     invalid={!!errors.username}
                   />
                   {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}

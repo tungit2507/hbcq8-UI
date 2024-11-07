@@ -150,7 +150,7 @@ const BirdList = () => {
                     <CTableBody>
                         {userBirds.map((bird, index) => (
                             <CTableRow key={bird.id}>
-                                <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
+                                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                                 <CTableDataCell>{bird.name}</CTableDataCell>
                                 <CTableDataCell>{bird.code}</CTableDataCell>
                                 <CTableDataCell>

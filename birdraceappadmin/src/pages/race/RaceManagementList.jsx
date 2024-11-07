@@ -149,10 +149,11 @@ const RaceList = () => {
                 <CTableDataCell>{race.endDate}</CTableDataCell>
                 <CTableDataCell>{race.restTimePerDay}</CTableDataCell>
                 <CTableDataCell>
-                  <Link className="btn btn-info mx-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
-                  <Link className="btn btn-primary mx-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
-                  <CButton className="btn btn-danger text-white mx-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
-                  <CButton className="btn btn-success text-white mx-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton>
+                <Link className="btn btn-warning m-1" to={`/management/race/tour-result-set?id=${race.id}`}>Kiểm Tra Xếp Hạng</Link>
+                  <Link className="btn btn-info m-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
+                  <Link className="btn btn-primary m-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
+                  <CButton className="btn btn-danger text-white m-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
+                  <CButton className="btn btn-success text-white m-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton>
                 </CTableDataCell>
               </CTableRow>
             ))}
