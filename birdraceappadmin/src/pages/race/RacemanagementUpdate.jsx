@@ -249,8 +249,13 @@ const UpdateRaceForm = () => {
                   <CFormInput
                     type="number"
                     id="breakTime"
+                    step={0.1}
                     placeholder='Nhập thời gian nghỉ'
-                    {...register('breakTime', { required: 'Thời gian nghỉ là bắt buộc' })}
+                    {...register('breakTime', { 
+                      required: 'Thời gian nghỉ là bắt buộc', 
+                      min: { value: 0, message: 'Thời gian nghỉ không được nhỏ hơn 0' },
+                      max: { value: 24, message: 'Thời gian nghỉ không được lớn hơn 24' }},
+                    )}
                     invalid={!!errors.breakTime}
                   />
                   {errors.breakTime && <div className="invalid-feedback">{errors.breakTime.message}</div>}

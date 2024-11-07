@@ -12,9 +12,10 @@ const RaceRegistrationList = () => {
   const [selectedRegistrations, setSelectedRegistrations] = useState([]);
   const [registrations, setRegistrations] = useState([]);
   const navigate = useNavigate();
+  const raceId = new URLSearchParams(window.location.search).get('id');
+
 
   useEffect(() => {
-    const raceId = new URLSearchParams(window.location.search).get('id');
     fetchRaceRegistrationByRaceId(raceId)
       .then(data => {
         setRegistrations(data);
@@ -201,7 +202,7 @@ const RaceRegistrationList = () => {
                 <CTableDataCell>
                   {registration.statusCode  === 'W' && (
                     <>
-                      <Link to={`/management/race/registration-list/approve?id=${registration.requesterId}`} className="btn btn-success me-2 mb-2 mb-md-0">Duyệt</Link>
+                      <Link to={`/management/race/registration-list/approve?requesterId=${registration.requesterId}&tourId=${raceId}`} className="btn btn-success me-2 mb-2 mb-md-0">Duyệt</Link>
                       <CButton color="danger" onClick={() => handleReject(registration.requesterId)}
                         className="me-2 mb-2 mb-md-0"
                       >Từ Chối</CButton>

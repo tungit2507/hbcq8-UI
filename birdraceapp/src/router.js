@@ -29,6 +29,7 @@ const routes = createBrowserRouter([
             { path: "/blogs", element: <BlogList/> },
             { path: "/tournament-result", element: <TournamentResults/> },
             { path: "/facibilitys", element: <FacibilityManagement/> },
+            { path: "/my-tour", element: <FacibilityManagement/> },
         ]
     },
     { path: "*", element: <Page404/> },

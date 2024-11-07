@@ -6,9 +6,7 @@ const BASE_URL_FACILITIES = '/api/v1/admin/user-location';
 // Hàm giả lập để lấy danh sách căn cứ
 export const fetchFacilities = async (user) => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL_FACILITIES}?user=${user}`);
-        console.log(response);
-        
+        const response = await axiosInstance.get(`${BASE_URL_FACILITIES}?user=${user}`);      
         return response.data;
     } catch (error) {
         console.error('Error fetching facilities:', error);
@@ -53,7 +51,7 @@ export const updateFacility = async (id, facilityData) => {
         return response.data;
     } catch (error) {
         console.error('Error updating facility:', error);
-        Swal.fire('Lỗi', 'Không thể cập nhật cơ sở. Vui lòng thử lại sau.', 'error');
+        throw error;
     }
 };
 

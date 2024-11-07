@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
+import { CFormLabel, CInputGroup, CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '../../api/FacilityApi';
@@ -25,11 +25,26 @@ const FacilityManagement = () => {
     };
 
     const handleAddFacility = async () => {
+        if (!currentFacility.code || !currentFacility.pointCoor) {
+            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
+            return;
+        }
+
+        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
+            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
+        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
+            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
         try {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', currentFacility.code);
+            formData.append('code', "Z" + currentFacility.code);
             await addFacility(formData);
             fetchData();
             setShowAddModal(false);
@@ -40,11 +55,26 @@ const FacilityManagement = () => {
     };
 
     const handleEditFacility = async () => {
+        if (!currentFacility.code || !currentFacility.pointCoor) {
+            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
+            return;
+        }
+
+        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
+            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
+        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
+            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
         try {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', currentFacility.code);
+            formData.append('code', "Z" + currentFacility.code);
             await updateFacility(currentFacility.id, formData);
             fetchData();
             setShowEditModal(false);
@@ -104,7 +134,7 @@ const FacilityManagement = () => {
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 <CTableDataCell>{facility.createdBy}</CTableDataCell>
                                 <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, code: facility.code.replace(/^Z/, ''), id: facility.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                     <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
@@ -120,18 +150,21 @@ const FacilityManagement = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Mã Căn Cứ"
-                            label="Mã Căn Cứ"
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                        />
+                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
+                            <CFormInput
+                                className='my-1'
+                                type="text"
+                                placeholder="Nhập Mã Căn Cứ"
+                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                            />
+                        </CInputGroup>
                         <CFormInput
                             className='my-1'
                             type="text"
                             placeholder="Nhập Tọa Độ"
-                            label="Tọa Độ"
+                            label="Tọa Độ (Ví Dụ: 21.12;105.12)"
                             onChange={(e) => setCurrentFacility({ ...currentFacility, pointCoor: e.target.value })}
                         />
                     </CForm>
@@ -149,14 +182,17 @@ const FacilityManagement = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Mã Căn Cứ"
-                            label="Mã Căn Cứ"
-                            value={currentFacility.code}
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                        />
+                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
+                            <CFormInput
+                                className='my-1'
+                                type="text"
+                                placeholder="Nhập Mã Căn Cứ"
+                                value={currentFacility.code}
+                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                            />
+                        </CInputGroup>
                         <CFormInput
                             className='my-1'
                             type="text"

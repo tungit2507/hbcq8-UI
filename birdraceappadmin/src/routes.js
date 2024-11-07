@@ -23,9 +23,8 @@ import RaceRegistrationList from "./pages/race/RaceRegistrationList";
 import ArticleList from "./pages/article/ArticleList";
 import ArticleAdd from "./pages/article/ArticleAdd";
 import FacilityManagement from "./pages/facility/FacilityList";
-import RaceRegistrationAddFacility from "./pages/race/RaceRegistrationAddFacility";
 import FacilityManagementAdmin from "./pages/facility/FacilityListAdmin";
-
+import RaceRegistrationAddFacility from "./pages/race/RaceRegistrationAddFacility";
 
 const routes = createBrowserRouter([
     {

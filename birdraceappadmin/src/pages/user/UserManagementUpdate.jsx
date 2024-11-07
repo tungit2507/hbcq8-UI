@@ -21,7 +21,7 @@ const UserManagementUpdate = () => {
     const fetchUser = async () => {
       try {
         const fetchedUser = await getOneUser(userId);
-        fetchedUser.birthday = moment(fetchedUser.birthday).format('MM/DD/YYYY'); // Định dạng lại ngày sinh để render lên màn hình
+        fetchedUser.birthday = moment(fetchedUser.birthday).format('MM/DD/YYYY');
         setUser(fetchedUser);
         setValue('username', fetchedUser.username);
         setValue('email', fetchedUser.email);
@@ -47,6 +47,7 @@ const UserManagementUpdate = () => {
       formData.append('phone', data.phone);
       console.log(formData);
       await updateUser(userId,formData); 
+      showSuccessNotification("Cập nhật thành viên thành công");
     } catch (error) {
       showErrorNotification("Lỗi xảy ra khi cập nhật thành viên");
       console.log(error);

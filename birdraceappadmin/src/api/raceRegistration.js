@@ -17,17 +17,32 @@ export const fetchRaceRegistrationByRaceId = async (raceId) => {
 
 export const approveRaceRegistration = async (dto) => {
     try {
-        const response = await axiosInstance.post(`${BASE_URL_RACE_REGISTRATION}/approve`, dto, {
+        const response = await axiosInstance.put(`${BASE_URL_RACE_REGISTRATION}/approve`, dto, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
         return response.data;
     } catch (error) {
-        console.error('Lỗi khi duyệt đăng ký:', error);
+        console.error('Lỗi khi tải đơn đăng ký:', error);
         showErrorNotification('Lỗi khi duyệt đăng ký');
     }
 };
+
+
+export const getRaceRegistrationDetail = async (raceId, requesterId) =>{
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_RACE_REGISTRATION}/detail?tourId=${raceId}&requesterId=${requesterId}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi tải đơn đăng ký:', error);
+        showErrorNotification('Lỗi khi duyệt đăng ký');
+    }
+}
 
 
 
