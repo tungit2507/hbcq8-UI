@@ -3,13 +3,13 @@ import { useLocation } from 'react-router-dom';
 import { fetchFacilities } from '../../api/FacilityApi';
 import { CForm, CFormLabel, CFormInput, CButton, CRow, CCol, CFormSelect } from '@coreui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { getRaceRegistrationDetail } from '../../api/RaceRegistration';
-import { fetchRaceById } from '../../api/RaceApi';
-import { calculateDistance } from '../../api/RaceLocationApi';
+import { getRaceRegistrationDetail } from '../../api/raceRegistration';
+import { fetchRaceById } from '../../api/raceApi';
+import { calculateDistance } from '../../api/raceLocationApi';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import { toast } from 'react-toastify';
-import { approveRaceRegistration } from '../../api/RaceRegistration';
-import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
+import { approveRaceRegistration } from '../../api/raceRegistration';
+import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
 import { current } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 

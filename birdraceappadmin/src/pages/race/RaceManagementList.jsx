@@ -3,9 +3,9 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import { Link } from "react-router-dom";
 import sampleImage from './../../assets/images/avatars/1.jpg'; // Đảm bảo đường dẫn chính xác
 import Swal from 'sweetalert2';
-import { fetchRaces, SortRank } from '../../api/RaceApi';
+import { fetchRaces, SortRank } from '../../api/raceApi';
 import ErrorImage from '../../assets/images/avatars/1.jpg';
-import { deleteRace } from '../../api/RaceApi';
+import { deleteRace } from '../../api/raceApi';
 
 const RaceList = () => {
   const [searchTerm, setSearchTerm] = useState("");

@@ -3,8 +3,8 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import exampleImage1 from './../../assets/images/avatars/1.jpg';
 import Swal from 'sweetalert2';
-import { deleteUser, changeRole, getListUser } from '../../api/UserApi';
-import { showErrorNotification } from '../../api/SweetAlertNotify';
+import { deleteUser, changeRole, getListUser } from '../../api/userApi';
+import { showErrorNotification } from '../../api/sweetAlertNotify';
 
 const UserManagementList = () => {
   const navigate = useNavigate();

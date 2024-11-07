@@ -5,13 +5,12 @@ import MainLayout from "./layout/main_layout/main_layout";
 
 import NotFoundPage from "./pages/error/404";
 
-import RegistrationForm from "./pages/auth/Register";
+import RegistrationForm from "./pages/auth/register";
 
 import LoginForm from "./pages/auth/LoginForm";
 
-import DashBoard from "./pages/index/Dashboard";
+import DashBoard from "./pages/index/dashboard";
 
-import RaceManagementAdd from "./pages/race/RaceManagementAdd";
 import RaceManagementUpdate from "./pages/race/RacemanagementUpdate";
 import RaceManagementList from "./pages/race/RaceManagementList";
 
@@ -20,6 +19,7 @@ import UserManagementUpdate from "./pages/user/UserManagementUpdate";
 import UserManagementAdd from "./pages/user/UserManagementAdd";
 
 import RaceRegistrationList from "./pages/race/RaceRegistrationList";
+import RaceManagementAdd from "./pages/race/RaceRegistrationList";
 import ArticleList from "./pages/article/ArticleList";
 import ArticleAdd from "./pages/article/ArticleAdd";
 import FacilityManagement from "./pages/facility/FacilityList";

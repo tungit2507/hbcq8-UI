@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '../../api/FacilityApi';
 import { useLocation } from 'react-router-dom';
-import { showErrorNotification } from '../../api/SweetAlertNotify';
+import { showErrorNotification } from '../../api/sweetAlertNotify';
 
 const FacilityManagement = () => {
     const [facilities, setFacilities] = useState([]);

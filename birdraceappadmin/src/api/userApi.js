@@ -1,5 +1,5 @@
-import axiosInstance from "./Api";
-import { showErrorNotification } from "./SweetAlertNotify";
+import axiosInstance from "./api";
+import { showErrorNotification } from "./sweetAlertNotify";
 
 
 const BASE_URL_USERS = '/api/v1/admin/user';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput, CFormCheck } from '@coreui/react';
 import Swal from 'sweetalert2';
-import { approveRaceRegistration, fetchRaceRegistrationByRaceId, rejectRaceRegistration } from '../../api/RaceRegistration';
+import { approveRaceRegistration, fetchRaceRegistrationByRaceId, rejectRaceRegistration } from '../../api/raceRegistration';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 

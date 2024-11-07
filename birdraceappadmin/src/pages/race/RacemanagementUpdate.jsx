@@ -3,9 +3,9 @@ import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, 
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
-import { calculateDistance } from '../../api/RaceLocationApi';
-import { fetchRaceById, updateRace } from '../../api/RaceApi';
+import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
+import { calculateDistance } from '../../api/raceLocationApi';
+import { fetchRaceById, updateRace } from '../../api/raceApi';
 import { fetchFacilities } from '../../api/FacilityApi';
 
 const UpdateRaceForm = () => {

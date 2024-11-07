@@ -1,4 +1,4 @@
-import axiosInstance from "./Api";
+import axiosInstance from "./api";
 import Swal from "sweetalert2";
 
 const BASE_URL_ARTICLES = '/api/v1/admin/post';

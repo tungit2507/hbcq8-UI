@@ -21,7 +21,7 @@ import {
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react';
-import { logout } from '../../api/UserApi';
+import { logout } from '../../api/userApi';
 import { useNavigate } from 'react-router-dom';
 
 

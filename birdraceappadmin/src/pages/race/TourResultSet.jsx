@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton } from "@coreui/react";
 import { useLocation } from "react-router-dom";
-import { fetchRaceDetail, approveResult } from '../../api/RaceApi';
+import { fetchRaceDetail, approveResult } from '../../api/raceApi';
 import Swal from 'sweetalert2';
 
 const TourResultSet = () => {

@@ -1,5 +1,5 @@
-import axiosInstance from "./Api";
-import { showErrorNotification } from "./SweetAlertNotify";
+import axiosInstance from "./api";
+import { showErrorNotification } from "./sweetAlertNotify";
 
 const BASE_URL_RACE_REGISTRATION = "/api/v1/admin/tour-apply";
 const BASE_URL_RACE_REGISTRATION_NONE_ADMIN = "/api/v1/tour-apply";

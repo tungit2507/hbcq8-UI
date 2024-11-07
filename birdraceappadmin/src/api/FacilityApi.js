@@ -1,4 +1,4 @@
-import axiosInstance from "./Api";
+import axiosInstance from "./api";
 import Swal from "sweetalert2";
 
 const BASE_URL_FACILITIES = '/api/v1/admin/user-location';

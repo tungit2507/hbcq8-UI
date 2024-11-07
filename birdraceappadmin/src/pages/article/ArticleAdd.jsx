@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import CSS for Quill
 import { useDropzone } from 'react-dropzone';
-import { addArticle } from '../../api/ArticleApi';
+import { addArticle } from '../../api/articleApi';
 
 const ArticleAdd = () => {
     const [newArticle, setNewArticle] = useState({ title: '', description: '', content: '', image: null });

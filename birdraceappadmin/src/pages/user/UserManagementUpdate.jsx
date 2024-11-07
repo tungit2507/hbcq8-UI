@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { showErrorNotification, showSuccessNotification } from '../../api/SweetAlertNotify';
+import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
 import moment from 'moment';
-import { updateUser, getOneUser } from '../../api/UserApi';
+import { updateUser, getOneUser } from '../../api/userApi';
 import { useLocation } from 'react-router-dom';
 
 const UserManagementUpdate = () => {

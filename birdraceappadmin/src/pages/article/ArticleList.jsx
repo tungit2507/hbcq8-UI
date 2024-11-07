@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import { fetchArticles } from '../../api/ArticleApi';
+import { fetchArticles } from '../../api/articleApi';
 
 const ArticleList = () => {
   const [searchTerm, setSearchTerm] = useState("");
