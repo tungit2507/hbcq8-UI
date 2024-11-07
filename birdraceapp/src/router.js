@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/main_layout";
-import HomePage from "./pages/home/Home";
-import LoginForm from "./pages/author/Login";
-import RegistrationForm from "./pages/author/Register";
+import HomePage from "./pages/home/home";
+import LoginForm from "./pages/author/login";
+import RegistrationForm from "./pages/author/register";
 import Page404 from "./pages/Page404"
-import TournamentList from "./pages/tournament/TournamentList";
+import TournamentList from "./pages/tournament/tournamentList";
 import BirdList from "./pages/bird/BirdList";
 import Profile from "./pages/userProfile/UserProfile";
 import BlogDetail from "./pages/blog/BlogDetail";
