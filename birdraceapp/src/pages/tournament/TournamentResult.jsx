@@ -47,7 +47,7 @@ const TournamentResults = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">Hạng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Mã Kiềng Chim</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tốc Độ Trung Bình</CTableHeaderCell>
 
             </CTableRow>
@@ -56,7 +56,7 @@ const TournamentResults = () => {
             {results.map(ranker => (
               <CTableRow key={ranker.id}>
                 <CTableHeaderCell scope="row">{ranker.rank}</CTableHeaderCell>
-                <CTableDataCell>{ranker.birdcode}</CTableDataCell>
+                <CTableDataCell>{ranker.birdCode}</CTableDataCell>
                 <CTableDataCell>{ranker.avgSpeed}</CTableDataCell>
               </CTableRow>
             ))}
