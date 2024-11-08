@@ -24,8 +24,9 @@ export const addArticle = async (articleData) => {
         });
         return response.data;
     } catch (error) {
+        const errorMessage = error.response.data.message || 'Không thể thêm bài viết. Vui lòng thử lại sau.';
         console.error('Error adding article:', error);
-        Swal.fire('Lỗi', 'Không thể thêm bài viết. Vui lòng thử lại sau.', 'error');
+        Swal.fire('Lỗi', errorMessage, 'error');
     }
 };
 

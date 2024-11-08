@@ -23,7 +23,7 @@ const BlogDetail = () => {
     }
 
     if (!post) {
-        return <div>Loading...</div>;
+        return <div>Bài Viết Không Tồn Tại</div>;
     }
 
     return (

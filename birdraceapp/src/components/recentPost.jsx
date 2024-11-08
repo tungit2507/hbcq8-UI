@@ -1,37 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-const posts = [
-  {
-    image: 'assets/img/blog/blog-1.jpg',
-    date: 'December 12',
-    title: 'Eum ad dolor et. Autem aut fugiat debitis',
-    author: 'Julia Parker',
-    category: 'Politics',
-    link: 'blog-details.html',
-    aosDelay: '100',
-  },
-  {
-    image: 'assets/img/blog/blog-2.jpg',
-    date: 'July 17',
-    title: 'Et repellendus molestiae qui est sed omnis',
-    author: 'Mario Douglas',
-    category: 'Sports',
-    link: 'blog-details.html',
-    aosDelay: '200',
-  },
-  {
-    image: 'assets/img/blog/blog-3.jpg',
-    date: 'September 05',
-    title: 'Quia assumenda est et veritati tirana ploder',
-    author: 'Lisa Hunter',
-    category: 'Economics',
-    link: 'blog-details.html',
-    aosDelay: '300',
-  }
-];
+import axioInstance from '../apiInstance';
+import { useEffect, useState } from 'react';
 
 const RecentPosts = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    axioInstance.get('/post')
+      .then(response => {
+        setPosts(response.data.slice(0, 3));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <section id="recent-posts" className="recent-posts section dark-background">
       <div className="container section-title" data-aos="fade-up">
@@ -44,18 +28,19 @@ const RecentPosts = () => {
             <div className="col-xl-4 col-md-6" key={index} data-aos="fade-up" data-aos-delay={post.aosDelay}>
               <div className="post-item position-relative h-100">
                 <div className="post-img position-relative overflow-hidden">
-                  <img src={post.image} className="img-fluid" alt={`Post ${index + 1}`} />
+                  <img src="/assets/img/carousel/carousel-6.jpg" className="img-fluid" alt={`Post ${index + 1}`} />
                   <span className="post-date">{post.date}</span>
                 </div>
 
                 <div className="post-content d-flex flex-column">
-                  <h3 className="post-title">{post.title}</h3>
+                  <h3 className="post-title">
+                    {post.title.length > 50 ? `${post.title.slice(0, 50)}...` : post.title}
+                  </h3>
 
                   <div className="meta d-flex align-items-center">
                     <div className="d-flex align-items-center">
                       <i className="bi bi-person"></i> <span className="ps-2">{post.author}</span>
                     </div>
-                    <span className="px-3 text-black-50">/</span>
                     <div className="d-flex align-items-center">
                       <i className="bi bi-folder2"></i> <span className="ps-2">{post.category}</span>
                     </div>
@@ -63,13 +48,18 @@ const RecentPosts = () => {
 
                   <hr />
 
-                  <Link to={'/blogs'} className="readmore stretched-link">
-                    <span>Read More</span><i className="bi bi-arrow-right"></i>
+                  <Link to={`/blog-detail/${post.slug}`} className="readmore stretched-link">
+                    <span>Xem Bài Viết</span><i className="bi bi-arrow-right"></i>
                   </Link>
                 </div>
               </div>
             </div>
           ))}
+        </div>
+        <div className="container text-end mt-4">
+          <Link to="/blogs" className="btn btn-primary">
+            Xem Tất Cả
+          </Link>
         </div>
       </div>
     </section>

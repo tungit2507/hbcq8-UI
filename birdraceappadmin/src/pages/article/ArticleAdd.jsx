@@ -5,8 +5,12 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import CSS for Quill
 import { useDropzone } from 'react-dropzone';
 import { addArticle } from '../../api/articleApi';
+import { useNavigate } from 'react-router-dom';
 
 const ArticleAdd = () => {
+
+    const navigate =  useNavigate();
+
     const [newArticle, setNewArticle] = useState({ title: '', description: '', content: '', image: null });
 
     const onDrop = (acceptedFiles) => {
@@ -36,12 +40,9 @@ const ArticleAdd = () => {
         formData.append('title', newArticle.title);
         formData.append('content', newArticle.content);
         formData.append('imgUrl', "");
-        
         await addArticle(formData);
-        // Xử lý thêm bài viết mới
-        console.log('Bài viết mới đã được thêm:', newArticle);
-        Swal.fire('Thành công!', 'Bài viết đã được thêm.', 'success');
-        setNewArticle({ title: '', description: '', content: '', image: null });
+        navigate('/management/article/list');        
+
     };
 
     const modules = {
@@ -73,16 +74,9 @@ const ArticleAdd = () => {
                             value={newArticle.title}
                             onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })}
                         />
-                        {/* <CFormLabel htmlFor="description">Mô tả</CFormLabel>
-                        <CFormInput
-                            type="text"
-                            placeholder="Nhập Mô tả"
-                            value={newArticle.description}
-                            onChange={(e) => setNewArticle({ ...newArticle, description: e.target.value })}
-                        /> */}
                         <CFormLabel htmlFor="description">Nội Dung Bài Viết</CFormLabel>                
                         <ReactQuill 
-                            className="quill-editor rounded-circle bg-light"
+                            className="quill-editor"
                             value={newArticle.content}
                             onChange={(content) => setNewArticle({ ...newArticle, content })}
                             placeholder="Soạn thảo nội dung bài viết..."
