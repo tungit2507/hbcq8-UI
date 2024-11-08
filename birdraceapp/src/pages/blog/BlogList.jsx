@@ -36,6 +36,10 @@ const BlogList = () => {
         });
     }, []);
 
+    const truncateTitle = (title) => {
+        return title.length > 50 ? title.substring(0, 50) + '...' : title;
+    };
+
     return (
         <section id="blog-posts-2" className="blog-posts-2 section">
             <div className="container">
@@ -47,17 +51,12 @@ const BlogList = () => {
                                     <img src="/assets/img/carousel/carousel-6.jpg" className="img-fluid" alt="" />
                                 </div>
                                 <div className="meta d-flex align-items-end">
-                                    {/* <span className="post-date"><span>{blog.date}</span></span> */}
-                                    {/* <div className="d-flex align-items-center">
-                                        <i className="bi bi-person"></i> <span className="ps-2">{blog.author}</span>
-                                    </div> */}
-                                    {/* <span className="px-3 text-black-50">/</span> */}
                                     <div className="d-flex align-items-center">
                                         <i className="bi bi-folder2"></i> <span className="ps-2">{blog.category}</span>
                                     </div>
                                 </div>
                                 <div className="post-content d-flex flex-column">
-                                    <h3 className="post-title">{blog.title}</h3>
+                                    <h3 className="post-title">{truncateTitle(blog.title)}</h3>
                                     <Link to={`/blog-detail/${blog.slug}`} className="readmore stretched-link"><span>Đọc Bài Viết</span><i className="bi bi-arrow-right"></i></Link>
                                 </div>
                             </article>

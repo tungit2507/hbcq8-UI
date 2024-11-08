@@ -24,7 +24,7 @@ const Footer = () => {
               <ul>
                 <li><Link to="/">Trang Chủ</Link></li>
                 <li><Link to="/about-us">Về Chúng Tôi</Link></li>
-                <li><Link to="/activity">Hoạt Động</Link></li>
+                {/* <li><Link to="/blogs">Hoạt Động</Link></li> */}
                 <li><Link to="/history">Lịch Sử Giải Đua</Link></li>
                 <li><Link to="/contact">Liên Hệ</Link></li>
                 
