@@ -12,7 +12,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   response => response,
   error => {
-    console.log(error.response.data.status == 401);
     if(error.response.data.status == 401){
       window.location.href = '/login';
     }

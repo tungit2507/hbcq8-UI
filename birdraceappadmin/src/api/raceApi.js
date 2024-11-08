@@ -57,11 +57,12 @@ export const updateRace = async (raceId ,raceData) => {
 
 export const deleteRace = async (id) => {
     try {
-        const response = await axiosInstance.delete(`${BASE_URL_RACES}/delete?id=${id}`);
+        const response = await axiosInstance.delete(`${BASE_URL_RACES}/${id}`);
+        
         return response.data;
     } catch (error) {
-        console.error('Error deleting race:', error);
-        Swal.fire('Lỗi', 'Không thể xóa giải đua. Vui lòng thử lại sau.', 'error');
+        const errorMessage = error.response.data.errorMessage || 'Không thể xóa giải đua. Vui lòng thử lại sau.';
+        Swal.fire('Lỗi', errorMessage, 'error');
     }
 }
 

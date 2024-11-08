@@ -26,7 +26,6 @@ const RaceList = () => {
     }).then( async (result) => {
       if (result.isConfirmed) {
         await deleteRace(id);
-        Swal.fire("Đã xóa!", "Mục của bạn đã bị xóa.", "success");
         const loadRaces = async () => {
           try {
             const fetchedRaces = await fetchRaces();
