@@ -63,8 +63,13 @@ const ReachDestination = () => {
                         fetchData();
                     })
                     .catch(error => {
-                        toast.error('Có lỗi xảy ra khi báo cáo.');
-                        console.error('Error reporting:', error);
+                        if(error.response.status === 408) {
+                            const errorMessage = "Quá thời hạn chỉnh sửa lại";
+                            toast.error(errorMessage, error);
+                        }else{
+                            const errorMessage = "Báo cáo không thành công";
+                            toast.error(errorMessage, error);
+                        }
                     });
             }
         });

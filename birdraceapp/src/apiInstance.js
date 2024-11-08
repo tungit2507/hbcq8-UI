@@ -8,7 +8,6 @@ const axioInstance = axios.create({
 axioInstance.interceptors.response.use(
   response => response,
   error => {
-    console.log(error.response?.data?.status);
     if (error.response?.data?.status == 401) {
       window.location.href = '/login';
     }
