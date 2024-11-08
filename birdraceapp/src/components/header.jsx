@@ -46,7 +46,7 @@ const Header = () => {
                 <Nav.Link as={Link} to="/" className="nav-link" onClick={handleNavLinkClick}>Trang Chủ</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Về Chúng Tôi</Nav.Link>
+                <Nav.Link as={Link} to={"/about-us"} className="nav-link">Về Chúng Tôi</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
                 <Nav.Link as={Link} to={"/blogs"} className="nav-link">Hoạt Động</Nav.Link>

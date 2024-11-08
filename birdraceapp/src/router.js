@@ -13,6 +13,7 @@ import TournamentResults from "./pages/tournament/TournamentResult";
 import FacibilityManagement from "./pages/facility/FacilityManagement";
 import Mytournament from "./pages/tournament/MyTournament";
 import ReachDestination from "./pages/tournament/ReachDestination";
+import AboutUs from "./pages/about/AboutUs";
 
 const routes = createBrowserRouter([
     
@@ -22,7 +23,7 @@ const routes = createBrowserRouter([
         element: <MainLayout />,
         children: [
             { path: "/", element: <HomePage/>},
-            { path: "/about-us", element: <>Tính Năng Đang Phát Triển</> },
+            { path: "/about-us", element: <AboutUs/> },
             { path: "/our-activity", element: <>Tính Năng Đang Phát Triển</> },
             { path: "/history", element: <TournamentList/> },
             { path: "/contact-us", element: <div>Tính Năng Đang Phát Triển</div> },
