@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton } from "@coreui/react";
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CFormCheck } from "@coreui/react";
 import { useLocation } from "react-router-dom";
 import { fetchRaceDetail, approveResult, rejectResult } from '../../api/raceApi';
 import Swal from 'sweetalert2';
@@ -10,6 +10,7 @@ const TourResultSet = () => {
     const tourId = queryParams.get('id');
 
     const [raceDetails, setRaceDetails] = useState([]);
+    const [selectedBirds, setSelectedBirds] = useState([]);
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -68,6 +69,66 @@ const TourResultSet = () => {
         });
     };
 
+    const handleSelectBird = (birdCode) => {
+        setSelectedBirds((prevSelected) =>
+            prevSelected.includes(birdCode)
+                ? prevSelected.filter((code) => code !== birdCode)
+                : [...prevSelected, birdCode]
+        );
+    };
+
+    const handleConfirmAll = () => {
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: 'Bạn có muốn xác nhận kết quả cho tất cả các chim đã chọn?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    selectedBirds.forEach((birdCode) => {
+                        let formData = new FormData();
+                        formData.append('birdCode', birdCode);
+                        formData.append('tourId', tourId);
+                        approveResult(formData);
+                    });
+                    Swal.fire('Thành công', 'Kết quả đã được xác nhận thành công.', 'success');
+                } catch (error) {
+                    Swal.fire('Từ chối', 'Không thành công', 'error');
+                }
+            }
+        });
+    };
+
+    const handleRejectAll = () => {
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: 'Bạn có muốn từ chối kết quả cho tất cả các chim đã chọn?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Từ chối!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    selectedBirds.forEach((birdCode) => {
+                        let formData = new FormData();
+                        formData.append('birdCode', birdCode);
+                        formData.append('tourId', tourId);
+                        rejectResult(formData);
+                    });
+                    Swal.fire('Thành công', 'Kết quả đã được từ chối thành công.', 'success');
+                } catch (error) {
+                    Swal.fire('Từ chối', 'Không thành công', 'error');
+                }
+            }
+        });
+    };
+
     const formatDateTime = (dateTime) => {
         if (!dateTime) return '';
         const date = new Date(dateTime);
@@ -83,11 +144,27 @@ const TourResultSet = () => {
 
     return (
         <div className="p-3 rounded">
-            <h3 className="mb-4">Tour Result Set</h3>
+            <h3 className="mb-4">Xét Duyệt Kết Quả Giải Đua</h3>
+            <div className="mb-3">
+                <CButton color="success" onClick={handleConfirmAll} disabled={selectedBirds.length === 0}>Xác nhận tất cả</CButton>
+                <CButton color="danger" onClick={handleRejectAll} disabled={selectedBirds.length === 0}>Từ chối tất cả</CButton>
+            </div>
             <div className="table-responsive">
                 <CTable className="table-bordered rounded table-striped text-center">
                     <CTableHead>
                         <CTableRow>
+                            <CTableHeaderCell>
+                                <CFormCheck 
+                                    checked={selectedBirds.length === raceDetails.length}
+                                    onChange={() => {
+                                        if (selectedBirds.length === raceDetails.length) {
+                                            setSelectedBirds([]);
+                                        } else {
+                                            setSelectedBirds(raceDetails.map(detail => detail.birdCode));
+                                        }
+                                    }}
+                                />
+                            </CTableHeaderCell>
                             <CTableHeaderCell>Mã kiềng</CTableHeaderCell>
                             <CTableHeaderCell>Căn cứ xuất phát</CTableHeaderCell>
                             <CTableHeaderCell>Thời gian xuất phát</CTableHeaderCell>
@@ -116,6 +193,12 @@ const TourResultSet = () => {
                         {raceDetails.length > 0 ? (
                             raceDetails.map((detail, index) => (
                                 <CTableRow key={index}>
+                                    <CTableDataCell>
+                                        <CFormCheck
+                                            checked={selectedBirds.includes(detail.birdCode)}
+                                            onChange={() => handleSelectBird(detail.birdCode)}
+                                        />
+                                    </CTableDataCell>
                                     <CTableDataCell>{detail.birdCode}</CTableDataCell>
                                     <CTableDataCell>{detail.startPointCode}</CTableDataCell>
                                     <CTableDataCell>{formatDateTime(detail.startPointTime)}</CTableDataCell>
@@ -145,7 +228,7 @@ const TourResultSet = () => {
                             ))
                         ) : (
                             <CTableRow>
-                                <CTableDataCell colSpan="22">No race details available.</CTableDataCell>
+                                <CTableDataCell colSpan="23">No race details available.</CTableDataCell>
                             </CTableRow>
                         )}
                     </CTableBody>
