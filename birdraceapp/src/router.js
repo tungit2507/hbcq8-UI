@@ -14,11 +14,15 @@ import FacibilityManagement from "./pages/facility/FacilityManagement";
 import Mytournament from "./pages/tournament/MyTournament";
 import ReachDestination from "./pages/tournament/ReachDestination";
 import AboutUs from "./pages/about/AboutUs";
+import ForgotPassword from "./pages/author/ForgotPassword";
+import ChangePassword from "./pages/author/ChangePassword";
 
 const routes = createBrowserRouter([
     
     { path: "/login", element: <LoginForm/>},
     { path: "/register", element: <RegistrationForm/> },
+    { path: "/forgot-password", element: <ForgotPassword/> },
+    { path: "/change-password", element: <ChangePassword/> },
     {
         element: <MainLayout />,
         children: [

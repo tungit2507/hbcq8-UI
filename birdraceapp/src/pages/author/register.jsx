@@ -127,10 +127,13 @@ const RegistrationForm = () => {
                     {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
                   </div>
                   <div className="text-center">
-                    <button type="submit" className="btn btn-primary btn-color px-5 mb-5 w-100" disabled={isSubmitting}>
+                    <button type="submit" className="btn btn-primary btn-color px-5 mb-1 w-100" disabled={isSubmitting}>
                       {isSubmitting ? 'Đang xử lý...' : 'Đăng Ký'}
                     </button>
                   </div>
+                  <div id="emailHelp" className="form-text text-end text-dark">
+                  <Link to={'/forgot-password'} className=''>Quên mật khẩu?</Link>
+                </div>
                   <div id="emailHelp" className="form-text text-center mb-5 text-dark">
                     Đã có tài khoản? Đăng nhập
                     <Link to={'/login'}> tại đây</Link>
