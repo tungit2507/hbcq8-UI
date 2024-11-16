@@ -1,227 +1,201 @@
 import React, { useState, useEffect } from 'react';
-import {CFormLabel,CInputGroup,CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
+import { CFormLabel, CInputGroup, CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
-import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '../../api/FacilityApi';
-import { useLocation } from 'react-router-dom';
+import { fetchBirds, updateBird, addBird, deleteBird } from   '../../api/BirdApi';
 import { showErrorNotification } from '../../api/sweetAlertNotify';
 
 const BirdManagement = () => {
-    const [facilities, setFacilities] = useState([]);
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [currentFacility, setCurrentFacility] = useState({ code: '', name: '', pointCoor: '', createdDate: '', createdBy: '', id: '' });
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const userId = queryParams.get('user');
+  const [birds, setBirds] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentBird, setCurrentBird] = useState({ name: '', description: '', id: '' });
+  const currentUser = sessionStorage.getItem('currentUser');
+  const userId = currentUser ? JSON.parse(currentUser).id : '';
 
-    useEffect(() => {        
-        fetchData();
-    }, [userId]);
+  useEffect(() => {
+    fetchData();
+  }, [userId]);
 
-    const fetchData = async () => {
-        const data = await fetchFacilities(userId);
-        setFacilities(data);
-    };
+  const fetchData = async () => {
+    // const data = await fetchBirds(userId);
+    const data = [
+        { id: 1, name: 'Chim 1', description: 'Mô tả chim 1' },
+        { id: 2, name: 'Chim 2', description: 'Mô tả chim 2' },
+        { id: 3, name: 'Chim 3', description: 'Mô tả chim 3' },
+        { id: 4, name: 'Chim 4', description: 'Mô tả chim 4' },
+        { id: 5, name: 'Chim 5', description: 'Mô tả chim 5' },
+        ];
+    setBirds(data);
+  };
 
-    const handleAddFacility = async () => {
+  const handleAddBird = async () => {
+    if (!currentBird.name || !currentBird.description) {
+      showErrorNotification("Tên chim và mô tả không được bỏ trống.");
+      return;
+    }
 
-        if (!currentFacility.code || !currentFacility.pointCoor) {
-            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
-            return;
-        }
+    try {
+      const formData = new FormData();
+      formData.append('userId', userId);
+      formData.append('name', currentBird.name);
+      formData.append('description', currentBird.description);
+      await addBird(formData);
+      fetchData();
+      setShowAddModal(false);
+    } catch (error) {
+      const errorMessage = error.response.data.errorMessage;
+      showErrorNotification(errorMessage || "Lỗi trong quá trình xử lý ");
+    }
+  };
 
-        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
-            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
-            return;
-        }
+  const handleEditBird = async () => {
+    if (!currentBird.name || !currentBird.description) {
+      showErrorNotification("Tên chim và mô tả không được bỏ trống.");
+      return;
+    }
 
-        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
-            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
-            return;
-        }
+    try {
+      const formData = new FormData();
+      formData.append('userId', userId);
+      formData.append('name', currentBird.name);
+      formData.append('description', currentBird.description);
+      await updateBird(currentBird.id, formData);
+      fetchData();
+      setShowEditModal(false);
+    } catch (error) {
+      const errorMessage = error.response.data.errorMessage;
+      showErrorNotification(errorMessage || "Lỗi trong quá trình cập nhật ");
+    }
+  };
 
-        try {
-            const formData = new FormData();
-            formData.append('userId', userId);
-            formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', "Z" +  currentFacility.code);
-            await addFacility(formData);
-            fetchData();
-            setShowAddModal(false);
-        } catch (error) {
-            const errorMessage = error.response.data.errorMessage;
-            showErrorNotification(errorMessage || "Lỗi trong quá trình xử lý ");
-        }
-    };
+  const handleDeleteBird = async (id) => {
+    try {
+      await deleteBird(id);
+      fetchData();
+      Swal.fire('Thành công', 'Chim đã được xóa thành công.', 'success');
+    } catch (error) {
+      const errorMessage = error.response.data.errorMessage;
+      showErrorNotification(errorMessage || "Không thể xóa chim. Vui lòng thử lại sau.");
+    }
+  };
 
-    const handleEditFacility = async () => {
-        try {
-            if (!currentFacility.code || !currentFacility.pointCoor) {
-                showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
-                return;
-            }
+  const handleDeleteModal = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chắn muốn xóa?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, xóa!',
+      cancelButtonText: 'Không'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteBird(id);
+      }
+    });
+  };
 
-            if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
-                showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
-                return;
-            }
+  return (
+    <div className="p-3 rounded">
+      <h4>Quản Lý Chim Đua</h4>
+      <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Chim Đua</CButton>
+      <div className="table-responsive mt-4">
+        <CTable className="table-bordered rounded table-striped text-center">
+          <CTableHead>
+            <CTableRow>
+              <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
+            </CTableRow>
+          </CTableHead>
+          <CTableBody>
+            {birds?.map(bird => (
+              <CTableRow key={bird.id}>
+                <CTableDataCell>{bird.name}</CTableDataCell>
+                <CTableDataCell>{bird.description}</CTableDataCell>
+                <CTableDataCell>
+                  <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird({ ...bird, id: bird.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                  <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(bird.id)}>Xóa</CButton>
+                </CTableDataCell>
+              </CTableRow>
+            ))}
+          </CTableBody>
+        </CTable>
+      </div>
 
-            if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
-                showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('userId', userId);
-            formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', "Z" + currentFacility.code);
-            await updateFacility(currentFacility.id, formData);
-            fetchData();
-            setShowEditModal(false);
-        } catch (error) {
-            const errorMessage = error.response.data.errorMessage;
-            showErrorNotification(errorMessage || "Lỗi trong quá trình cập nhật ");
-        }
-    };
-
-    const handleDeleteFacility = async (code) => {
-        try {
-            await deleteFacility(code);
-            fetchData();
-            Swal.fire('Thành công', 'Căn cứ đã được xóa thành công.', 'success');
-        } catch (error) {
-            const errorMessage = error.response.data.errorMessage;
-            showErrorNotification(errorMessage || "Không thể xóa cơ sở. Vui lòng thử lại sau.");
-        }
-    };
-
-    const handleDeleteModal = (code) => {
-        Swal.fire({
-            title: 'Bạn có chắc chắn muốn xóa?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Có, xóa!',
-            cancelButtonText: 'Không'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                handleDeleteFacility(code);
-            }
-        });
-    };
-
-    return (
-        <div className="p-3 rounded">
-            <h4>Quản Lý Căn Cứ</h4>
-            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Căn Cứ</CButton>
-            <div className="table-responsive mt-4">
-                <CTable className="table-bordered rounded table-striped text-center">
-                    <CTableHead>
-                        <CTableRow>
-                            <CTableHeaderCell scope="col">Mã Căn Cứ</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                        {facilities.map(facility => (
-                            <CTableRow key={facility.code}>
-                                <CTableDataCell>{facility.code}</CTableDataCell>
-                                <CTableDataCell>{facility.pointCoor}</CTableDataCell>
-                                <CTableDataCell>{facility.createdAt}</CTableDataCell>
-                                <CTableDataCell>{facility.createdBy}</CTableDataCell>
-                                <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
-                                </CTableDataCell>
-                            </CTableRow>
-                        ))}
-                    </CTableBody>
-                </CTable>
-            </div>
-
-            {/* Modal Thêm Căn Cứ */}
-            <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
-                <CModalHeader closeButton>
-                    <CModalTitle>Thêm Căn Cứ</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                    <CForm>
-                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
-                        <CInputGroup className="mb-3">
-                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
-                            <CFormInput
-                                className='my-1'
-                                type="text"
-                                placeholder="Nhập Mã Căn Cứ"
-                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                            />
-                        </CInputGroup>
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Tọa Độ"
-                            label="Tọa Độ"
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, pointCoor: e.target.value })}
-                        />
-                    </CForm>
-                </CModalBody>
-                <CModalFooter>
-                    <CButton color="secondary" onClick={() => setShowAddModal(false)}>Hủy</CButton>
-                    <CButton color="primary" onClick={handleAddFacility}>Thêm</CButton>
-                </CModalFooter>
-            </CModal>
-
-            {/* Modal Chỉnh Sửa Căn Cứ */}
-            <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
-                <CModalHeader closeButton>
-                    <CModalTitle>Chỉnh Sửa Căn Cứ</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                    <CForm>
-                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
-                        <CInputGroup className="mb-3">
-                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
-                            <CFormInput
-                                value={currentFacility.code}
-                                className='my-1'
-                                type="text"
-                                placeholder="Nhập Mã Căn Cứ"
-                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                            />
-                        </CInputGroup>
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Tọa Độ"
-                            label="Tọa Độ"
-                            value={currentFacility.pointCoor}
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, pointCoor: e.target.value })}
-                        />
-                    </CForm>
-                </CModalBody>
-                <CModalFooter>
-                    <CButton color="secondary" onClick={() => setShowEditModal(false)}>Hủy</CButton>
-                    <CButton color="primary" onClick={handleEditFacility}>Lưu</CButton>
-                </CModalFooter>
-            </CModal>
-            <ToastContainer 
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
+      {/* Modal Thêm Chim Đua */}
+      <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Thêm Chim Đua</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CForm>
+            <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
+            <CFormInput
+              className='my-1'
+              type="text"
+              placeholder="Nhập Tên Chim"
+              onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
             />
-        </div>
-    );
+            <CFormLabel htmlFor="description" className="mt-3">Mô Tả</CFormLabel>
+            <CFormInput
+              className='my-1'
+              type="text"
+              placeholder="Nhập Mô Tả"
+              onChange={(e) => setCurrentBird({ ...currentBird, description: e.target.value })}
+            />
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setShowAddModal(false)}>Hủy</CButton>
+          <CButton color="primary" onClick={handleAddBird}>Thêm</CButton>
+        </CModalFooter>
+      </CModal>
+
+      {/* Modal Chỉnh Sửa Chim Đua */}
+      <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Chỉnh Sửa Chim Đua</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CForm>
+            <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
+            <CFormInput
+              className='my-1'
+              type="text"
+              placeholder="Nhập Tên Chim"
+              value={currentBird.name}
+              onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
+            />
+            <CFormLabel htmlFor="description" className="mt-3">Mô Tả</CFormLabel>
+            <CFormInput
+              className='my-1'
+              type="text"
+              placeholder="Nhập Mô Tả"
+              value={currentBird.description}
+              onChange={(e) => setCurrentBird({ ...currentBird, description: e.target.value })}
+            />
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setShowEditModal(false)}>Hủy</CButton>
+          <CButton color="primary" onClick={handleEditBird}>Lưu</CButton>
+        </CModalFooter>
+      </CModal>
+      <ToastContainer 
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </div>
+  );
 };
 
 export default BirdManagement;
