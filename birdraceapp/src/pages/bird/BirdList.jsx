@@ -172,17 +172,18 @@ const BirdList = () => {
                         <CFormInput
                             className='my-1'
                             type="text"
-                            placeholder="Nhập Tên Chim"
-                            label="Tên Chim"
-                            onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
-                        />
-                        <CFormInput
-                            className='my-1'
-                            type="text"
                             placeholder="Nhập Mã Kiềng"
                             label="Mã Kiềng"
                             onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
                         />
+                        <CFormInput
+                            className='my-1'
+                            type="text"
+                            placeholder="Nhập Tên Chim"
+                            label="Tên Chim"
+                            onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
+                        />
+                       
                         {/* <CFormInput
                             className='my-1'
                             type="file"
@@ -206,6 +207,15 @@ const BirdList = () => {
                 <CModalBody>
                     <CForm>
                         <CFormInput
+                            className='my-2'
+                            type="text"
+                            placeholder="Nhập Mã Kiềng"
+                            value={currentBird.code}
+                            label="Mã Kiềng (Ví Dụ: 001)"
+                            onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
+                            disabled
+                        />
+                        <CFormInput
                             className='my-1'
                             type="text"
                             placeholder="Nhập Tên Chim"
@@ -213,22 +223,7 @@ const BirdList = () => {
                             value={currentBird.name}
                             onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
                         />
-                        <CFormInput
-                            className='my-2'
-                            type="text"
-                            placeholder="Nhập Mã Kiềng"
-                            value={currentBird.code}
-                            label="Mã Kiềng (Ví Dụ: 001)"
-                            onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
-                        />
-                        {/* <CFormInput
-                            disabled
-                            className='my-2'
-                            type="file"
-                            placeholder="Hình Ảnh"
-                            label="Chọn hình ảnh chim"
-                            onChange={(e) => setCurrentBird({ ...currentBird, image: e.target.files[0] })}
-                        /> */}
+                        
                     </CForm>
                 </CModalBody>
                 <CModalFooter>

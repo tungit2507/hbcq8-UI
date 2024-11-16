@@ -214,7 +214,7 @@ const FacilityManagement = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                    <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
+                    <CFormLabel htmlFor="basic-url">Mã Căn Cứ</CFormLabel>
                         <CInputGroup className="mb-3">
                             <CInputGroupText id="basic-addon3">Z</CInputGroupText>
                             <CFormInput
@@ -223,6 +223,7 @@ const FacilityManagement = () => {
                                 type="text"
                                 placeholder="Nhập Mã Căn Cứ"
                                 onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                                disabled
                             />
                         </CInputGroup>
                         <CFormInput
