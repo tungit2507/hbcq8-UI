@@ -26,6 +26,8 @@ import FacilityManagement from "./pages/facility/FacilityList";
 import FacilityManagementAdmin from "./pages/facility/FacilityListAdmin";
 import RaceRegistrationAddFacility from "./pages/race/RaceRegistrationAddFacility";
 import TourResultSet from "./pages/race/TourResultSet";
+import StartPointList from "./pages/facility/StartPointList";
+import BirdManagement from "./pages/bird/BirdManagementList";
 
 const routes = createBrowserRouter([
     {
@@ -46,6 +48,8 @@ const routes = createBrowserRouter([
             { path: "/management/article/add", element: <ArticleAdd/>, name: "Update Article" },
             { path: "/management/facility/list", element: <FacilityManagement/>, name: "Facility Management" },
             { path: "/management/facility/list/admin", element: <FacilityManagementAdmin/>, name: "Facility Management" },
+            { path: "/management/start-point/list", element: <StartPointList/>, name: "Facility Management" },
+            { path: "/management/bird/list", element: <BirdManagement/>, name: "Facility Management" },
 
         ]
     },

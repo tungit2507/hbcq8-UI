@@ -368,7 +368,7 @@ const AddRaceForm = () => {
                 </CCol>
               </CRow> */}
               {fields.map((field, index) => (
-                <CRow className="mb-3" key={field.id}>
+                <CRow className="my-3" key={field.id}>
                   <CCol md={3}>
                     <CFormLabel htmlFor={`stages[${index}].name`}>Tên Chặng {index + 1}</CFormLabel>
                     <CFormInput
@@ -381,8 +381,8 @@ const AddRaceForm = () => {
                     {errors.stages?.[index]?.name && <div className="invalid-feedback">{errors.stages[index].name.message}</div>}
                   </CCol>
                   <CCol md={3}>
-                    <CFormLabel htmlFor={`stages[${index}].coordinates`}>Tọa Độ Chặng {index + 1}</CFormLabel>
-                    <CFormInput
+                    <CFormLabel htmlFor={`stages[${index}].coordinates`}>Điểm Xuất Phát {index + 1}</CFormLabel>
+                    {/* <CFormInput
                       placeholder='193.000;152.222'
                       type="text"
                       id={`stages[${index}].coordinates`}
@@ -395,21 +395,51 @@ const AddRaceForm = () => {
                       })}
                       invalid={!!errors.stages?.[index]?.coordinates}
                     />
+                    {errors.stages?.[index]?.coordinates && <div className="invalid-feedback">{errors.stages[index].coordinates.message}</div>} */}
+                    <CFormSelect
+                      defaultValue=""
+                      onChange={(e) => {
+                        const selectedFacility = facilities.find(facility => facility.code === e.target.value);
+                        if (selectedFacility) {
+                          setValue(`stages[${index}].coordinates`, selectedFacility.pointCoor);
+                        }
+                      }}
+                    >
+                      <option value="" disabled>Chọn điểm xuất phát</option>
+                      {facilities.map(facility => (
+                        <option key={facility.id} value={facility.code}>{facility.code}</option>
+                      ))}
+                    </CFormSelect>
+                  </CCol>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor={`stages[${index}].coordinates`}>Tọa Độ Chặng {index + 1}</CFormLabel>
+                    <CFormInput
+                      // placeholder='193.000;152.222'
+                      type="text"
+                      id={`stages[${index}].coordinates`}
+                      {...register(`stages[${index}].coordinates`, {
+                        required: 'Tọa độ chặng là bắt buộc',
+                        pattern: {
+                          value: /^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/,
+                          message: 'Tọa độ không hợp lệ. Định dạng đúng: "kinh_độ;vĩ_độ" (ví dụ: 193.000;152.555)'
+                        }
+                      })}
+                      readOnly
+                      invalid={!!errors.stages?.[index]?.coordinates}
+                    />
                     {errors.stages?.[index]?.coordinates && <div className="invalid-feedback">{errors.stages[index].coordinates.message}</div>}
                   </CCol>
-                  <CCol md={3}>
-                    <CFormLabel htmlFor={`stages[${index}].distance`}>Khoảng Cách (kilômét)</CFormLabel>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor={`stages[${index}].startTime`}>Thời Gian Xuất Phát</CFormLabel>
                     <CFormInput
-                      type="number"
-                      id={`stages[${index}].distance`}
-                      {...register(`stages[${index}].distance`, { required: 'Số mét chặng là bắt buộc' })}
-                      invalid={!!errors.stages?.[index]?.distance}
-                      value={stageDistances[index] || ''}
-                      readOnly
+                      type="time"
+                      id={`stages[${index}].startTime`}
+                      {...register(`stages[${index}].startTime`, { required: 'Thời gian xuất phát là bắt buộc' })}
+                      invalid={!!errors.stages?.[index]?.startTime}
                     />
-                    {errors.stages?.[index]?.distance && <div className="invalid-feedback">{errors.stages[index].distance.message}</div>}
+                    {errors.stages?.[index]?.startTime && <div className="invalid-feedback">{errors.stages[index].startTime.message}</div>}
                   </CCol>
-                  <CCol md={3} className="d-flex align-items-end">
+                  <CCol md={2} className="d-flex align-items-end">
                     <CButton color="danger" onClick={() => remove(index)}>Xóa Chặng</CButton>
                   </CCol>
                 </CRow>

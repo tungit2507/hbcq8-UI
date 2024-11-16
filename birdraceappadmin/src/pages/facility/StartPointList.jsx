@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import {CFormLabel,CInputGroup,CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
+import {   CFormLabel, CInputGroup,CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '../../api/FacilityApi';
-import { useLocation } from 'react-router-dom';
 import { showErrorNotification } from '../../api/sweetAlertNotify';
 
-const BirdManagement = () => {
-    const [facilities, setFacilities] = useState([]);
+const StartPointList = () => {
+    const [startPoint, setstartPoint] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [currentFacility, setCurrentFacility] = useState({ code: '', name: '', pointCoor: '', createdDate: '', createdBy: '', id: '' });
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const userId = queryParams.get('user');
+    const currentUser = sessionStorage.getItem('currentUser');
+    const userId = currentUser ? JSON.parse(currentUser).id : '';
 
     useEffect(() => {        
         fetchData();
@@ -21,10 +19,42 @@ const BirdManagement = () => {
 
     const fetchData = async () => {
         const data = await fetchFacilities(userId);
-        setFacilities(data);
+        setstartPoint(data);
     };
 
     const handleAddFacility = async () => {
+        if (!currentFacility.code || !currentFacility.pointCoor) {
+            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
+            return;
+        }
+
+        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
+            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
+        
+        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
+            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('pointCoor', currentFacility.pointCoor);
+            formData.append('code', "Z" + currentFacility.code);
+            await addFacility(formData);
+            fetchData();
+            setShowAddModal(false);
+        } catch (error) {
+            const errorMessage = error.response.data.errorMessage;
+            showErrorNotification(errorMessage || "Lỗi trong quá trình xử lý ");
+        }
+    };
+
+    const handleEditFacility = async () => {
+
 
         if (!currentFacility.code || !currentFacility.pointCoor) {
             showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
@@ -36,42 +66,13 @@ const BirdManagement = () => {
             return;
         }
 
+        
         if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
             showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }
 
         try {
-            const formData = new FormData();
-            formData.append('userId', userId);
-            formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', "Z" +  currentFacility.code);
-            await addFacility(formData);
-            fetchData();
-            setShowAddModal(false);
-        } catch (error) {
-            const errorMessage = error.response.data.errorMessage;
-            showErrorNotification(errorMessage || "Lỗi trong quá trình xử lý ");
-        }
-    };
-
-    const handleEditFacility = async () => {
-        try {
-            if (!currentFacility.code || !currentFacility.pointCoor) {
-                showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
-                return;
-            }
-
-            if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
-                showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
-                return;
-            }
-
-            if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
-                showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
-                return;
-            }
-
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
@@ -114,13 +115,13 @@ const BirdManagement = () => {
 
     return (
         <div className="p-3 rounded">
-            <h4>Quản Lý Căn Cứ</h4>
-            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Căn Cứ</CButton>
+            <h4>Quản Lý Điểm Xuất Phát</h4>
+            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Điểm Xuất Phát</CButton>
             <div className="table-responsive mt-4">
                 <CTable className="table-bordered rounded table-striped text-center">
                     <CTableHead>
                         <CTableRow>
-                            <CTableHeaderCell scope="col">Mã Căn Cứ</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Tên Điểm Xuất Phát</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell>
@@ -128,14 +129,15 @@ const BirdManagement = () => {
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        {facilities.map(facility => (
+                        {startPoint.map(facility => (
                             <CTableRow key={facility.code}>
-                                <CTableDataCell>{facility.code}</CTableDataCell>
+                                {/* <CTableDataCell>{facility.code}</CTableDataCell> */}
+                                <CTableDataCell>Tên Điểm Xuất Phát</CTableDataCell>
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 <CTableDataCell>{facility.createdBy}</CTableDataCell>
                                 <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, code: facility.code.replace(/^Z/, ''), id: facility.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                     <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
@@ -147,25 +149,26 @@ const BirdManagement = () => {
             {/* Modal Thêm Căn Cứ */}
             <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Thêm Căn Cứ</CModalTitle>
+                    <CModalTitle>Thêm Điểm Xuất Phát </CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
-                        <CInputGroup className="mb-3">
-                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
-                            <CFormInput
-                                className='my-1'
-                                type="text"
-                                placeholder="Nhập Mã Căn Cứ"
-                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                            />
-                        </CInputGroup>
+
+                    <CFormLabel htmlFor="basic-url">Tên Điểm Xuất Phát</CFormLabel>
+                    <CInputGroup className="mb-3">
+                        <CFormInput
+                            className='my-1'
+                            type="text"
+                            placeholder="Tên Điểm Xuất Phát"
+                            onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
+                        />
+                    </CInputGroup>
+                        
                         <CFormInput
                             className='my-1'
                             type="text"
                             placeholder="Nhập Tọa Độ"
-                            label="Tọa Độ"
+                            label="Tọa Độ (Ví Dụ: 21.12;105.12)"
                             onChange={(e) => setCurrentFacility({ ...currentFacility, pointCoor: e.target.value })}
                         />
                     </CForm>
@@ -176,29 +179,33 @@ const BirdManagement = () => {
                 </CModalFooter>
             </CModal>
 
+            {/* Modal Chỉnh Sửa Điểm Xuất Phát */}
+            <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
+                <CModalHeader closeButton></CModalHeader>
+            </CModal>
+
             {/* Modal Chỉnh Sửa Căn Cứ */}
             <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Chỉnh Sửa Căn Cứ</CModalTitle>
+                    <CModalTitle>Chỉnh Sửa Điểm Xuất Phát</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormLabel htmlFor="basic-url">Mã Căn Cứ (Ví Dụ: Z001)</CFormLabel>
-                        <CInputGroup className="mb-3">
-                            <CInputGroupText id="basic-addon3">Z</CInputGroupText>
-                            <CFormInput
-                                value={currentFacility.code}
-                                className='my-1'
-                                type="text"
-                                placeholder="Nhập Mã Căn Cứ"
-                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                            />
+                     <CFormLabel htmlFor="basic-url">Tên Điểm Xuất Phát</CFormLabel>
+                     <CInputGroup className="mb-3">
+                        <CFormInput
+                            className='my-1'
+                            type="text"
+                            placeholder="Nhập Mã Căn Cứ"
+                            value={currentFacility.code}
+                            onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                        />
                         </CInputGroup>
                         <CFormInput
                             className='my-1'
                             type="text"
                             placeholder="Nhập Tọa Độ"
-                            label="Tọa Độ"
+                            label="Tọa Độ (Ví Dụ: 21.12;105.12)"
                             value={currentFacility.pointCoor}
                             onChange={(e) => setCurrentFacility({ ...currentFacility, pointCoor: e.target.value })}
                         />
@@ -224,4 +231,4 @@ const BirdManagement = () => {
     );
 };
 
-export default BirdManagement;
+export default StartPointList;

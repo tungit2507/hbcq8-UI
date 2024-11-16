@@ -54,8 +54,8 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Quản Lý Căn Cứ',
-        to: '/management/facility/list/admin',
+        name: 'Quản Lý Điểm Xuất Phát',
+        to: '/management/start-point/list',
       },
     ],
   },

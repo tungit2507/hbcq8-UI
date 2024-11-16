@@ -155,6 +155,7 @@ const UserManagementList = () => {
                 <CTableDataCell>{user.address}</CTableDataCell>
                 <CTableDataCell>{user.roleId=== 1?"Admin":"User"}</CTableDataCell>
                 <CTableDataCell>
+                  <Link className="m-1 btn btn-warning" to={`/management/bird/list?user=${user.id}`}>QL Chim Đua</Link>
                   <Link className="m-1 btn btn-success" to={`/management/facility/list?user=${user.id}`}>QL Căn Cứ</Link>
                   <Link className="m-1 btn btn-primary" to={`/management/user/update?id=${user.id}`}>Chỉnh Sửa</Link>
                   {/* <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>Phân Quyền</CButton> */}
