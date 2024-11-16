@@ -24,10 +24,10 @@ const ReachDestination = () => {
             toast.error('Mã căn cứ phải bắt đầu bằng "Z" và theo sau là 3 hoặc 4 chữ số.');
             return;
         }
-        if (!/^\d{5}$/.test(report.secretCode)) {
-            toast.error('Mã bí mật phải có 5 số.');
-            return;
-        }
+        // if (!/^\d{5}$/.test(report.secretCode)) {
+        //     toast.error('Mã bí mật phải có 5 số.');
+        //     return;
+        // }
         Swal.fire({
             title: 'Xác Nhận Báo Cáo',
             html: `Vui Lòng Xác Nhận Trước Khi Báo Cáo<p>${report.tourCode} ${report.birdCode} ${report.secretCode}</p>`,
@@ -171,7 +171,7 @@ const ReachDestination = () => {
                             className='my-1'
                             type="text"
                             id="secretCode"
-                            placeholder="Nhập Mã Bí Mật (5 ký tự)"
+                            placeholder="Nhập Mã Bí Mật"
                             value={report.secretCode}
                             onChange={(e) => setReport({ ...report, secretCode: e.target.value })}
                         />
