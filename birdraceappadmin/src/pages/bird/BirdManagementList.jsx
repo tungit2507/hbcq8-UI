@@ -22,13 +22,6 @@ const BirdManagement = () => {
 
   const fetchData = async () => {
     const data = await fetchBirds(userId);
-    // const data = [
-    //     { id: 1, name: 'Chim 1', description: 'Mô tả chim 1' },
-    //     { id: 2, name: 'Chim 2', description: 'Mô tả chim 2' },
-    //     { id: 3, name: 'Chim 3', description: 'Mô tả chim 3' },
-    //     { id: 4, name: 'Chim 4', description: 'Mô tả chim 4' },
-    //     { id: 5, name: 'Chim 5', description: 'Mô tả chim 5' },
-    //     ];
     setBirds(data);
   };
 

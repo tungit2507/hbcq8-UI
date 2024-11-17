@@ -3,7 +3,8 @@ import {   CFormLabel, CInputGroup,CInputGroupText, CTable, CTableHead, CTableRo
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '../../api/FacilityApi';
-import { showErrorNotification } from '../../api/sweetAlertNotify';
+import { showErrorNotification, showWarningNotification } from '../../api/sweetAlertNotify';
+import { addStartPoint, deleteStartPoint, fetchStartPoints, updateStartPoint } from '../../api/StartPoint';
 
 const StartPointList = () => {
     const [startPoint, setstartPoint] = useState([]);
@@ -18,24 +19,24 @@ const StartPointList = () => {
     }, [userId]);
 
     const fetchData = async () => {
-        const data = await fetchFacilities(userId);
+        const data = await fetchStartPoints();
         setstartPoint(data);
     };
 
     const handleAddFacility = async () => {
-        if (!currentFacility.code || !currentFacility.pointCoor) {
-            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
+        if (!currentFacility.code || !currentFacility.pointCoor || !currentFacility.name) {
+            showWarningNotification("Vui lòng nhập đầy đủ thông tin.");
             return;
         }
 
-        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
-            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
+        if (!/^P\d{3,4}$/.test("P" + currentFacility.code)) {
+            showWarningNotification("Định dạng mã điểm Thả không đúng. Vui lòng nhập lại.");
             return;
         }
 
         
         if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
-            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
+            showWarningNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }
 
@@ -43,8 +44,9 @@ const StartPointList = () => {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', "Z" + currentFacility.code);
-            await addFacility(formData);
+            formData.append('code', "P" + currentFacility.code);
+            formData.append('name', currentFacility.name);
+            await addStartPoint(formData);
             fetchData();
             setShowAddModal(false);
         } catch (error) {
@@ -56,28 +58,29 @@ const StartPointList = () => {
     const handleEditFacility = async () => {
 
 
-        if (!currentFacility.code || !currentFacility.pointCoor) {
-            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
+        if (!currentFacility.code || !currentFacility.pointCoor || !currentFacility.name) {
+            showWarningNotification("Vui lòng nhập đầy đủ thông tin.");
             return;
         }
 
-        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
-            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
+        if (!/^P\d{3,4}$/.test("P" + currentFacility.code)) {
+            showWarningNotification("Định dạng mã điểm thả không đúng. Vui lòng nhập lại.");
             return;
         }
 
         
         if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
-            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
+            showWarningNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }
 
         try {
             const formData = new FormData();
-            formData.append('userId', userId);
+            // formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', "Z" + currentFacility.code);
-            await updateFacility(currentFacility.id, formData);
+            formData.append('code', "P" + currentFacility.code);
+            formData.append('name', currentFacility.name);
+            await updateStartPoint(currentFacility.id, formData);
             fetchData();
             setShowEditModal(false);
         } catch (error) {
@@ -86,9 +89,9 @@ const StartPointList = () => {
         }
     };
 
-    const handleDeleteFacility = async (code) => {
+    const handleDeleteFacility = async (id) => {
         try {
-            await deleteFacility(code);
+            await deleteStartPoint(id);
             fetchData();
             Swal.fire('Thành công', 'Căn cứ đã được xóa thành công.', 'success');
         } catch (error) {
@@ -97,7 +100,7 @@ const StartPointList = () => {
         }
     };
 
-    const handleDeleteModal = (code) => {
+    const handleDeleteModal = (id) => {
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa?',
             icon: 'warning',
@@ -108,37 +111,38 @@ const StartPointList = () => {
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                handleDeleteFacility(code);
+                handleDeleteFacility(id);
             }
         });
     };
 
     return (
         <div className="p-3 rounded">
-            <h4>Quản Lý Điểm Xuất Phát</h4>
-            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Điểm Xuất Phát</CButton>
+            <h4>Quản Lý Điểm Thả</h4>
+            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Điểm Thả</CButton>
             <div className="table-responsive mt-4">
                 <CTable className="table-bordered rounded table-striped text-center">
                     <CTableHead>
                         <CTableRow>
-                            <CTableHeaderCell scope="col">Tên Điểm Xuất Phát</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Mã Điểm Thả</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Tên Điểm Thả</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell> */}
                             <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        {startPoint.map(facility => (
+                        {startPoint?.map(facility => (
                             <CTableRow key={facility.code}>
-                                {/* <CTableDataCell>{facility.code}</CTableDataCell> */}
-                                <CTableDataCell>Tên Điểm Xuất Phát</CTableDataCell>
+                                <CTableDataCell>{facility.code}</CTableDataCell>
+                                <CTableDataCell>{facility.name}</CTableDataCell>
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
-                                <CTableDataCell>{facility.createdBy}</CTableDataCell>
+                                {/* <CTableDataCell>{facility.createdBy}</CTableDataCell> */}
                                 <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, code: facility.code.replace(/^Z/, ''), id: facility.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
+                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, code: facility.code.replace(/^P/, ''), id: facility.id}); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.id)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
                         ))}
@@ -146,24 +150,32 @@ const StartPointList = () => {
                 </CTable>
             </div>
 
-            {/* Modal Thêm Căn Cứ */}
+            {/* Modal Thêm Điểm Thả */}
             <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Thêm Điểm Xuất Phát </CModalTitle>
+                    <CModalTitle>Thêm Điểm Thả</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-
-                    <CFormLabel htmlFor="basic-url">Tên Điểm Xuất Phát</CFormLabel>
-                    <CInputGroup className="mb-3">
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Tên Điểm Xuất Phát"
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
-                        />
-                    </CInputGroup>
-                        
+                        <CFormLabel htmlFor="basic-url">Mã Điểm Thả (Ví Dụ: P001)</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CInputGroupText id="basic-addon3">P</CInputGroupText>
+                            <CFormInput
+                                className='my-1'
+                                type="text"
+                                placeholder="Nhập Mã Điểm Thả"
+                                onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                            />
+                        </CInputGroup>
+                        <CFormLabel htmlFor="basic-url">Tên Điểm Thả</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CFormInput
+                                className='my-1'
+                                type="text"
+                                placeholder="Tên Điểm Thả"
+                                onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
+                            />
+                        </CInputGroup>
                         <CFormInput
                             className='my-1'
                             type="text"
@@ -179,27 +191,34 @@ const StartPointList = () => {
                 </CModalFooter>
             </CModal>
 
-            {/* Modal Chỉnh Sửa Điểm Xuất Phát */}
-            <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
-                <CModalHeader closeButton></CModalHeader>
-            </CModal>
-
-            {/* Modal Chỉnh Sửa Căn Cứ */}
+            {/* Modal Chỉnh Sửa Điểm Thả */}
             <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Chỉnh Sửa Điểm Xuất Phát</CModalTitle>
+                    <CModalTitle>Chỉnh Sửa Điểm Thả</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                     <CFormLabel htmlFor="basic-url">Tên Điểm Xuất Phát</CFormLabel>
-                     <CInputGroup className="mb-3">
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Mã Căn Cứ"
-                            value={currentFacility.code}
-                            onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
-                        />
+                        <CFormLabel htmlFor="basic-url">Mã Điểm Thả (Ví Dụ: P001)</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CInputGroupText id="basic-addon3">P</CInputGroupText>
+                            <CFormInput
+                                className='my-1'
+                                type="text"
+                                placeholder="Nhập Mã Điểm Thả"
+                                value={currentFacility.code}
+                                readOnly
+                                // onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
+                            />
+                        </CInputGroup>
+                        <CFormLabel htmlFor="basic-url">Tên Điểm Thả</CFormLabel>
+                        <CInputGroup className="mb-3">
+                            <CFormInput
+                                className='my-1'
+                                type="text"
+                                placeholder="Tên Điểm Thả"
+                                value={currentFacility.name}
+                                onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
+                            />
                         </CInputGroup>
                         <CFormInput
                             className='my-1'

@@ -1,12 +1,12 @@
 import axiosInstance from "./api";
 import Swal from "sweetalert2";
 
-const BASE_URL_START_POINT = '/api/v1/admin/start-point';
+const BASE_URL_START_POINT = '/api/v1/admin/system-location';
 
 
 export const fetchStartPoints = async (userId) => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL_START_POINT}?user=${userId}`);
+        const response = await axiosInstance.get(`${BASE_URL_START_POINT}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching start points:', error);
@@ -58,6 +58,6 @@ export const deleteStartPoint = async (id) => {
         return response.data;
     } catch (error) {
         console.error('Error deleting start point:', error);
-        Swal.fire('Lỗi', 'Không thể xóa điểm xuất phát. Vui lòng thử lại sau.', 'error');
+        throw error;
     }
 };

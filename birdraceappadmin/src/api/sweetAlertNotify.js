@@ -40,3 +40,13 @@ export const showConfirmNotification = async (message) => {
     });
     return result.isConfirmed;
 };
+
+
+// Hàm hiển thị thông báo cảnh báo
+export const showWarningNotification = (message) => {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Cảnh báo',
+        text: message,
+    });
+};

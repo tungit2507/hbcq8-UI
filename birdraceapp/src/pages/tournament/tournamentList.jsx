@@ -34,7 +34,7 @@ const TournamentList = () => {
       });
       console.log(response);
       if (response && response.data && Array.isArray(response.data)) {
-        setTournamentsData(response.data);
+        setTournamentsData(response.data | []);
         console.log(response.data)
         handlePageChange(1);
       } else {
@@ -42,13 +42,7 @@ const TournamentList = () => {
         toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Dữ liệu không hợp lệ.');
       }
     } catch (error) {
-  
-      const errorCode = error.response.data.status?  error.response.data.status : 'UNKNOWN';
-      console.log(error)
-      if(errorCode == 401){
-        navigate("/login")
-      }
-      console.error('Lỗi khi tải danh sách giải đấu:', error);
+        console.error('Lỗi khi tải danh sách giải đấu:', error);
       toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
     }
   };
