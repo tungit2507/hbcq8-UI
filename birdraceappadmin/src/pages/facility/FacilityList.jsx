@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {CFormLabel,CInputGroup,CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
+import { CFormLabel, CInputGroup, CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchFacilities, updateFacility, addFacility, deleteFacility } from '../../api/FacilityApi';
@@ -25,9 +25,8 @@ const FacilityManagement = () => {
     };
 
     const handleAddFacility = async () => {
-
-        if (!currentFacility.code || !currentFacility.pointCoor) {
-            showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
+        if (!currentFacility.code || !currentFacility.pointCoor || !currentFacility.name) {
+            showErrorNotification("Mã căn cứ, tên căn cứ và tọa độ không được bỏ trống.");
             return;
         }
 
@@ -45,7 +44,8 @@ const FacilityManagement = () => {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
-            formData.append('code', "Z" +  currentFacility.code);
+            formData.append('code', "Z" + currentFacility.code);
+            formData.append('name', currentFacility.name);
             await addFacility(formData);
             fetchData();
             setShowAddModal(false);
@@ -56,26 +56,27 @@ const FacilityManagement = () => {
     };
 
     const handleEditFacility = async () => {
+        if (!currentFacility.code || !currentFacility.pointCoor || !currentFacility.name) {
+            showErrorNotification("Mã căn cứ, tên căn cứ và tọa độ không được bỏ trống.");
+            return;
+        }
+
+        if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
+            showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
+        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
+            showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
+            return;
+        }
+
         try {
-            if (!currentFacility.code || !currentFacility.pointCoor) {
-                showErrorNotification("Mã căn cứ và tọa độ không được bỏ trống.");
-                return;
-            }
-
-            if (!/^Z\d{3,4}$/.test("Z" + currentFacility.code)) {
-                showErrorNotification("Định dạng mã căn cứ không đúng. Vui lòng nhập lại.");
-                return;
-            }
-
-            if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
-                showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
-                return;
-            }
-
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('pointCoor', currentFacility.pointCoor);
             formData.append('code', "Z" + currentFacility.code);
+            formData.append('name', currentFacility.name);
             await updateFacility(currentFacility.id, formData);
             fetchData();
             setShowEditModal(false);
@@ -121,6 +122,7 @@ const FacilityManagement = () => {
                     <CTableHead>
                         <CTableRow>
                             <CTableHeaderCell scope="col">Mã Căn Cứ</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Tên Căn Cứ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell>
@@ -131,6 +133,7 @@ const FacilityManagement = () => {
                         {facilities.map(facility => (
                             <CTableRow key={facility.code}>
                                 <CTableDataCell>{facility.code}</CTableDataCell>
+                                <CTableDataCell>{facility.name}</CTableDataCell>
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 <CTableDataCell>{facility.createdBy}</CTableDataCell>
@@ -164,6 +167,13 @@ const FacilityManagement = () => {
                         <CFormInput
                             className='my-1'
                             type="text"
+                            placeholder="Nhập Tên Căn Cứ"
+                            label="Tên Căn Cứ"
+                            onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
+                        />
+                        <CFormInput
+                            className='my-1'
+                            type="text"
                             placeholder="Nhập Tọa Độ"
                             label="Tọa Độ"
                             onChange={(e) => setCurrentFacility({ ...currentFacility, pointCoor: e.target.value })}
@@ -194,6 +204,14 @@ const FacilityManagement = () => {
                                 onChange={(e) => setCurrentFacility({ ...currentFacility, code: e.target.value })}
                             />
                         </CInputGroup>
+                        <CFormInput
+                            className='my-1'
+                            type="text"
+                            placeholder="Nhập Tên Căn Cứ"
+                            label="Tên Căn Cứ"
+                            value={currentFacility.name}
+                            onChange={(e) => setCurrentFacility({ ...currentFacility, name: e.target.value })}
+                        />
                         <CFormInput
                             className='my-1'
                             type="text"

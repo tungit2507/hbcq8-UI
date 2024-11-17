@@ -151,6 +151,7 @@ const FacilityManagement = () => {
                 <CTable className="table-bordered rounded table-striped text-center">
                     <CTableHead>
                         <CTableRow>
+                            <CTableHeaderCell scope="col">Tên Căn Cứ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Mã Căn Cứ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
@@ -161,6 +162,7 @@ const FacilityManagement = () => {
                     <CTableBody>
                         {facilities.map(facility => (
                             <CTableRow key={facility.id}>
+                                <CTableDataCell>{facility.name}</CTableDataCell>
                                 <CTableDataCell>{facility.code}</CTableDataCell>
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
