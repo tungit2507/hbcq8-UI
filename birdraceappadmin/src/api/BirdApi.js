@@ -3,26 +3,26 @@ import Swal from "sweetalert2";
 
 const BASE_URL_BIRD = '/api/v1/admin/bird';
 
-export const fetchBirds = async (user) => {
+export const fetchBirds = async (userId) => {
     try {
-        const response = await axiosInstance.get(`${BASE_URL_BIRD}?user=${user}`);      
+        const response = await axiosInstance.get(`${BASE_URL_BIRD}?userId=${userId}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching facilities:', error);
-        Swal.fire('Lỗi', 'Không thể lấy danh sách cơ sở. Vui lòng thử lại sau.', 'error');
+        console.error('Error fetching birds:', error);
+        Swal.fire('Lỗi', 'Không thể lấy danh sách chim. Vui lòng thử lại sau.', 'error');
     }
 };
 
-export const addBird = async (facilityData) => {
+export const addBird = async (birdData) => {
     try {
-        const response = await axiosInstance.post(`${BASE_URL_BIRD}`, facilityData, {
+        const response = await axiosInstance.post(`${BASE_URL_BIRD}`, birdData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
         return response.data;
     } catch (error) {
-        console.error('Error adding facility:', error);
+        console.error('Error adding bird:', error);
         throw error;
     }
 };
@@ -32,21 +32,21 @@ export const fetchBirdById = async (id) => {
         const response = await axiosInstance.get(`${BASE_URL_BIRD}/${id}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching facility:', error);
-        Swal.fire('Lỗi', 'Không thể lấy thông tin cơ sở. Vui lòng thử lại sau.', 'error');
+        console.error('Error fetching bird:', error);
+        Swal.fire('Lỗi', 'Không thể lấy thông tin chim. Vui lòng thử lại sau.', 'error');
     }
 };
 
-export const updateBird = async (id, facilityData) => {
+export const updateBird = async (id, birdData) => {
     try {
-        const response = await axiosInstance.put(`${BASE_URL_BIRD}/${id}`, facilityData, {
+        const response = await axiosInstance.put(`${BASE_URL_BIRD}/${id}`, birdData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
         return response.data;
     } catch (error) {
-        console.error('Error updating facility:', error);
+        console.error('Error updating bird:', error);
         throw error;
     }
 };
@@ -56,11 +56,7 @@ export const deleteBird = async (id) => {
         const response = await axiosInstance.delete(`${BASE_URL_BIRD}/${id}`);
         return response.data;
     } catch (error) {
-        console.error('Error deleting facility:', error);
-        Swal.fire('Lỗi', 'Không thể xóa cơ sở. Vui lòng thử lại sau.', 'error');
+        console.error('Error deleting bird:', error);
+        Swal.fire('Lỗi', 'Không thể xóa chim. Vui lòng thử lại sau.', 'error');
     }
 };
-
-
-
-

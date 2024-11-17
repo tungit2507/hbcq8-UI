@@ -4,28 +4,31 @@ import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchBirds, updateBird, addBird, deleteBird } from   '../../api/BirdApi';
 import { showErrorNotification } from '../../api/sweetAlertNotify';
+import { useLocation } from 'react-router-dom';
+
 
 const BirdManagement = () => {
   const [birds, setBirds] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentBird, setCurrentBird] = useState({ name: '', description: '', id: '' });
-  const currentUser = sessionStorage.getItem('currentUser');
-  const userId = currentUser ? JSON.parse(currentUser).id : '';
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const userId = queryParams.get('user');
 
   useEffect(() => {
     fetchData();
   }, [userId]);
 
   const fetchData = async () => {
-    // const data = await fetchBirds(userId);
-    const data = [
-        { id: 1, name: 'Chim 1', description: 'Mô tả chim 1' },
-        { id: 2, name: 'Chim 2', description: 'Mô tả chim 2' },
-        { id: 3, name: 'Chim 3', description: 'Mô tả chim 3' },
-        { id: 4, name: 'Chim 4', description: 'Mô tả chim 4' },
-        { id: 5, name: 'Chim 5', description: 'Mô tả chim 5' },
-        ];
+    const data = await fetchBirds(userId);
+    // const data = [
+    //     { id: 1, name: 'Chim 1', description: 'Mô tả chim 1' },
+    //     { id: 2, name: 'Chim 2', description: 'Mô tả chim 2' },
+    //     { id: 3, name: 'Chim 3', description: 'Mô tả chim 3' },
+    //     { id: 4, name: 'Chim 4', description: 'Mô tả chim 4' },
+    //     { id: 5, name: 'Chim 5', description: 'Mô tả chim 5' },
+    //     ];
     setBirds(data);
   };
 

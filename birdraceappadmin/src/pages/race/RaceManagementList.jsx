@@ -84,7 +84,7 @@ const RaceList = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = races.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = races?.slice(indexOfFirstItem, indexOfLastItem) || [];
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
@@ -131,7 +131,7 @@ const RaceList = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {currentItems.map(race => (
+            {currentItems?.map(race => (
               <CTableRow key={race.id}>
                 <CTableHeaderCell scope="row">{race.id}</CTableHeaderCell>
                 <CTableDataCell>

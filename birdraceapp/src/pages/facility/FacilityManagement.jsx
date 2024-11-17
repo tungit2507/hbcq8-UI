@@ -146,7 +146,7 @@ const FacilityManagement = () => {
     return (
         <div className="p-3 rounded">
             <h4>Quản Lý Căn Cứ</h4>
-            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Căn Cứ</CButton>
+            {/* <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Căn Cứ</CButton> */}
             <div className="table-responsive mt-4">
                 <CTable className="table-bordered rounded table-striped text-center">
                     <CTableHead>
@@ -155,7 +155,7 @@ const FacilityManagement = () => {
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
                             {/* <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell> */}
-                            <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell> */}
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -165,10 +165,10 @@ const FacilityManagement = () => {
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 {/* <CTableDataCell>{facility.createdBy}</CTableDataCell> */}
-                                <CTableDataCell>
+                                {/* <CTableDataCell>
                                 <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                 <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.id)}>Xóa</CButton>
-                                </CTableDataCell>
+                                </CTableDataCell> */}
                             </CTableRow>
                         ))}
                     </CTableBody>
@@ -176,7 +176,7 @@ const FacilityManagement = () => {
             </div>
 
             {/* Modal Thêm Căn Cứ */}
-            <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
+            {/* <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
                 <CModalHeader closeButton>
                     <CModalTitle>Thêm Căn Cứ</CModalTitle>
                 </CModalHeader>
@@ -205,10 +205,10 @@ const FacilityManagement = () => {
                     <CButton color="secondary" onClick={() => setShowAddModal(false)}>Hủy</CButton>
                     <CButton color="primary" onClick={addFacility}>Thêm</CButton>
                 </CModalFooter>
-            </CModal>
+            </CModal> */}
 
             {/* Modal Chỉnh Sửa Căn Cứ */}
-            <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
+            {/* <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
                 <CModalHeader closeButton>
                     <CModalTitle>Chỉnh Sửa Căn Cứ</CModalTitle>
                 </CModalHeader>
@@ -240,7 +240,7 @@ const FacilityManagement = () => {
                     <CButton color="secondary" onClick={() => setShowEditModal(false)}>Hủy</CButton>
                     <CButton color="primary" onClick={editFacility}>Lưu</CButton>
                 </CModalFooter>
-            </CModal>
+            </CModal> */}
             <ToastContainer 
                 position="top-center"
                 autoClose={5000}

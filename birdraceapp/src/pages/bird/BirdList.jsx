@@ -8,7 +8,7 @@ const BirdList = () => {
     const [userBirds, setUserBirds] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [currentBird, setCurrentBird] = useState({ id: '', name: '', code: '', image: '' });
+    const [currentBird, setCurrentBird] = useState({ id: '', name: '', code: '', image: '', description: '' });
 
     useEffect(() => {
         const fetchUserBirds = async () => {
@@ -32,63 +32,58 @@ const BirdList = () => {
         fetchUserBirds();
     }, []);
 
-    const handleAddBird = async () => {
+    // const handleAddBird = async () => {
 
-        if(currentBird.name === '' || currentBird.code === ''){
-            toast.error('Vui lòng nhập đầy đủ thông tin');
-            return;
-        }
+    //     if(currentBird.name === '' || currentBird.code === ''){
+    //         toast.error('Vui lòng nhập đầy đủ thông tin');
+    //         return;
+    //     }
 
-        if (!/^\d{3}$/.test(currentBird.code)) {
-            toast.error('Mã Kiềng phải bao gồm 3 chữ số');
-            return;
-        }
+    //     if (!/^\d{3}$/.test(currentBird.code)) {
+    //         toast.error('Mã Kiềng phải bao gồm 3 chữ số');
+    //         return;
+    //     }
 
-        const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
-        const formData = new FormData();
-        formData.append('name', currentBird.name);
-        formData.append('code', currentBird.code);
-        formData.append('imgUrl', "");//đang phát triển img
-        formData.append("userId", currentUser.id);
-        try {
-            const response = await axioInstance.post('/bird', formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            setUserBirds([...userBirds, response.data]);
-            toast.success('Thêm chim đua thành công!');
-            setShowAddModal(false);
-            setCurrentBird({ id: '', name: '', code: '', image: '' });
-        } catch (error) {
-            console.error('Lỗi khi thêm chim đua:', error);
-            if(error.response.data.errorMessage){
-                toast.error(error.response.data.errorMessage);
-            }else{
-                toast.error('Đã xảy ra lỗi khi thêm chim đua. Vui lòng thử lại sau.');
-            }
-        }
-    };
+    //     const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
+    //     const formData = new FormData();
+    //     formData.append('name', currentBird.name);
+    //     formData.append('code', currentBird.code);
+    //     formData.append('imgUrl', "");//đang phát triển img
+    //     formData.append("userId", currentUser.id);
+    //     try {
+    //         const response = await axioInstance.post('/bird', formData, {
+    //             withCredentials: true,
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
+    //         setUserBirds([...userBirds, response.data]);
+    //         toast.success('Thêm chim đua thành công!');
+    //         setShowAddModal(false);
+    //         setCurrentBird({ id: '', name: '', code: '', image: '' });
+    //     } catch (error) {
+    //         console.error('Lỗi khi thêm chim đua:', error);
+    //         if(error.response.data.errorMessage){
+    //             toast.error(error.response.data.errorMessage);
+    //         }else{
+    //             toast.error('Đã xảy ra lỗi khi thêm chim đua. Vui lòng thử lại sau.');
+    //         }
+    //     }
+    // };
 
     const handleEditBird = async () => {
 
 
-        if(currentBird.name === '' || currentBird.code === ''){
+        if(currentBird.name === '' || currentBird.description === ''){
             toast.error('Vui lòng nhập đầy đủ thông tin');
-            return;
-        }
-
-        if (!/^\d{3}$/.test(currentBird.code)) {
-            toast.error('Mã Kiềng phải bao gồm 3 chữ số');
             return;
         }
 
         const currentUser = await JSON.parse(sessionStorage.getItem("currentUser"));
         const formData = new FormData();
         formData.append('name', currentBird.name);
-        formData.append('code', currentBird.code);
-        formData.append('imgUrl', currentBird.image); // đang phát triển img
+        formData.append('imgUrl', currentBird.image);
+        formData.append('description', currentBird.description);
         formData.append('id', currentBird.id);
         formData.append('userId', currentUser.id);
         try {
@@ -155,7 +150,7 @@ const BirdList = () => {
                                 <CTableDataCell>{bird.code}</CTableDataCell>
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird(bird); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.code)}>Xóa</CButton>
+                                    {/* <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.code)}>Xóa</CButton> */}
                                 </CTableDataCell>
                             </CTableRow>
                         ))}
@@ -163,7 +158,7 @@ const BirdList = () => {
                 </CTable>
             </div>
 
-            <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
+            {/* <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
                 <CModalHeader closeButton>
                     <CModalTitle>Thêm Chim Đua</CModalTitle>
                 </CModalHeader>
@@ -183,22 +178,13 @@ const BirdList = () => {
                             label="Tên Chim"
                             onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
                         />
-                       
-                        {/* <CFormInput
-                            className='my-1'
-                            type="file"
-                            placeholder="Hình Ảnh"
-                            label="Chọn hình ảnh chim"
-                            disabled
-                            onChange={(e) => setCurrentBird({ ...currentBird, image: e.target.files[0] })}
-                        /> */}
                     </CForm>
                 </CModalBody>
                 <CModalFooter>
                     <CButton color="secondary" onClick={() => setShowAddModal(false)}>Hủy</CButton>
                     <CButton color="primary" onClick={handleAddBird}>Thêm</CButton>
                 </CModalFooter>
-            </CModal>
+            </CModal> */}
 
             <CModal visible={showEditModal} onClose={() => {setCurrentBird({id:"",code:"", name:""});  setShowEditModal(false)}}>
                 <CModalHeader closeButton>
@@ -206,7 +192,7 @@ const BirdList = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormInput
+                        {/* <CFormInput
                             className='my-2'
                             type="text"
                             placeholder="Nhập Mã Kiềng"
@@ -214,7 +200,7 @@ const BirdList = () => {
                             label="Mã Kiềng (Ví Dụ: 001)"
                             onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
                             disabled
-                        />
+                        /> */}
                         <CFormInput
                             className='my-1'
                             type="text"
@@ -222,6 +208,14 @@ const BirdList = () => {
                             label="Tên Chim"
                             value={currentBird.name}
                             onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
+                        />
+                        <CFormInput
+                            className='my-1'
+                            type="text"
+                            placeholder="Nhập Mô Tả"
+                            label="Mô tả"
+                            value={currentBird.description}
+                            onChange={(e) => setCurrentBird({ ...currentBird, description: e.target.value })}
                         />
                         
                     </CForm>
@@ -231,7 +225,7 @@ const BirdList = () => {
                     <CButton color="primary" onClick={handleEditBird}>Lưu</CButton>
                 </CModalFooter>
             </CModal>
-            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Chim Đua</CButton>
+            {/* <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Chim Đua</CButton> */}
 
             <ToastContainer
                 position="top-center"
