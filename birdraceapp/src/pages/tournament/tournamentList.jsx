@@ -34,16 +34,17 @@ const TournamentList = () => {
       });
       console.log(response);
       if (response && response.data && Array.isArray(response.data)) {
-        setTournamentsData(response.data | []);
+        setTournamentsData(response.data);
         console.log(response.data)
         handlePageChange(1);
+        console.log('Danh sách giải đấu:', tournamentsData);
       } else {
         console.error('Dữ liệu giải đấu không hợp lệ:', response.data);
         toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Dữ liệu không hợp lệ.');
       }
     } catch (error) {
         console.error('Lỗi khi tải danh sách giải đấu:', error);
-      toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
+        toast.error('Đã xảy ra lỗi khi tải danh sách giải đấu. Vui lòng thử lại sau.');
     }
   };
 
@@ -169,9 +170,11 @@ const TournamentList = () => {
             <CTableRow>
               <CTableHeaderCell scope="col">ID</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tên Giải Đấu</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Ngày Bắt Đầu Nhận Đơn</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Ngày Kết Thúc Nhận Đơn</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Trạng Thái Giải Đua</CTableHeaderCell>
+              
               <CTableHeaderCell scope="col">Trạng Thái Đơn</CTableHeaderCell>
               <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell>
               <CTableHeaderCell scope="col"></CTableHeaderCell>
@@ -182,9 +185,8 @@ const TournamentList = () => {
               <CTableRow key={tournament.tourId}>
                 <CTableHeaderCell scope="row">{tournament.tourId}</CTableHeaderCell>
                 <CTableDataCell>{tournament.tourName}</CTableDataCell>
-                <CTableDataCell>{tournament.startDate}</CTableDataCell>
-                <CTableDataCell>{tournament.endDate}</CTableDataCell>
-                <CTableDataCell>{tournament.tourStatus}</CTableDataCell>
+                <CTableDataCell>{tournament.startDateInfo}</CTableDataCell>
+                <CTableDataCell>{tournament.endDateInfo}</CTableDataCell>
                 <CTableDataCell>
                   {tournament.tourApplyStatusCode === 'R' ? 'Đã từ chối' : 
                    tournament.tourApplyStatusCode === 'A' ? 'Đã được duyệt' : 
@@ -193,8 +195,12 @@ const TournamentList = () => {
                 </CTableDataCell>
                 <CTableDataCell>{tournament.memo}</CTableDataCell>
                 <CTableDataCell>
-                  {tournament.isActived && !tournament.tourApplyStatusCode && (
-                    <CButton
+                  {
+                  // tournament.isActived 
+                  // && !tournament.tourApplyStatusCode 
+                  // && 
+                  (
+                    <CButton className='me-2'
                       color="primary" onClick={() => {
                         const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
                         if (isLoggedIn) {
