@@ -41,7 +41,7 @@ const RaceRegistrationList = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = registrations.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = registrations.slice(indexOfFirstItem, indexOfLastItem) || [];
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

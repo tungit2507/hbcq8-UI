@@ -1,166 +1,70 @@
 import React, { useState, useEffect } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow, CFormSelect } from '@coreui/react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { updateRace, fetchRaceById } from '../../api/raceApi';
 import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
-import { calculateDistance } from '../../api/raceLocationApi';
-import { fetchRaceById, updateRace } from '../../api/raceApi';
-import { fetchFacilities } from '../../api/FacilityApi';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { fetchStartPoints } from '../../api/StartPoint';
 
 const UpdateRaceForm = () => {
-  const id = new URLSearchParams(window.location.search).get('id');
-  const [imagePreview, setImagePreview] = useState(null);
-  const { control, register, handleSubmit, formState: { errors }, setValue, watch } = useForm();
-  const { fields, append, remove } = useFieldArray({ control, name: 'stages' });
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+  const [race, setRace] = useState(null);
+  const { control, register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const { fields, append, remove } = useFieldArray({ control, name: 'tourStages' });
   const navigate = useNavigate();
-  const [facilities, setFacilities] = useState([]);
-  const [isActive, setIsActive] = useState(true);
-  const [endPointDistance, setEndPointDistance] = useState(0);
-  const [stageDistances, setStageDistances] = useState([]);
-
-  const currentUser = sessionStorage.getItem('currentUser');
-  const userId = currentUser ? JSON.parse(currentUser).id : '';
+  const [imagePreview, setImagePreview] = useState(null);
+  const [systemLocations, setSystemLocations] = useState([]);
 
   useEffect(() => {
-    const fetchFacilitiesData = async () => {
-      const data = await fetchFacilities(userId);
-      setFacilities(data);
-    };
-
-    const fetchRaceData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetchRaceById(id);
-        const raceData = response;
-        
-        setValue('name', raceData.name);
-        setValue('numberOfBirds', raceData.birdsNum);
-        setValue('startDate', raceData.startDate.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
-        setValue('endDate', raceData.endDate.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
-        setValue('breakTime', raceData.restTimePerDay);
-        setValue('startPointCode', raceData.startPointCode);
-        setValue('endPointCode', raceData.endPointCode);
+        const data = await fetchRaceById(id);
+        setRace(data);
+        setValue('name', data.name);
+        setValue('description', data.description);
+        setValue('birdsNum', data.birdsNum);
+        setValue('startDateInfo', data.startDateInfo.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
+        setValue('endDateInfo', data.endDateInfo.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
+        setValue('startDateReceive', data.startDateReceive.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
+        setValue('endDateReceive', data.endDateReceive.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
+        data.tourStages.forEach(stage => {
+          stage.startTime = stage.startTime.replace(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5');
+          append(stage);
+        });
 
-        
-        
-        
-        const stagesData = [];
-        for (let i = 1; i <= 5; i++) {
-          const point = raceData.tourLocation[`point${i}`];
-          if (point) {
-            stagesData.push({
-              name: point.name,
-              coordinates: point.coor,
-              distance: point.dist
-            });
-          }
-        }
-        setValue('stages', stagesData);
-
-        setImagePreview(raceData.imgUrl);
-        setIsActive(raceData.isActived);
+        const locations = await fetchStartPoints();
+        setSystemLocations(locations);
       } catch (error) {
-        toast.error('Không thể tải dữ liệu giải đua.');
+        console.error('Error fetching race data:', error);
+        showErrorNotification('Không thể lấy thông tin giải đua. Vui lòng thử lại sau.');
       }
     };
-
-    fetchFacilitiesData().then(() => fetchRaceData());
-  }, [id, setValue]);
+    fetchData();
+  }, [id, setValue, append]);
 
   const onSubmit = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append('name', data.name);
-      formData.append('birdsNum', data.numberOfBirds);
-      formData.append('startDate', `${data.startDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00')}`);
-      formData.append('endDate', `${data.endDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00')}`);
-      formData.append('restTimePerDay', data.breakTime);
-      formData.append('isActived', isActive);
-      formData.append('startPointCode', data.startPointCode);
-      formData.append('endPointCode', data.endPointCode);
-
-   
-
-      await updateRace(id, formData);
-      showSuccessNotification('Cập nhật giải đua thành công!');
-      setImagePreview(null);
+      const formattedData = {
+        ...data,
+        startDateInfo: data.startDateInfo.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00'),
+        endDateInfo: data.endDateInfo.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00'),
+        startDateReceive: data.startDateReceive.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00'),
+        endDateReceive: data.endDateReceive.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00'),
+        tourStages: data.tourStages.map(stage => ({
+          ...stage,
+          startTime: stage.startTime.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/, '$3-$2-$1 $4:$5:00')
+        }))
+      };
+      await updateRace(id, formattedData);
+      showSuccessNotification("Cập Nhật Giải Đua Thành Công");
       navigate('/management/race/list');
     } catch (error) {
-      const errorMessage = error.response.data.errorMessage ? error.response.data.errorMessage : 'Cập nhật giải đua thất bại.';
+      console.error('Error updating race:', error);
+      const errorMessage = error.response?.data?.errorMessage || "Lỗi khi cập nhật giải đua";
       showErrorNotification(errorMessage);
-    }
-  };
-
-  const handleCalculateDistance = async () => {
-
-    if (!watch('startPointCode')) {
-      showErrorNotification('Chưa nhập mã căn cứ bắt đầu');
-      return;
-    }
-
-    if (!watch('endPointCode')) {
-      showErrorNotification('Chưa nhập mã căn cứ đích');
-      return;
-    }
-
-    const startCoordinates = facilities.find(facility => facility.code === watch('startPointCode'))?.pointCoor;
-    const endCoordinates = facilities.find(facility => facility.code === watch('endPointCode'))?.pointCoor;
-    const stageCoordinates = watch('stages').map(stage => stage.coordinates);
-
-    const coordinatePattern = /^\d+(\.\d+)?;\d+(\.\d+)?$/;
-
-    for (let i = 0; i < stageCoordinates.length; i++) {
-      if (!coordinatePattern.test(stageCoordinates[i])) {
-        showErrorNotification(`Tọa độ chặng ${i + 1} không hợp lệ`);
-        return;
-      }
-    }
-
-    const allCoordinates = [startCoordinates, ...stageCoordinates, endCoordinates].filter(Boolean);
-
-    const calDistanceRequestDto = {
-      coordinates: allCoordinates
-    };
-
-    try {
-      const calculateDistanceDto = {
-        startPoint: startCoordinates,
-        point1: stageCoordinates[0] || null,
-        point2: stageCoordinates[1] || null,
-        point3: stageCoordinates[2] || null,
-        point4: stageCoordinates[3] || null,
-        point5: stageCoordinates[4] || null,
-        endPoint: endCoordinates
-      };
-
-      const result = await calculateDistance(calculateDistanceDto);
-
-      if (result) {
-        setValue('endPoint.distance', result.endPoint);
-        setEndPointDistance(result.endPoint);
-
-        const newStageDistances = [];
-        for (let i = 1; i <= 5; i++) {
-          const pointDistance = result[`point${i}`];
-          if (pointDistance !== null && pointDistance !== undefined && pointDistance !== 0) {
-            newStageDistances.push(pointDistance);
-          } else {
-            break;
-          }
-        }
-
-        setStageDistances(newStageDistances);
-
-        newStageDistances.forEach((distance, index) => {
-          setValue(`stages[${index}].distance`, distance);
-        });
-      } else {
-        toast.error('Không nhận được kết quả tính khoảng cách hợp lệ.');
-      }
-    } catch (error) {
-      console.error('Lỗi khi tính khoảng cách:', error);
-      toast.error('Đã xảy ra lỗi khi tính khoảng cách.');
     }
   };
 
@@ -175,6 +79,14 @@ const UpdateRaceForm = () => {
     }
   };
 
+  const handleStartPointChange = (index, value) => {
+    const selectedLocation = systemLocations.find(location => location.code === value);
+    if (selectedLocation) {
+      setValue(`tourStages[${index}].startPointCoor`, selectedLocation.pointCoor);
+      setValue(`tourStages[${index}].startPointName`, selectedLocation.name);
+    }
+  };
+
   return (
     <CRow className="justify-content-center">
       <CCol md={11}>
@@ -186,201 +98,169 @@ const UpdateRaceForm = () => {
             <CForm onSubmit={handleSubmit(onSubmit)}>
               {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />}
               <CRow className="mb-3">
-                <CCol>
-                  <CFormLabel htmlFor="image">Hình Ảnh</CFormLabel>
-                  <Controller
-                    name="image"
-                    control={control}
-                    render={({ field }) => (
-                      <CFormInput
-                        disabled
-                        type="file"
-                        id="image"
-                        accept="image/*"
-                        onChange={(e) => {
-                          field.onChange(e);
-                          handleImageChange(e);
-                        }}
-                        invalid={!!errors.image}
-                      />
-                    )}
-                  />
-                  {errors.image && <div className="invalid-feedback">{errors.image.message}</div>}
-                </CCol>
-              </CRow>
-              <CRow className="mb-3">
                 <CCol md={6}>
-                  <CFormLabel htmlFor="raceName">Tên Giải Đua</CFormLabel>
+                  <CFormLabel htmlFor="name">Tên Giải Đua</CFormLabel>
                   <CFormInput
                     placeholder='Tên giải đua'
                     type="text"
-                    id="raceName"
+                    id="name"
                     {...register('name', { required: 'Tên giải đua là bắt buộc' })}
                     invalid={!!errors.name}
                   />
                   {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                 </CCol>
                 <CCol md={6}>
-                  <CFormLabel htmlFor="numberOfBirds">Số lượng chim đua tối đa</CFormLabel>
+                  <CFormLabel htmlFor="birdsNum">Số lượng chim đua tối đa</CFormLabel>
                   <CFormInput
                     placeholder='Nhập Số Chim'
                     type="number"
-                    id="numberOfBirds"
-                    {...register('numberOfBirds', { required: 'Số chim là bắt buộc', min: { value: 1, message: 'Phải có ít nhất 1 chim' } })}
-                    invalid={!!errors.numberOfBirds}
+                    id="birdsNum"
+                    {...register('birdsNum', { required: 'Số chim là bắt buộc', min: { value: 1, message: 'Phải có ít nhất 1 chim' } })}
+                    invalid={!!errors.birdsNum}
                   />
-                  {errors.numberOfBirds && <div className="invalid-feedback">{errors.numberOfBirds.message}</div>}
+                  {errors.birdsNum && <div className="invalid-feedback">{errors.birdsNum.message}</div>}
                 </CCol>
               </CRow>
               <CRow className="mb-3">
                 <CCol md={6}>
-                  <CFormLabel htmlFor="startDate">Ngày Bắt Đầu</CFormLabel>
+                  <CFormLabel htmlFor="startDateInfo">Ngày Bắt Đầu</CFormLabel>
                   <CFormInput
                     type="datetime-local"
-                    id="startDate"
-                    {...register('startDate', { required: 'Ngày bắt đầu là bắt buộc' })}
-                    invalid={!!errors.startDate}
+                    id="startDateInfo"
+                    {...register('startDateInfo', { required: 'Ngày bắt đầu là bắt buộc' })}
+                    invalid={!!errors.startDateInfo}
                   />
-                  {errors.startDate && <div className="invalid-feedback">{errors.startDate.message}</div>}
+                  {errors.startDateInfo && <div className="invalid-feedback">{errors.startDateInfo.message}</div>}
                 </CCol>
                 <CCol md={6}>
-                  <CFormLabel htmlFor="endDate">Ngày Kết Thúc</CFormLabel>
+                  <CFormLabel htmlFor="endDateInfo">Ngày Kết Thúc</CFormLabel>
                   <CFormInput
                     type="datetime-local"
-                    id="endDate"
-                    {...register('endDate', { required: 'Ngày kết thúc là bắt buộc' })}
-                    invalid={!!errors.endDate}
+                    id="endDateInfo"
+                    {...register('endDateInfo', { required: 'Ngày kết thúc là bắt buộc' })}
+                    invalid={!!errors.endDateInfo}
                   />
-                  {errors.endDate && <div className="invalid-feedback">{errors.endDate.message}</div>}
+                  {errors.endDateInfo && <div className="invalid-feedback">{errors.endDateInfo.message}</div>}
                 </CCol>
               </CRow>
               <CRow className="mb-3">
+                <CCol md={6}>
+                  <CFormLabel htmlFor="startDateReceive">Ngày Bắt Đầu Nhận Đơn</CFormLabel>
+                  <CFormInput
+                    type="datetime-local"
+                    id="startDateReceive"
+                    {...register('startDateReceive', { required: 'Ngày bắt đầu nhận chim là bắt buộc' })}
+                    invalid={!!errors.startDateReceive}
+                  />
+                  {errors.startDateReceive && <div className="invalid-feedback">{errors.startDateReceive.message}</div>}
+                </CCol>
+                <CCol md={6}>
+                  <CFormLabel htmlFor="endDateReceive">Ngày Kết Thúc Nhận Đơn</CFormLabel>
+                  <CFormInput
+                    type="datetime-local"
+                    id="endDateReceive"
+                    {...register('endDateReceive', { required: 'Ngày kết thúc nhận chim là bắt buộc' })}
+                    invalid={!!errors.endDateReceive}
+                  />
+                  {errors.endDateReceive && <div className="invalid-feedback">{errors.endDateReceive.message}</div>}
+                </CCol>
+              </CRow>
+              <CRow>
                 <CCol>
-                  <CFormLabel htmlFor="breakTime">Thời gian nghỉ (Đơn vị: 0.5 giờ)</CFormLabel>
-                  <CFormInput
-                    type="number"
-                    id="breakTime"
-                    step={0.1}
-                    placeholder='Nhập thời gian nghỉ'
-                    {...register('breakTime', { 
-                      required: 'Thời gian nghỉ là bắt buộc', 
-                      min: { value: 0, message: 'Thời gian nghỉ không được nhỏ hơn 0' },
-                      max: { value: 24, message: 'Thời gian nghỉ không được lớn hơn 24' }},
-                    )}
-                    invalid={!!errors.breakTime}
-                  />
-                  {errors.breakTime && <div className="invalid-feedback">{errors.breakTime.message}</div>}
-                </CCol>
-              </CRow>
-              <CRow className="mb-3">
-                <CCol md={3}>
-                  <CFormLabel htmlFor="startPointCode">Mã căn cứ bắt đầu </CFormLabel>
-                  <CFormSelect
-                    id="startPointCode"
-                    {...register('startPointCode', { required: 'Tên điểm bắt đầu là bắt buộc' })}
-                    invalid={!!errors.startPoint?.name}
-                  >
-                    <option value="">Chọn mã căn cứ bắt đầu</option>
-                    {facilities.map(facility => (
-                      <option key={facility.id} value={facility.code}>{facility.code}</option>
-                    ))}
-                  </CFormSelect>
-                  {errors.startPoint?.name && <div className="invalid-feedback">{errors.startPoint.name.message}</div>}
-                </CCol>
-                <CCol md={3}> 
-                  <CFormLabel htmlFor="startPointDistance">Khoảng Cách (kilômét)</CFormLabel>
-                  <CFormInput
-                    type="number"
-                    id="startPointDistance"
-                    defaultValue={0}
-                    readOnly
-                    {...register('startPoint.distance', { required: 'Số mét điểm bắt đầu là bắt buộc' })}
-                    invalid={!!errors.startPoint?.distance}
-                  />
-                  {errors.startPoint?.distance && <div className="invalid-feedback">{errors.startPoint.distance.message}</div>}
+                <CFormLabel htmlFor="description">Mô Tả</CFormLabel>
+                <CFormInput
+                  placeholder='Nhập Mô Tả'
+                  type="text"
+                  id="description"
+                  {...register('description', { required: 'Mô tả là bắt buộc' })}
+                  invalid={!!errors.description}/>
+                {errors.description && <div className="invalid-feedback">{errors.description.message}</div>}
                 </CCol>
               </CRow>
               {fields.map((field, index) => (
-                <CRow className="mb-3" key={field.id}>
-                  <CCol md={3}>
-                    <CFormLabel htmlFor={`stages[${index}].name`}>Tên Chặng {index + 1}</CFormLabel>
-                    <CFormInput
-                      placeholder='Nhập Tên Chặng'
-                      type="text"
-                      id={`stages[${index}].name`}
-                      {...register(`stages[${index}].name`, { required: 'Tên chặng là bắt buộc' })}
-                      invalid={!!errors.stages?.[index]?.name}
+                <CRow className="my-3" key={field.id}>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor={`tourStages[${index}].startPointCode`}>Mã Điểm Xuất Phát {index + 1}</CFormLabel>
+                    <Controller
+                      name={`tourStages[${index}].startPointCode`}
+                      control={control}
+                      defaultValue={field.startPointCode}
+                      render={({ field }) => (
+                        <CFormSelect
+                          id={`tourStages[${index}].startPointCode`}
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleStartPointChange(index, e.target.value);
+                          }}
+                          invalid={!!errors.tourStages?.[index]?.startPointCode}
+                        >
+                          <option value="">Chọn Mã Điểm Xuất Phát</option>
+                          {systemLocations.map(location => (
+                            <option key={location.code} value={location.code}>{location.code}</option>
+                          ))}
+                        </CFormSelect>
+                      )}
                     />
-                    {errors.stages?.[index]?.name && <div className="invalid-feedback">{errors.stages[index].name.message}</div>}
+                    {errors.tourStages?.[index]?.startPointCode && <div className="invalid-feedback">{errors.tourStages[index]?.startPointCode?.message}</div>}
                   </CCol>
-                  <CCol md={3}>
-                    <CFormLabel htmlFor={`stages[${index}].coordinates`}>Tọa Độ Chặng {index + 1}</CFormLabel>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor={`tourStages[${index}].startPointName`}>Tên Điểm Xuất Phát {index + 1}</CFormLabel>
                     <CFormInput
-                      placeholder='193.000;152.222'
+                      placeholder='Nhập Tên Điểm Xuất Phát'
                       type="text"
-                      id={`stages[${index}].coordinates`}
-                      {...register(`stages[${index}].coordinates`, {
-                        required: 'Tọa độ chặng là bắt buộc',
-                        pattern: {
-                          value: /^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/,
-                          message: 'Tọa độ không hợp lệ. Định dạng đúng: "kinh_độ;vĩ_độ" (ví dụ: 193.000;152.555)'
-                        }
-                      })}
-                      invalid={!!errors.stages?.[index]?.coordinates}
-                    />
-                    {errors.stages?.[index]?.coordinates && <div className="invalid-feedback">{errors.stages[index].coordinates.message}</div>}
-                  </CCol>
-                  <CCol md={3}>
-                    <CFormLabel htmlFor={`stages[${index}].distance`}>Khoảng Cách (kilômét)</CFormLabel>
-                    <CFormInput
-                      type="number"
-                      id={`stages[${index}].distance`}
-                      {...register(`stages[${index}].distance`, { required: 'Số mét chặng là bắt buộc' })}
-                      invalid={!!errors.stages?.[index]?.distance}
-                      value={stageDistances[index] || ''}
+                      id={`tourStages[${index}].startPointName`}
+                      {...register(`tourStages[${index}].startPointName`, { required: 'Tên điểm xuất phát là bắt buộc' })}
+                      invalid={!!errors.tourStages?.[index]?.startPointName}
                       readOnly
                     />
-                    {errors.stages?.[index]?.distance && <div className="invalid-feedback">{errors.stages[index].distance.message}</div>}
+                    {errors.tourStages?.[index]?.startPointName && <div className="invalid-feedback">{errors.tourStages[index]?.startPointName?.message}</div>}
                   </CCol>
-                  <CCol md={3} className="d-flex align-items-end">
-                    <CButton color="danger" onClick={() => remove(index)}>Xóa Chặng</CButton>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor={`tourStages[${index}].startPointCoor`}>Tọa Độ {index + 1}</CFormLabel>
+                    <CFormInput
+                      placeholder='Nhập Tọa Độ'
+                      type="text"
+                      id={`tourStages[${index}].startPointCoor`}
+                      {...register(`tourStages[${index}].startPointCoor`, { required: 'Tọa độ là bắt buộc' })}
+                      invalid={!!errors.tourStages?.[index]?.startPointCoor}
+                      readOnly
+                    />
+                    {errors.tourStages?.[index]?.startPointCoor && <div className="invalid-feedback">{errors.tourStages[index]?.startPointCoor?.message}</div>}
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormLabel htmlFor={`tourStages[${index}].startTime`}>Thời Gian Xuất Phát {index + 1}</CFormLabel>
+                    <CFormInput
+                      type="datetime-local"
+                      id={`tourStages[${index}].startTime`}
+                      {...register(`tourStages[${index}].startTime`, { required: 'Thời gian xuất phát là bắt buộc' })}
+                      invalid={!!errors.tourStages?.[index]?.startTime}
+                    />
+                    {errors.tourStages?.[index]?.startTime && <div className="invalid-feedback">{errors.tourStages[index]?.startTime?.message}</div>}
+                  </CCol>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor={`tourStages[${index}].restTimePerDay`}>Thời Gian Nghỉ {index + 1}</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      step={0.1}
+                      id={`tourStages[${index}].restTimePerDay`}
+                      {...register(`tourStages[${index}].restTimePerDay`, { required: 'Thời gian nghỉ là bắt buộc' })}
+                      invalid={!!errors.tourStages?.[index]?.restTimePerDay}
+                    />
+                    {errors.tourStages?.[index]?.restTimePerDay && <div className="invalid-feedback">{errors.tourStages[index]?.restTimePerDay?.message}</div>}
+                  </CCol>
+                  <CCol md={1} className="d-flex align-items-end">
+                    <CButton color="danger" onClick={() => remove(index)}>Xóa</CButton>
                   </CCol>
                 </CRow>
               ))}
               <CRow className="mb-3">
-                <CCol md={3}>
-                  <CFormLabel htmlFor="endPointCode">Mã căn cứ đích</CFormLabel>
-                  <CFormSelect
-                    id="endPointCode"
-                    {...register('endPointCode', { required: 'Mã căn cứ đích là bắt buộc' })}
-                    invalid={!!errors.endPoint?.name}
-                  >
-                    <option value="">Chọn mã căn cứ đích</option>
-                    {facilities.map(facility => (
-                      <option key={facility.id} value={facility.code}>{facility.code}</option>
-                    ))}
-                  </CFormSelect>
-                  {errors.endPoint?.name && <div className="invalid-feedback">{errors.endPoint.name.message}</div>}
-                </CCol>
-                <CCol md={3}>
-                  <CFormLabel htmlFor="endPointDistance">Khoảng Cách (kilômét)</CFormLabel>
-                  <CFormInput
-                    type="number"
-                    id="endPointDistance"
-                    {...register('endPoint.distance', { required: 'Số mét điểm kết thúc là bắt buộc' })}
-                    invalid={!!errors.endPoint?.distance}
-                    value={endPointDistance || ''}
-                    readOnly
-                  />
-                  {errors.endPoint?.distance && <div className="invalid-feedback">{errors.endPoint.distance.message}</div>}
-                </CCol>
-                <CCol md={3} className="d-flex align-items-end">
-                  <CButton
-                    color="primary"
-                    onClick={() => handleCalculateDistance()}
-                  >
-                    Tính Khoảng Cách
-                  </CButton>
+                <CCol>
+                  {fields.length < 10 && (
+                    <CButton className='my-2' type="button" color="secondary" onClick={() => append({ startPointCode: '', startPointName: '', startPointCoor: '', startTime: '' })}>
+                      Thêm Chặng
+                    </CButton>
+                  )}
                 </CCol>
               </CRow>
               <CRow>

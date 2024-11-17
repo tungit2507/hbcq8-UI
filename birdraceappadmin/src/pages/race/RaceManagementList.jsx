@@ -120,12 +120,14 @@ const RaceList = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">ID</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Tên Giải Đua</CTableHeaderCell>
               <CTableHeaderCell scope="col">Số Chim</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Ngày Mở Đơn</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Ngày Đóng Đơn</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Thời Gian Nghỉ</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Thời Gian Nghỉ</CTableHeaderCell> */}
               {/* <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
             </CTableRow>
@@ -134,26 +136,28 @@ const RaceList = () => {
             {currentItems?.map(race => (
               <CTableRow key={race.id}>
                 <CTableHeaderCell scope="row">{race.id}</CTableHeaderCell>
-                <CTableDataCell>
+                {/* <CTableDataCell>
                   <img
                     src={race.image || ErrorImage}
                     alt="Race"
                     style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "50%" }}
                     onError={(e) => {e.target.src = ErrorImage}}
                   />
-                </CTableDataCell>
+                </CTableDataCell> */}
                 <CTableDataCell>{race.name}</CTableDataCell>
                 <CTableDataCell>{race.birdsNum}</CTableDataCell>
-                <CTableDataCell>{race.startDate}</CTableDataCell>
-                <CTableDataCell>{race.endDate}</CTableDataCell>
-                <CTableDataCell>{race.restTimePerDay}</CTableDataCell>
+                <CTableDataCell>{race.startDateReceive}</CTableDataCell>
+                <CTableDataCell>{race.endDateReceive}</CTableDataCell>
+                <CTableDataCell>{race.startDateInfo}</CTableDataCell>
+                <CTableDataCell>{race.endDateInfo}</CTableDataCell>
+                {/* <CTableDataCell>{race.restTimePerDay}</CTableDataCell> */}
                 <CTableDataCell>
                   <Link className="btn btn-info m-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
                   <Link className="btn btn-warning m-1" to={`/management/race/tour-result-set?id=${race.id}`}>Kiểm Tra Xếp Hạng</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
+                  <Link className="btn btn-primary m-1" to={`/management/race/update?id=${race.id}`}>Chi Tiết</Link>
                   <CButton className="btn btn-success text-white m-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton>
                   <CButton className="btn btn-danger text-white m-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
-
                 </CTableDataCell>
               </CTableRow>
             ))}
