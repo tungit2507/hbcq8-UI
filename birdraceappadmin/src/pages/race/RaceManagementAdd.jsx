@@ -89,7 +89,7 @@ const AddRaceForm = () => {
                     {...register('name', { required: 'Tên giải đua là bắt buộc' })}
                     invalid={!!errors.name}
                   />
-                  {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                  {errors.name && <div className="invalid-feedback">{errors.name?.message}</div>}
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel htmlFor="birdsNum">Số lượng chim đua tối đa</CFormLabel>
@@ -100,7 +100,7 @@ const AddRaceForm = () => {
                     {...register('birdsNum', { required: 'Số chim là bắt buộc', min: { value: 1, message: 'Phải có ít nhất 1 chim' } })}
                     invalid={!!errors.birdsNum}
                   />
-                  {errors.birdsNum && <div className="invalid-feedback">{errors.birdsNum.message}</div>}
+                  {errors.birdsNum && <div className="invalid-feedback">{errors.birdsNum?.message}</div>}
                 </CCol>
               </CRow>
               <CRow className="mb-3">
@@ -112,7 +112,7 @@ const AddRaceForm = () => {
                     {...register('startDateInfo', { required: 'Ngày bắt đầu là bắt buộc' })}
                     invalid={!!errors.startDateInfo}
                   />
-                  {errors.startDateInfo && <div className="invalid-feedback">{errors.startDateInfo.message}</div>}
+                  {errors.startDateInfo && <div className="invalid-feedback">{errors.startDateInfo?.message}</div>}
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel htmlFor="endDateInfo">Ngày Kết Thúc</CFormLabel>
@@ -122,7 +122,7 @@ const AddRaceForm = () => {
                     {...register('endDateInfo', { required: 'Ngày kết thúc là bắt buộc' })}
                     invalid={!!errors.endDateInfo}
                   />
-                  {errors.endDateInfo && <div className="invalid-feedback">{errors.endDateInfo.message}</div>}
+                  {errors.endDateInfo && <div className="invalid-feedback">{errors.endDateInfo?.message}</div>}
                 </CCol>
               </CRow>
               <CRow className="mb-3">
@@ -134,7 +134,7 @@ const AddRaceForm = () => {
                     {...register('startDateReceive', { required: 'Ngày bắt đầu nhận chim là bắt buộc' })}
                     invalid={!!errors.startDateReceive}
                   />
-                  {errors.startDateReceive && <div className="invalid-feedback">{errors.startDateReceive.message}</div>}
+                  {errors.startDateReceive && <div className="invalid-feedback">{errors.startDateReceive?.message}</div>}
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel htmlFor="endDateReceive">Ngày Kết Thúc Nhận Chim</CFormLabel>
@@ -144,7 +144,7 @@ const AddRaceForm = () => {
                     {...register('endDateReceive', { required: 'Ngày kết thúc nhận chim là bắt buộc' })}
                     invalid={!!errors.endDateReceive}
                   />
-                  {errors.endDateReceive && <div className="invalid-feedback">{errors.endDateReceive.message}</div>}
+                  {errors.endDateReceive && <div className="invalid-feedback">{errors.endDateReceive?.message}</div>}
                 </CCol>
               </CRow>
               <CRow>
@@ -156,7 +156,7 @@ const AddRaceForm = () => {
                   id="description"
                   {...register('description', { required: 'Mô tả là bắt buộc' })}
                   invalid={!!errors.description}/>
-                {errors.description && <div className="invalid-feedback">{errors.description.message}</div>}
+                {errors.description && <div className="invalid-feedback">{errors.description?.message}</div>}
                 </CCol>
               </CRow>
               {fields.map((field, index) => (
@@ -184,7 +184,7 @@ const AddRaceForm = () => {
                         </CFormSelect>
                       )}
                     />
-                    {errors.tourStages?.[index]?.startPointCode && <div className="invalid-feedback">{errors.tourStages[index].startPointCode.message}</div>}
+                    {errors.tourStages?.[index]?.startPointCode && <div className="invalid-feedback">{errors.tourStages[index]?.startPointCode?.message}</div>}
                   </CCol>
                   <CCol md={2}>
                     <CFormLabel htmlFor={`tourStages[${index}].startPointName`}>Tên Điểm Xuất Phát {index + 1}</CFormLabel>
@@ -196,7 +196,7 @@ const AddRaceForm = () => {
                       invalid={!!errors.tourStages?.[index]?.startPointName}
                       readOnly
                     />
-                    {errors.tourStages?.[index]?.startPointName && <div className="invalid-feedback">{errors.tourStages[index].startPointName.message}</div>}
+                    {errors.tourStages?.[index]?.startPointName && <div className="invalid-feedback">{errors.tourStages[index]?.startPointName?.message}</div>}
                   </CCol>
                   <CCol md={2}>
                     <CFormLabel htmlFor={`tourStages[${index}].startPointCoor`}>Tọa Độ {index + 1}</CFormLabel>
@@ -208,7 +208,7 @@ const AddRaceForm = () => {
                       invalid={!!errors.tourStages?.[index]?.startPointCoor}
                       readOnly
                     />
-                    {errors.tourStages?.[index]?.startPointCoor && <div className="invalid-feedback">{errors.tourStages[index].startPointCoor.message}</div>}
+                    {errors.tourStages?.[index]?.startPointCoor && <div className="invalid-feedback">{errors.tourStages[index]?.startPointCoor?.message}</div>}
                   </CCol>
                   <CCol md={3}>
                     <CFormLabel htmlFor={`tourStages[${index}].startTime`}>Thời Gian Xuất Phát {index + 1}</CFormLabel>
@@ -218,7 +218,7 @@ const AddRaceForm = () => {
                       {...register(`tourStages[${index}].startTime`, { required: 'Thời gian xuất phát là bắt buộc' })}
                       invalid={!!errors.tourStages?.[index]?.startTime}
                     />
-                    {errors.tourStages?.[index]?.startTime && <div className="invalid-feedback">{errors.tourStages[index].startTime.message}</div>}
+                    {errors.tourStages?.[index]?.startTime && <div className="invalid-feedback">{errors.tourStages[index]?.startTime?.message}</div>}
                   </CCol>
                   <CCol md={2}>
                     <CFormLabel htmlFor={`tourStages[${index}].restTimePerDay`}>Thời Gian Nghỉ {index + 1}</CFormLabel>
@@ -228,7 +228,7 @@ const AddRaceForm = () => {
                       {...register(`tourStages[${index}].restTimePerDay`, { required: 'Thời gian nghỉ là bắt buộc' })}
                       invalid={!!errors.tourStages?.[index]?.restTimePerDay}
                     />
-                    {errors.tourStages?.[index]?.restTimePerDay && <div className="invalid-feedback">{errors.tourStages[index].restTime.message}</div>}
+                    {errors.tourStages?.[index]?.restTimePerDay && <div className="invalid-feedback">{errors.tourStages[index]?.restTimePerDay?.message}</div>}
                   </CCol>
                   <CCol md={1} className="d-flex align-items-end">
                     <CButton color="danger" onClick={() => remove(index)}>Xóa</CButton>

@@ -10,7 +10,6 @@ import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import { toast } from 'react-toastify';
 import { approveRaceRegistration } from '../../api/raceRegistration';
 import { showErrorNotification, showSuccessNotification } from '../../api/sweetAlertNotify';
-import { current } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 
 const RaceRegistrationAddFacility = () => {
@@ -175,6 +174,48 @@ const RaceRegistrationAddFacility = () => {
                   />
                 </CCol> */}
               </CRow>
+
+              {race?.tourStages?.map((field, index) => (
+                <CRow className="mb-3" key={field.id}>
+                  <CCol md={3}>
+                  <CFormLabel>Điểm Xuất Phát {index + 1}</CFormLabel>
+                  <CFormInput
+                      type="text"
+                      id={`field.startTime`}
+                      value={field.startPointName}
+                      readOnly
+                    />
+                  </CCol>
+                  <CCol md={4}>
+                    
+                    <CFormLabel htmlFor={`selectedFacilities[${index}].code`}>Căn Cứ Đích {index + 1}</CFormLabel>
+                    <CFormSelect
+                      id={`selectedFacilities[${index}].code`}
+                      {...register(`selectedFacilities[${index}].code`, { required: 'Mã căn cứ là bắt buộc' })}
+                    >
+                      <option value="">Chọn mã căn cứ</option>
+                      {facilities.map(facility => (
+                        <option key={facility.id} value={facility.code}>{facility.code}</option>
+                      ))}
+                    </CFormSelect>
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormLabel htmlFor={`selectedFacilities[${index}].distance`}>Khoảng Cách (kilômét)</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      id={`selectedFacilities[${index}].distance`}
+                      {...register(`selectedFacilities[${index}].distance`, { required: 'Số mét chặng là bắt buộc' })}
+                      value={stageDistances[index] || ''}
+                      readOnly
+                    />
+                  </CCol>
+                  <CCol md={1} className="d-flex align-items-end">
+                    <CButton color="danger" onClick={() => remove(index)}>Xóa</CButton>
+                  </CCol>
+                </CRow>
+              ))}
+
+
               {fields.map((field, index) => (
                 <CRow className="mb-3" key={field.id}>
                   <CCol md={6}>
@@ -204,13 +245,13 @@ const RaceRegistrationAddFacility = () => {
                   </CCol>
                 </CRow>
               ))}
-              <CRow className="mb-3">
+              {/* <CRow className="mb-3">
                 <CCol>
                   {fields.length < 5 && (
                     <CButton type="button" color="secondary" onClick={() => append({ code: '' })}>Thêm Căn Cứ</CButton>
                   )}
                 </CCol>
-              </CRow>
+              </CRow> */}
               {/* <CRow>
                 <CCol md={6}>
                   <CFormLabel htmlFor="endPointCode">Mã căn cứ đích</CFormLabel>
@@ -232,17 +273,20 @@ const RaceRegistrationAddFacility = () => {
                 </CCol>
                
               </CRow> */}
-              <CCol md={3} className="d-flex align-items-end">
+              <CRow>
+                <CCol md={10} className="text-end">
                   <CButton
                     dis
                     color="primary"
                     onClick={() => handleCalculateDistance()}
+                    disabled
                   >
                     Tính Khoảng Cách
                   </CButton>
                 </CCol>
+              </CRow>
               <CRow>
-                <CCol>
+                <CCol className="text-center">
                   <CButton className='my-2' type="submit" color="primary">Duyệt Đơn Đăng Ký</CButton>
                 </CCol>
               </CRow>
