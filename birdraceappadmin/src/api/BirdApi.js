@@ -37,9 +37,9 @@ export const fetchBirdById = async (id) => {
     }
 };
 
-export const updateBird = async (id, birdData) => {
+export const updateBird = async (birdData) => {
     try {
-        const response = await axiosInstance.put(`${BASE_URL_BIRD}/${id}`, birdData, {
+        const response = await axiosInstance.put(`${BASE_URL_BIRD}`, birdData, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -51,12 +51,13 @@ export const updateBird = async (id, birdData) => {
     }
 };
 
-export const deleteBird = async (id) => {
+export const deleteBird = async (code) => {
     try {
-        const response = await axiosInstance.delete(`${BASE_URL_BIRD}/${id}`);
+        const response = await axiosInstance.delete(`${BASE_URL_BIRD}/${code}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting bird:', error);
         Swal.fire('Lỗi', 'Không thể xóa chim. Vui lòng thử lại sau.', 'error');
+        throw error;
     }
 };

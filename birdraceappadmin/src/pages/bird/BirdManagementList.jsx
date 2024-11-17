@@ -26,8 +26,13 @@ const BirdManagement = () => {
   };
 
   const handleAddBird = async () => {
-    if (!currentBird.name || !currentBird.description) {
-      showErrorNotification("Tên chim và mô tả không được bỏ trống.");
+    if (!currentBird.name || !currentBird.code) {
+      showErrorNotification("Tên chim và mã kiềng không được bỏ trống.");
+      return;
+    }
+
+    if (!/^\d{3,4}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng chỉ được chứa 3-4 chữ số.");
       return;
     }
 
@@ -35,7 +40,7 @@ const BirdManagement = () => {
       const formData = new FormData();
       formData.append('userId', userId);
       formData.append('name', currentBird.name);
-      formData.append('description', currentBird.description);
+      formData.append('code', currentBird.code);
       await addBird(formData);
       fetchData();
       setShowAddModal(false);
@@ -46,28 +51,34 @@ const BirdManagement = () => {
   };
 
   const handleEditBird = async () => {
-    if (!currentBird.name || !currentBird.description) {
-      showErrorNotification("Tên chim và mô tả không được bỏ trống.");
+    if (!currentBird.name || !currentBird.code) {
+      showErrorNotification("Tên chim và mã kiềng không được bỏ trống.");
       return;
     }
 
+
+    if (!/^\d{3,4}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng chỉ được chứa 3-4 chữ số.");
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append('userId', userId);
       formData.append('name', currentBird.name);
-      formData.append('description', currentBird.description);
-      await updateBird(currentBird.id, formData);
+      formData.append('code', currentBird.code);
+      formData.append('id', currentBird.id);
+      await updateBird(formData);
       fetchData();
       setShowEditModal(false);
     } catch (error) {
       const errorMessage = error.response.data.errorMessage;
-      showErrorNotification(errorMessage || "Lỗi trong quá trình cập nhật ");
+      showErrorNotification(errorMessage || "Lỗi trong quá trình cập nhật");
     }
   };
 
-  const handleDeleteBird = async (id) => {
+  const handleDeleteBird = async (code) => {
     try {
-      await deleteBird(id);
+      await deleteBird(code);
       fetchData();
       Swal.fire('Thành công', 'Chim đã được xóa thành công.', 'success');
     } catch (error) {
@@ -100,7 +111,9 @@ const BirdManagement = () => {
         <CTable className="table-bordered rounded table-striped text-center">
           <CTableHead>
             <CTableRow>
+              
               <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
               <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell>
               <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
             </CTableRow>
@@ -109,10 +122,11 @@ const BirdManagement = () => {
             {birds?.map(bird => (
               <CTableRow key={bird.id}>
                 <CTableDataCell>{bird.name}</CTableDataCell>
+                <CTableDataCell>{bird.code}</CTableDataCell>
                 <CTableDataCell>{bird.description}</CTableDataCell>
                 <CTableDataCell>
                   <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird({ ...bird, id: bird.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                  <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(bird.id)}>Xóa</CButton>
+                  <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(bird.code)}>Xóa</CButton>
                 </CTableDataCell>
               </CTableRow>
             ))}
@@ -127,19 +141,19 @@ const BirdManagement = () => {
         </CModalHeader>
         <CModalBody>
           <CForm>
+            <CFormLabel htmlFor="description" className="mt-3">Mã Kiềng (Ví dụ: 001)</CFormLabel>
+            <CFormInput
+              className='my-1'
+              type="text"
+              placeholder="Nhập Mã Kiềng "
+              onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
+            />
             <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
             <CFormInput
               className='my-1'
               type="text"
               placeholder="Nhập Tên Chim"
               onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
-            />
-            <CFormLabel htmlFor="description" className="mt-3">Mô Tả</CFormLabel>
-            <CFormInput
-              className='my-1'
-              type="text"
-              placeholder="Nhập Mô Tả"
-              onChange={(e) => setCurrentBird({ ...currentBird, description: e.target.value })}
             />
           </CForm>
         </CModalBody>
@@ -156,6 +170,14 @@ const BirdManagement = () => {
         </CModalHeader>
         <CModalBody>
           <CForm>
+            <CFormLabel htmlFor="description" className="mt-3">Mã kiềng (ví dụ: 001)</CFormLabel>
+            <CFormInput
+              className='my-1'
+              type="text"
+              placeholder="Nhập mã kiềng"
+              value={currentBird.code}
+              onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
+            />
             <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
             <CFormInput
               className='my-1'
@@ -164,14 +186,7 @@ const BirdManagement = () => {
               value={currentBird.name}
               onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
             />
-            <CFormLabel htmlFor="description" className="mt-3">Mô Tả</CFormLabel>
-            <CFormInput
-              className='my-1'
-              type="text"
-              placeholder="Nhập Mô Tả"
-              value={currentBird.description}
-              onChange={(e) => setCurrentBird({ ...currentBird, description: e.target.value })}
-            />
+            
           </CForm>
         </CModalBody>
         <CModalFooter>
