@@ -109,7 +109,7 @@ const UserManagementList = () => {
       {/* Title and Search Form */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h3 className="mb-2 mb-md-0">Danh Sách Thành Viên</h3>
-        <CForm className="d-flex" style={{ maxWidth: "400px", width: "100%" }}>
+        {/* <CForm className="d-flex" style={{ maxWidth: "400px", width: "100%" }}>
           <CFormInput
             type="search"
             placeholder="Tìm kiếm..."
@@ -119,7 +119,7 @@ const UserManagementList = () => {
             className="me-2 flex-grow-1"
           />
           <CButton color="primary" onClick={handleSearch} style={{ borderRadius: '0.25rem', padding: '0.375rem 0.75rem' }}>Tìm Kiếm</CButton>
-        </CForm>
+        </CForm> */}
       </div>
       <hr className="my-4" />
 
@@ -129,7 +129,7 @@ const UserManagementList = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Tên Đăng Nhập</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
               <CTableHeaderCell scope="col">Số Điện Thoại</CTableHeaderCell>
@@ -142,13 +142,13 @@ const UserManagementList = () => {
             {currentUsers.map((user, index) => (
               <CTableRow key={user.id}>
                 <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                <CTableDataCell>
+                {/* <CTableDataCell>
                   <img
                     src={exampleImage1}
                     alt="Profile"
                     style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "50%" }}
                   />
-                </CTableDataCell>
+                </CTableDataCell> */}
                 <CTableDataCell>{user.username}</CTableDataCell>
                 <CTableDataCell>{user.email}</CTableDataCell>
                 <CTableDataCell>{user.phone}</CTableDataCell>

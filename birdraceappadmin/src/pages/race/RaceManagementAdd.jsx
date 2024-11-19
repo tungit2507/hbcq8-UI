@@ -127,21 +127,21 @@ const AddRaceForm = () => {
               </CRow>
               <CRow className="mb-3">
                 <CCol md={6}>
-                  <CFormLabel htmlFor="startDateReceive">Ngày Bắt Đầu Nhận Chim</CFormLabel>
+                  <CFormLabel htmlFor="startDateReceive">Ngày Bắt Đầu Nhận Đơn</CFormLabel>
                   <CFormInput
                     type="datetime-local"
                     id="startDateReceive"
-                    {...register('startDateReceive', { required: 'Ngày bắt đầu nhận chim là bắt buộc' })}
+                    {...register('startDateReceive', { required: 'Ngày bắt đầu nhận đơn là bắt buộc' })}
                     invalid={!!errors.startDateReceive}
                   />
                   {errors.startDateReceive && <div className="invalid-feedback">{errors.startDateReceive?.message}</div>}
                 </CCol>
                 <CCol md={6}>
-                  <CFormLabel htmlFor="endDateReceive">Ngày Kết Thúc Nhận Chim</CFormLabel>
+                  <CFormLabel htmlFor="endDateReceive">Ngày Kết Thúc Nhận Đơn</CFormLabel>
                   <CFormInput
                     type="datetime-local"
                     id="endDateReceive"
-                    {...register('endDateReceive', { required: 'Ngày kết thúc nhận chim là bắt buộc' })}
+                    {...register('endDateReceive', { required: 'Ngày kết thúc nhận đơn là bắt buộc' })}
                     invalid={!!errors.endDateReceive}
                   />
                   {errors.endDateReceive && <div className="invalid-feedback">{errors.endDateReceive?.message}</div>}
@@ -204,7 +204,13 @@ const AddRaceForm = () => {
                       placeholder='Nhập Tọa Độ'
                       type="text"
                       id={`tourStages[${index}].startPointCoor`}
-                      {...register(`tourStages[${index}].startPointCoor`, { required: 'Tọa độ là bắt buộc' })}
+                      {...register(`tourStages[${index}].startPointCoor`, { 
+                        required: 'Tọa độ là bắt buộc',
+                        pattern: {
+                          value: /^\d{1,3}\.\d{1,6};\d{1,3}\.\d{1,6}$/,
+                          message: 'Tọa độ không hợp lệ'
+                        }
+                      })}
                       invalid={!!errors.tourStages?.[index]?.startPointCoor}
                       readOnly
                     />

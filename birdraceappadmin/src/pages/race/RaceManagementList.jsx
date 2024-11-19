@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from "@coreui/react";
 import { Link } from "react-router-dom";
-import sampleImage from './../../assets/images/avatars/1.jpg'; // Đảm bảo đường dẫn chính xác
 import Swal from 'sweetalert2';
-import { fetchRaces, SortRank } from '../../api/raceApi';
-import ErrorImage from '../../assets/images/avatars/1.jpg';
-import { deleteRace } from '../../api/raceApi';
+import { fetchRaces, SortRank, deleteRace } from '../../api/raceApi';
 
 const RaceList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [races, setRaces] = useState([]);
+
   const handleOnclickRemove = (id) => {
     Swal.fire({
       title: "Bạn có chắc muốn xóa mục này?",
@@ -23,13 +21,13 @@ const RaceList = () => {
       confirmButtonText: "Xóa",
       cancelButtonText: "Hủy",
       reverseButtons: true
-    }).then( async (result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteRace(id);
         const loadRaces = async () => {
           try {
             const fetchedRaces = await fetchRaces();
-            setRaces(fetchedRaces);            
+            setRaces(fetchedRaces);
           } catch (error) {
             console.error('Lỗi khi tải danh sách giải đua:', error);
           }
@@ -38,7 +36,6 @@ const RaceList = () => {
       }
     });
   };
-
 
   const handleSortRank = (id) => {
     Swal.fire({
@@ -60,20 +57,18 @@ const RaceList = () => {
         }
       }
     });
-  }
+  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
   };
 
-
   useEffect(() => {
     const loadRaces = async () => {
       try {
         const fetchedRaces = await fetchRaces();
         setRaces(fetchedRaces);
-        console.log(races);
       } catch (error) {
         console.error('Lỗi khi tải danh sách giải đua:', error);
       }
@@ -82,11 +77,16 @@ const RaceList = () => {
     loadRaces();
   }, []);
 
+  const filteredRaces = races.filter(race =>
+    race.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = races?.slice(indexOfFirstItem, indexOfLastItem) || [];
+  const currentItems = filteredRaces.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="p-3 rounded">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
@@ -106,11 +106,11 @@ const RaceList = () => {
               lineHeight: "1.5"
             }}
           />
-          <CButton color="primary" style={{ 
+          {/* <CButton color="primary" style={{ 
             padding: "0.25rem 0.5rem", 
             fontSize: "1rem", 
             borderWidth: "1px"
-          }}>Tìm Kiếm</CButton> 
+          }}>Tìm Kiếm</CButton>  */}
         </CForm>
       </div>
       <hr />
@@ -120,37 +120,25 @@ const RaceList = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">ID</CTableHeaderCell>
-              {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Tên Giải Đua</CTableHeaderCell>
               <CTableHeaderCell scope="col">Số Chim</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Mở Đơn</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Đóng Đơn</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
-              {/* <CTableHeaderCell scope="col">Thời Gian Nghỉ</CTableHeaderCell> */}
-              {/* <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {currentItems?.map(race => (
+            {currentItems.map((race, index) => (
               <CTableRow key={race.id}>
-                <CTableHeaderCell scope="row">{race.id}</CTableHeaderCell>
-                {/* <CTableDataCell>
-                  <img
-                    src={race.image || ErrorImage}
-                    alt="Race"
-                    style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "50%" }}
-                    onError={(e) => {e.target.src = ErrorImage}}
-                  />
-                </CTableDataCell> */}
+                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                 <CTableDataCell>{race.name}</CTableDataCell>
                 <CTableDataCell>{race.birdsNum}</CTableDataCell>
                 <CTableDataCell>{race.startDateReceive}</CTableDataCell>
                 <CTableDataCell>{race.endDateReceive}</CTableDataCell>
                 <CTableDataCell>{race.startDateInfo}</CTableDataCell>
                 <CTableDataCell>{race.endDateInfo}</CTableDataCell>
-                {/* <CTableDataCell>{race.restTimePerDay}</CTableDataCell> */}
                 <CTableDataCell>
                   <Link className="btn btn-info m-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
                   <Link className="btn btn-warning m-1" to={`/management/race/tour-result-set?id=${race.id}`}>Kiểm Tra Xếp Hạng</Link>
@@ -174,7 +162,7 @@ const RaceList = () => {
           >
             Trước
           </CPaginationItem>
-          {[...Array(Math.ceil(races.length / itemsPerPage)).keys()].map(number => (
+          {[...Array(Math.ceil(filteredRaces.length / itemsPerPage)).keys()].map(number => (
             <CPaginationItem
               key={number + 1}
               active={number + 1 === currentPage}
@@ -185,7 +173,7 @@ const RaceList = () => {
           ))}
           <CPaginationItem
             onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === Math.ceil(races.length / itemsPerPage)}
+            disabled={currentPage === Math.ceil(filteredRaces.length / itemsPerPage)}
           >
             Tiếp
           </CPaginationItem>

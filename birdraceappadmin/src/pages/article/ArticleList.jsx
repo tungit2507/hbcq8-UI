@@ -90,7 +90,7 @@ const ArticleList = () => {
                 {/* <CTableDataCell>{article.content}</CTableDataCell> */}
                 <CTableDataCell>{article.isDeleted ? 'Không hoạt động' : 'Hoạt động'}</CTableDataCell>
                 {/* <CTableDataCell><img src={article.imgUrl || 'https://example.com/default.jpg'} alt={`Hình ảnh của ${article.title}`} style={{ width: '50px', height: '50px', borderRadius: '50%' }} /></CTableDataCell> */}
-                <CTableDataCell>{new Date(article.createdAt).toLocaleString('vi-VN')}</CTableDataCell>
+                <CTableDataCell>{article.createdAt}</CTableDataCell>
                 <CTableDataCell>{article.authorUserName}</CTableDataCell>
                 <CTableDataCell>
                   <CButton color="danger" onClick={() => handleDelete(article.id)}>Xóa</CButton>
