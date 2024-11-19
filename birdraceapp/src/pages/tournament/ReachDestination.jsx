@@ -13,24 +13,22 @@ const ReachDestination = () => {
     const [showReportModal, setShowReportModal] = useState(false);
     const [report, setReport] = useState({ birdCode: '', secretCode: '', tourCode: '' });
     const [birdCodes, setBirdCodes] = useState([]);
+    const [tourStages, setTourStages] = useState([]);
+    const [tourStageReport, setTourStageReport] = useState('');
 
     const handleAddReport = () => {
-        console.log('Add report:', report);
-        if (!report.tourCode || !report.secretCode) {
+        if (!report.birdCode || !report.secretCode) {
             toast.error('Vui lòng nhập đầy đủ thông tin.');
             return;
         }
-        if (!/^Z\d{3,4}$/.test(report.tourCode)) {
-            toast.error('Mã căn cứ phải bắt đầu bằng "Z" và theo sau là 3 hoặc 4 chữ số.');
+        
+        if (!/^\d{5}$/.test(report.secretCode)) {
+            toast.error('Mã bí mật phải có 5 số.');
             return;
         }
-        // if (!/^\d{5}$/.test(report.secretCode)) {
-        //     toast.error('Mã bí mật phải có 5 số.');
-        //     return;
-        // }
         Swal.fire({
             title: 'Xác Nhận Báo Cáo',
-            html: `Vui Lòng Xác Nhận Trước Khi Báo Cáo<p>${report.tourCode} ${report.birdCode} ${report.secretCode}</p>`,
+            html: `Vui Lòng Xác Nhận Trước Khi Báo Cáo<p>${report.birdCode} ${report.secretCode}</p>`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Xác nhận',
@@ -43,7 +41,7 @@ const ReachDestination = () => {
                     requesterId: currentUser.id,
                     birdCode: report.birdCode,
                     pointKey: report.secretCode,
-                    pointNo: birdCodes.indexOf(report.tourCode) === birdCodes.length - 1 ? 0 : birdCodes.indexOf(report.tourCode) + 1
+                    stageId: tourStageReport.stageId
                 };
                 axiosInstance.post('/tour/submit', formData, { responseType: 'blob' })
                     .then(response => {
@@ -81,7 +79,8 @@ const ReachDestination = () => {
     const fetchData = async () => {
         try {
             const response = await axiosInstance.get(`/tour/detail?tourId=${tourId}`);
-            setBirds(response.data);
+            setBirds(response?.data?.birdCodes);
+            setTourStages(response?.data?.tourStages);
         } catch (error) {
             console.error('Error fetching birds:', error);
         }
@@ -92,17 +91,8 @@ const ReachDestination = () => {
         fetchData();
     }, [tourId]);
 
-    const openReportModal = (bird) => {
-        const codes = [
-            bird.point1Code,
-            bird.point2Code,
-            bird.point3Code,
-            bird.point4Code,
-            bird.point5Code,
-            bird.endPointCode
-        ].filter(code => code !== null);
-        setBirdCodes(codes);
-        setReport({ ...report, birdCode: bird.birdCode });
+    const openReportModal = (tourStage) => {
+        setTourStageReport(tourStage);
         setShowReportModal(true);
     };
 
@@ -118,29 +108,20 @@ const ReachDestination = () => {
                     <CTable className="table-bordered rounded table-striped text-center">
                         <CTableHead>
                             <CTableRow>
-                                <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ Bắt Đầu</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ 1 </CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ 2</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ 3</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ 4</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ 5</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Mã Căn Cứ Đích</CTableHeaderCell>
-                                <CTableHeaderCell scope="col"></CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Chặng Đua</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {birds.map((bird, index) => (
+                            {tourStages.map((tourStage, index) => (
                                 <CTableRow key={index}>
-                                    <CTableDataCell>{bird.birdCode}</CTableDataCell>
-                                    <CTableDataCell>{bird.startPointCode}</CTableDataCell>
-                                    <CTableDataCell className={bird.hasSubmit1 ? 'bg-success text-white' : ''}>{bird.point1Code}</CTableDataCell>
-                                    <CTableDataCell className={bird.hasSubmit2 ? 'bg-success text-white' : ''}>{bird.point2Code}</CTableDataCell>
-                                    <CTableDataCell className={bird.hasSubmit3 ? 'bg-success text-white' : ''}>{bird.point3Code}</CTableDataCell>
-                                    <CTableDataCell className={bird.hasSubmit4 ? 'bg-success text-white' : ''}>{bird.point4Code}</CTableDataCell>
-                                    <CTableDataCell className={bird.hasSubmit5 ? 'bg-success text-white' : ''}>{bird.point5Code}</CTableDataCell>
-                                    <CTableDataCell className={bird.hasSubmit0 ? 'bg-success text-white' : ''}>{bird.endPointCode}</CTableDataCell>
-                                    <CTableDataCell><CButton color='danger' onClick={() => openReportModal(bird)}>Báo Cáo</CButton></CTableDataCell>
+                                    <CTableDataCell>{tourStage.orderNo}</CTableDataCell>
+                                    {/* <CTableDataCell>{tourStage.startPointCode}</CTableDataCell> */}
+                                    <CTableDataCell>
+                                        {tourStage.isActived && (
+                                            <CButton color='danger' onClick={() => openReportModal(tourStage)}>Báo Cáo</CButton>
+                                        )}
+                                    </CTableDataCell>
                                 </CTableRow>
                             ))}
                         </CTableBody>
@@ -151,19 +132,19 @@ const ReachDestination = () => {
             </div>
             <CModal visible={showReportModal} onClose={() => setShowReportModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Chỉnh Sửa Căn Cứ</CModalTitle>
+                    <CModalTitle>Báo Cáo</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormLabel htmlFor="tourCode">Mã Căn Cứ</CFormLabel>
+                        <CFormLabel htmlFor="birdCode">Chọn Chim Đua</CFormLabel>
                         <CFormSelect
-                            id="tourCode"
-                            value={report.tourCode}
-                            onChange={(e) => setReport({ ...report, tourCode: e.target.value })}
+                            id="birdCode"
+                            value={report.birdCode}
+                            onChange={(e) => setReport({ ...report, birdCode: e.target.value })}
                         >
-                            <option value="" disabled>Chọn căn cứ</option>
-                            {birdCodes.map((code, index) => (
-                                <option key={index} value={code}>{index === birdCodes.length - 1 ? `Căn Cứ Đích: ${code}` : `Căn Cứ ${index + 1}: ${code}`}</option>
+                            <option value="" disabled>Chọn chim đua</option>
+                            {birds.map((birdCode, index) => (
+                                <option key={index} value={birdCode}>{birdCode}</option>
                             ))}
                         </CFormSelect>
                         <CFormLabel htmlFor="secretCode">Mã Bí Mật</CFormLabel>

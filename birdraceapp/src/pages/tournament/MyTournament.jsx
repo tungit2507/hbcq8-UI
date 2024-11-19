@@ -38,10 +38,6 @@ const MyTournament = () => {
                                 <CTableHeaderCell scope="col">Tên Giải Đấu</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Ngày Kết Thúc</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Vị Trí Bắt Đầu</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Vị Trí Kết Thúc</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Số Lượng Chim</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Trạng Thái</CTableHeaderCell>
                                 <CTableHeaderCell scope="col"></CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
@@ -50,22 +46,16 @@ const MyTournament = () => {
                                 <CTableRow key={tournament.tourId}>
                                     <CTableDataCell>{tournament.tourId}</CTableDataCell>
                                     <CTableDataCell>{tournament.tourName}</CTableDataCell>
-                                    <CTableDataCell>{tournament.startDate}</CTableDataCell>
-                                    <CTableDataCell>{tournament.endDate}</CTableDataCell>
-                                    <CTableDataCell>{tournament.startLocationCode}</CTableDataCell>
-                                    <CTableDataCell>{tournament.endLocationCode}</CTableDataCell>
-                                    <CTableDataCell>{tournament.birdsNum}</CTableDataCell>
-                                    <CTableDataCell>{tournament.tourStatus}</CTableDataCell>
+                                    <CTableDataCell>{tournament.startDateInfo}</CTableDataCell>
+                                    <CTableDataCell>{tournament.endDateInfo}</CTableDataCell>
                                     <CTableDataCell>
-                                        {tournament.isFinished === false ? (
-                                            <Link to={`/tour-detail?tourId=${tournament.tourId}`} className="btn btn-primary">
+                                            <Link to={`/tour-detail?tourId=${tournament.tourId}`} className="btn btn-warning m-1 ">
                                                 Báo Về Đích
                                             </Link>
-                                        ) : (
-                                            <Link to={`/tournament-result?tourId=${tournament.tourId}`} className="btn btn-primary">
+                                            <Link to={`/tournament-result?tourId=${tournament.tourId}`} className="btn btn-primary m-1">
                                                 Xem Kết Quả
                                             </Link>
-                                        )}
+                                     
 
                                         
                                     </CTableDataCell>

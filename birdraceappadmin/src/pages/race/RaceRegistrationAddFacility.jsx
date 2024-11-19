@@ -3,9 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { fetchFacilities } from '../../api/FacilityApi';
 import { CForm, CFormLabel, CFormInput, CButton, CRow, CCol, CFormSelect } from '@coreui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { getRaceRegistrationDetail } from '../../api/raceRegistration';
+import { calculdateDistance, getRaceRegistrationDetail } from '../../api/raceRegistration';
 import { fetchRaceById } from '../../api/raceApi';
-import { calculateDistance } from '../../api/raceLocationApi';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import { toast } from 'react-toastify';
 import { approveRaceRegistration } from '../../api/raceRegistration';
@@ -25,25 +24,16 @@ const RaceRegistrationAddFacility = () => {
   const [raceRegistration, setRaceRegistration] = useState(null);
   const [race, setRace] = useState(null);
   const [stageDistances, setStageDistances] = useState([]);
-  const [endPointDistance, setEndPointDistance] = useState(0);
-
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const raceRegistrationDetail = await getRaceRegistrationDetail(raceId, requesterId);
-        setRaceRegistration(raceRegistrationDetail);
-
         const facilitiesData = await fetchFacilities(requesterId);
         setFacilities(facilitiesData);
 
-        const race = await fetchRaceById(raceId);
-        setRace(race);
-
-        setValue('startPointCode', race.startPointCode);
-        setValue('endPointCode', race.endPointCode);
-
+        const race = await getRaceRegistrationDetail(raceId, requesterId);
+        setRace(race[0]);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -52,108 +42,58 @@ const RaceRegistrationAddFacility = () => {
     fetchData();
   }, [raceId, requesterId, setValue]);
 
-  const handleCalculateDistance = async () => {
-    const selectedFacilities = watch('selectedFacilities');
-    const unselectedFacility = selectedFacilities.find(facility => !facility.code);
 
-    if (unselectedFacility) {
-      toast.error('Vui lòng chọn tất cả các căn cứ trước khi tính khoảng cách.');
-      return;
-    }
-
-    const stageCoordinates = watch('selectedFacilities').map(stage => stage.code);
-    // const coordinatePattern = /^\d+(\.\d+)?;\d+(\.\d+)?$/;
-    
-    const stageCoordinatesWithCoor = stageCoordinates.map(code => {
-      const facility = facilities.find(facility => facility.code === code);
-      return facility ? facility.pointCoor : null;
-    });
-
+  const handleFacilityChange = async (index, facilityCode) => {
     try {
-      const calculateDistanceDto = {
-        startPoint: race.startPointCoor,
-        point1: stageCoordinatesWithCoor[0] || null,
-        point2: stageCoordinatesWithCoor[1] || null,
-        point3: stageCoordinatesWithCoor[2] || null,
-        point4: stageCoordinatesWithCoor[3] || null,
-        point5: stageCoordinatesWithCoor[4] || null,
-        endPoint: race.endPointCoor
-      };
+      const selectedFacility = facilities.find(f => f.code === facilityCode);
+      const startPointCoor = race.tourStages[index].startPointCoor;
+      const endPointCoor = selectedFacility.pointCoor;
+      const distance = await calculdateDistance(startPointCoor,endPointCoor);
 
-      const result = await calculateDistance(calculateDistanceDto);
-      console.log('Kết quả từ API:', result);
+      setStageDistances(prevDistances => {
+        const newDistances = [...prevDistances];
+        newDistances[index] = distance.toFixed(4);
+        return newDistances;
+      });
 
-      if (result) {
-        setValue('endPoint.distance', result.endPoint);
-        setEndPointDistance(result.endPoint);
-        console.log('Đã cập nhật khoảng cách điểm kết thúc:', result.endPoint);
-        
-        const newStageDistances = [];
-        for (let i = 1; i <= 5; i++) {
-          const pointDistance = result[`point${i}`];
-          if (pointDistance !== null && pointDistance !== undefined && pointDistance !== 0) {
-            newStageDistances.push(pointDistance);
-          } else {
-            break;
-          }
-        }
-        
-        setStageDistances(newStageDistances);
-        
-        newStageDistances.forEach((distance, index) => {
-          setValue(`selectedFacilities[${index}].distance`, distance);
-        });
-      } else {
-        toast.error('Không nhận được kết quả tính khoảng cách hợp lệ.');
-      }
+      setValue(`selectedFacilities[${index}].distance`, distance.toFixed(4));
     } catch (error) {
-      console.error('Lỗi khi tính khoảng cách:', error);
-      toast.error('Đã xảy ra lỗi khi tính khoảng cách.');
+      console.error('Error calculating distance:', error);
     }
-  }
-
-  const navigate = useNavigate();
+  };
 
   const onSubmit = async (data) => {
+    try {
+      const tourStages = data.selectedFacilities.map((facility, index) => {
+      
 
-    const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        return {
+          stageId: race.tourStages[index].stageId,
+          endPointCode: facility.code,
+          endPointCoor: facilities.find(f => f.code === facility.code).pointCoor,
+          endPointDist: facility.distance
+        };
+      });
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+      const formData = {
+        tourId: raceId,
+        requesterId: requesterId,
+        approverId: currentUser.id,
+        tourStages
+      };
 
-    const formData = {
-      tourId: raceId,
-      requesterId: requesterId,
-      approverId: currentUser.id, // Set this value as needed
-      startPointCode: data.startPointCode,
-      startPointCoor: race.startPointCoor,
-      point1Code: data.selectedFacilities[0]?.code || null,
-      point1Coor: facilities.find(facility => facility.code === data.selectedFacilities[0]?.code)?.pointCoor || null,
-      point1Dist: data.selectedFacilities[0]?.distance || 0,
-      point2Code: data.selectedFacilities[1]?.code || null,
-      point2Coor: facilities.find(facility => facility.code === data.selectedFacilities[1]?.code)?.pointCoor || null,
-      point2Dist: data.selectedFacilities[1]?.distance || 0,
-      point3Code: data.selectedFacilities[2]?.code || null,
-      point3Coor: facilities.find(facility => facility.code === data.selectedFacilities[2]?.code)?.pointCoor || null,
-      point3Dist: data.selectedFacilities[2]?.distance || 0,
-      point4Code: data.selectedFacilities[3]?.code || null,
-      point4Coor: facilities.find(facility => facility.code === data.selectedFacilities[3]?.code)?.pointCoor || null,
-      point4Dist: data.selectedFacilities[3]?.distance || 0,
-      point5Code: data.selectedFacilities[4]?.code || null,
-      point5Coor: facilities.find(facility => facility.code === data.selectedFacilities[4]?.code)?.pointCoor || null,
-      point5Dist: data.selectedFacilities[4]?.distance || 0,
-      endPointCode: data.endPointCode,
-      endPointCoor: race.endPointCoor,
-      endPointDist: data.endPoint.distance,
-      memo: data.memo || ''
-    };
-
-      try {
-        await approveRaceRegistration(formData);
-        showSuccessNotification("Đơn đăng ký đã được duyệt thành công");
-      } catch (error) {
-        showErrorNotification("Lỗi khi duyệt đơn đăng ký");
-      }
-      navigate(`/management/race/registration-list?id=${raceId}`);
+      await approveRaceRegistration(formData);
+      showSuccessNotification("Đơn đăng ký đã được duyệt thành công");
+      navigate(`/management/race/registration-list?id=${raceId}`)
+    } catch (error) {
+      console.error('Error approving race registration:', error);
+      showErrorNotification("Lỗi khi duyệt đơn đăng ký. Vui lòng thử lại sau.");
+    }
   };
+
+
+  
 
   return (
     <CRow className="justify-content-center">
@@ -164,22 +104,11 @@ const RaceRegistrationAddFacility = () => {
           </CCardHeader>
           <CCardBody>
             <CForm onSubmit={handleSubmit(onSubmit)}>
-              <CRow className="mb-3">
-                {/* <CCol md={6}>
-                  <CFormLabel htmlFor="startPointCode">Mã căn cứ bắt đầu</CFormLabel>
-                  <CFormInput
-                    id="startPointCode"
-                    disabled
-                    {...register('startPointCode', { required: 'Mã căn cứ bắt đầu là bắt buộc' })}
-                  />
-                </CCol> */}
-              </CRow>
-
               {race?.tourStages?.map((field, index) => (
                 <CRow className="mb-3" key={field.id}>
                   <CCol md={3}>
-                  <CFormLabel>Điểm Xuất Phát {index + 1}</CFormLabel>
-                  <CFormInput
+                    <CFormLabel>Điểm Xuất Phát {index + 1}</CFormLabel>
+                    <CFormInput
                       type="text"
                       id={`field.startTime`}
                       value={field.startPointCode + ' - ' + field.startPointName}
@@ -187,13 +116,13 @@ const RaceRegistrationAddFacility = () => {
                     />
                   </CCol>
                   <CCol md={4}>
-                    
                     <CFormLabel htmlFor={`selectedFacilities[${index}].code`}>Căn Cứ Đích {index + 1}</CFormLabel>
                     <CFormSelect
                       id={`selectedFacilities[${index}].code`}
                       {...register(`selectedFacilities[${index}].code`, { required: 'Mã căn cứ là bắt buộc' })}
+                      onChange={(e) => handleFacilityChange(index, e.target.value)}
                     >
-                      <option value="">Chọn mã căn cứ</option>
+                      <option value="">Chọn căn cứ</option>
                       {facilities.map(facility => (
                         <option key={facility.id} value={facility.code}>{facility.code + " - " + facility.name}</option>
                       ))}
@@ -209,85 +138,11 @@ const RaceRegistrationAddFacility = () => {
                       readOnly
                     />
                   </CCol>
-                  <CCol md={1} className="d-flex align-items-end">
-                    <CButton color="danger" onClick={() => remove(index)}>Xóa</CButton>
-                  </CCol>
                 </CRow>
               ))}
-
-
-              {fields.map((field, index) => (
-                <CRow className="mb-3" key={field.id}>
-                  <CCol md={6}>
-                    <CFormLabel htmlFor={`selectedFacilities[${index}].code`}>Mã căn cứ {index + 1}</CFormLabel>
-                    <CFormSelect
-                      id={`selectedFacilities[${index}].code`}
-                      {...register(`selectedFacilities[${index}].code`, { required: 'Mã căn cứ là bắt buộc' })}
-                    >
-                      <option value="">Chọn mã căn cứ</option>
-                      {facilities.map(facility => (
-                        <option key={facility.id} value={facility.code}>{facility.code}</option>
-                      ))}
-                    </CFormSelect>
-                  </CCol>
-                  <CCol md={3}>
-                    <CFormLabel htmlFor={`selectedFacilities[${index}].distance`}>Khoảng Cách (kilômét)</CFormLabel>
-                    <CFormInput
-                      type="number"
-                      id={`selectedFacilities[${index}].distance`}
-                      {...register(`selectedFacilities[${index}].distance`, { required: 'Số mét chặng là bắt buộc' })}
-                      value={stageDistances[index] || ''}
-                      readOnly
-                    />
-                  </CCol>
-                  <CCol md={3} className="d-flex align-items-end">
-                    <CButton color="danger" onClick={() => remove(index)}>Xóa</CButton>
-                  </CCol>
-                </CRow>
-              ))}
-              {/* <CRow className="mb-3">
+              <CRow>
                 <CCol>
-                  {fields.length < 5 && (
-                    <CButton type="button" color="secondary" onClick={() => append({ code: '' })}>Thêm Căn Cứ</CButton>
-                  )}
-                </CCol>
-              </CRow> */}
-              {/* <CRow>
-                <CCol md={6}>
-                  <CFormLabel htmlFor="endPointCode">Mã căn cứ đích</CFormLabel>
-                  <CFormInput
-                    id="endPointCode"
-                    disabled
-                    {...register('endPointCode', { required: 'Mã căn cứ đích là bắt buộc' })}
-                  />
-                </CCol>
-                <CCol md={3}>
-                  <CFormLabel htmlFor="endPointDistance">Khoảng Cách (kilômét)</CFormLabel>
-                  <CFormInput
-                    type="number"
-                    id="endPointDistance"
-                    {...register('endPoint.distance', { required: 'Số mét điểm kết thúc là bắt buộc' })}
-                    value={endPointDistance || ''}
-                    readOnly
-                  />
-                </CCol>
-               
-              </CRow> */}
-              <CRow>
-                <CCol md={10} className="text-end">
-                  <CButton
-                    dis
-                    color="primary"
-                    onClick={() => handleCalculateDistance()}
-                    disabled
-                  >
-                    Tính Khoảng Cách
-                  </CButton>
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol className="text-center">
-                  <CButton className='my-2' type="submit" color="primary">Duyệt Đơn Đăng Ký</CButton>
+                  <CButton type="submit" color="primary">Duyệt Đơn Đăng Ký</CButton>
                 </CCol>
               </CRow>
             </CForm>

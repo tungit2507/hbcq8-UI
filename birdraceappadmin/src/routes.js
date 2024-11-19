@@ -28,6 +28,7 @@ import RaceRegistrationAddFacility from "./pages/race/RaceRegistrationAddFacilit
 import TourResultSet from "./pages/race/TourResultSet";
 import StartPointList from "./pages/facility/StartPointList";
 import BirdManagement from "./pages/bird/BirdManagementList";
+import DetailRaceForm from "./pages/race/RacemanagementDetail";
 
 const routes = createBrowserRouter([
     {
@@ -40,6 +41,7 @@ const routes = createBrowserRouter([
             { path: "/management/race/list", element: <RaceManagementList/>, name: "Race List" },
             { path: "/management/race/add", element: <RaceManagementAdd/>, name: "Add Race" },
             { path: "/management/race/update", element: <RaceManagementUpdate/>, name: "Update Race" },
+            { path: "/management/race/detail", element: <DetailRaceForm/>, name: "Update Race" },
             { path: "/management/race/registration-list", element: <RaceRegistrationList/>, name: "RaceRegistrationList" },
             { path: "/management/race/tour-result-set", element: <TourResultSet/>, name: "RaceRegistrationList" },
             { path: "/management/race/registration-list/approve", element: <RaceRegistrationAddFacility/>, name: "RaceRegistrationList" },
