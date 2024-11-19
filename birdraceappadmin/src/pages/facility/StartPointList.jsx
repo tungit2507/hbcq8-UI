@@ -35,7 +35,7 @@ const StartPointList = () => {
         }
 
         
-        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
+        if (!/^\d{1,3}\.\d{1,6};\d{1,3}\.\d{1,6}$/.test(currentFacility.pointCoor)) {
             showWarningNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }
@@ -69,7 +69,7 @@ const StartPointList = () => {
         }
 
         
-        if (!/^\d{1,3}\.\d{1,3};\d{1,3}\.\d{1,3}$/.test(currentFacility.pointCoor)) {
+        if (!/^\d{1,3}\.\d{1,6};\d{1,3}\.\d{1,6}$/.test(currentFacility.pointCoor)) {
             showWarningNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }
