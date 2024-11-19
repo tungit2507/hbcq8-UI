@@ -48,8 +48,15 @@ const TournamentResults = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">Hạng</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã CC</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Căn Cứ</CTableHeaderCell>
               <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Tốc Độ Trung Bình</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Khoảng Cách</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Thời Gian Bay Về</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Thời Gian Thả</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Thời Gian Bay Hoàn Thành</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Vận Tốc</CTableHeaderCell>
 
             </CTableRow>
           </CTableHead>
@@ -57,7 +64,14 @@ const TournamentResults = () => {
             {results.map(ranker => (
               <CTableRow key={ranker.id}>
                 <CTableHeaderCell scope="row">{ranker.rank}</CTableHeaderCell>
+                <CTableDataCell>{ranker.userLocationCode}</CTableDataCell>
+                <CTableDataCell>{ranker.userLocationName}</CTableDataCell>
                 <CTableDataCell>{ranker.birdCode}</CTableDataCell>
+                <CTableDataCell>{ranker.userLocationCoor}</CTableDataCell>
+                <CTableDataCell>{ranker.distance}</CTableDataCell>
+                <CTableDataCell>{ranker.endTime}</CTableDataCell>
+                <CTableDataCell>{ranker.startTime}</CTableDataCell>
+                <CTableDataCell>{ranker.totalTime}</CTableDataCell>
                 <CTableDataCell>{ranker.speed}</CTableDataCell>
               </CTableRow>
             ))}
