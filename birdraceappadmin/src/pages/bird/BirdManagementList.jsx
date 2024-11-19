@@ -31,8 +31,8 @@ const BirdManagement = () => {
       return;
     }
 
-    if (!/^\d{3,4}$/.test(currentBird.code)) {
-      showErrorNotification("Mã kiềng chỉ được chứa 3-4 chữ số.");
+    if (!/^[a-zA-Z0-9]{16}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng phải chứa đúng 16 ký tự bao gồm chữ cái và số.");
       return;
     }
 
@@ -57,8 +57,8 @@ const BirdManagement = () => {
     }
 
 
-    if (!/^\d{3,4}$/.test(currentBird.code)) {
-      showErrorNotification("Mã kiềng chỉ được chứa 3-4 chữ số.");
+    if (!/^[a-zA-Z0-9]{16}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng phải chứa đúng 16 ký tự bao gồm chữ cái và số.");
       return;
     }
     try {
@@ -141,7 +141,7 @@ const BirdManagement = () => {
         </CModalHeader>
         <CModalBody>
           <CForm>
-            <CFormLabel htmlFor="description" className="mt-3">Mã Kiềng (Ví dụ: 001)</CFormLabel>
+            <CFormLabel htmlFor="description" className="mt-3">Mã Kiềng</CFormLabel>
             <CFormInput
               className='my-1'
               type="text"
@@ -170,7 +170,7 @@ const BirdManagement = () => {
         </CModalHeader>
         <CModalBody>
           <CForm>
-            <CFormLabel htmlFor="description" className="mt-3">Mã kiềng (ví dụ: 001)</CFormLabel>
+            <CFormLabel htmlFor="description" className="mt-3">Mã kiềng</CFormLabel>
             <CFormInput
               className='my-1'
               type="text"
