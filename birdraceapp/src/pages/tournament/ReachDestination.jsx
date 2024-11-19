@@ -28,7 +28,7 @@ const ReachDestination = () => {
         }
         Swal.fire({
             title: 'Xác Nhận Báo Cáo',
-            html: `Vui Lòng Xác Nhận Trước Khi Báo Cáo<p>${report.birdCode} ${report.secretCode}</p>`,
+            html: `Vui Lòng Xác Nhận Trước Khi Báo Cáo<p>${tourStageReport.endPointCode} ${report.birdCode} ${report.secretCode}</p>`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Xác nhận',
