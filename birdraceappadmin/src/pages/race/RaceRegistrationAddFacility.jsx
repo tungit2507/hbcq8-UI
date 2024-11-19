@@ -182,7 +182,7 @@ const RaceRegistrationAddFacility = () => {
                   <CFormInput
                       type="text"
                       id={`field.startTime`}
-                      value={field.startPointName}
+                      value={field.startPointCode + ' - ' + field.startPointName}
                       readOnly
                     />
                   </CCol>
@@ -195,7 +195,7 @@ const RaceRegistrationAddFacility = () => {
                     >
                       <option value="">Chọn mã căn cứ</option>
                       {facilities.map(facility => (
-                        <option key={facility.id} value={facility.code}>{facility.code}</option>
+                        <option key={facility.id} value={facility.code}>{facility.code + " - " + facility.name}</option>
                       ))}
                     </CFormSelect>
                   </CCol>

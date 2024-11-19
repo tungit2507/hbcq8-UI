@@ -179,7 +179,7 @@ const AddRaceForm = () => {
                         >
                           <option value="">Chọn Mã Điểm Xuất Phát</option>
                           {systemLocations.map(location => (
-                            <option key={location.code} value={location.code}>{location.code}</option>
+                            <option key={location.code} value={location.code}>{location.code + ' - ' + location.name }</option>
                           ))}
                         </CFormSelect>
                       )}
@@ -230,6 +230,7 @@ const AddRaceForm = () => {
                     <CFormLabel htmlFor={`tourStages[${index}].restTimePerDay`}>Thời Gian Nghỉ {index + 1}</CFormLabel>
                     <CFormInput
                       type="number"
+                      step={0.1}
                       id={`tourStages[${index}].restTimePerDay`}
                       {...register(`tourStages[${index}].restTimePerDay`, { required: 'Thời gian nghỉ là bắt buộc' })}
                       invalid={!!errors.tourStages?.[index]?.restTimePerDay}

@@ -197,7 +197,7 @@ const UpdateRaceForm = () => {
                         >
                           <option value="">Chọn Mã Điểm Xuất Phát</option>
                           {systemLocations.map(location => (
-                            <option key={location.code} value={location.code}>{location.code}</option>
+                            <option key={location.code} value={location.code}>{location.code + ' - ' + location.name }</option>
                           ))}
                         </CFormSelect>
                       )}
