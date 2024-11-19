@@ -16,6 +16,7 @@ import ReachDestination from "./pages/tournament/ReachDestination";
 import AboutUs from "./pages/about/AboutUs";
 import ForgotPassword from "./pages/author/ForgotPassword";
 import ChangePassword from "./pages/author/ChangePassword";
+import TournamentStageToResults from "./pages/tournament/TournamentStageToResult";
 
 const routes = createBrowserRouter([
     
@@ -39,6 +40,7 @@ const routes = createBrowserRouter([
             { path: "/facibilitys", element: <FacibilityManagement/> },
             { path: "/my-tour", element: <Mytournament/> },
             { path: "/tour-detail", element: <ReachDestination/> },
+            { path: "/tour-stage", element: <TournamentStageToResults/> },
         ]
     },
     { path: "*", element: <Page404/> },

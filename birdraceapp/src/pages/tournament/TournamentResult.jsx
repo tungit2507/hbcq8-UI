@@ -13,12 +13,13 @@ const TournamentResults = () => {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const tourId = query.get('tourId');
+    const stageId = query.get('stageId');
 
 
     useEffect(() => {
         const fetchResults = async () => {
             try {
-            const response = await axioInstance.get(`/tour/view-rank?tourId=${tourId}`);
+            const response = await axioInstance.get(`/tour/view-rank?tourId=${tourId}&&stageId=${stageId}`);
             setResults(response.data);
             } catch (error) {
             console.error('Error fetching tournament results:', error);
@@ -57,7 +58,7 @@ const TournamentResults = () => {
               <CTableRow key={ranker.id}>
                 <CTableHeaderCell scope="row">{ranker.rank}</CTableHeaderCell>
                 <CTableDataCell>{ranker.birdCode}</CTableDataCell>
-                <CTableDataCell>{ranker.avgSpeed}</CTableDataCell>
+                <CTableDataCell>{ranker.speed}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>

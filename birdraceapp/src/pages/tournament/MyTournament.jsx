@@ -52,12 +52,9 @@ const MyTournament = () => {
                                             <Link to={`/tour-detail?tourId=${tournament.tourId}`} className="btn btn-warning m-1 ">
                                                 Báo Về Đích
                                             </Link>
-                                            <Link to={`/tournament-result?tourId=${tournament.tourId}`} className="btn btn-primary m-1">
+                                            <Link to={`/tour-stage?tourId=${tournament.tourId}`} className="btn btn-primary m-1">
                                                 Xem Kết Quả
-                                            </Link>
-                                     
-
-                                        
+                                            </Link>   
                                     </CTableDataCell>
                                 </CTableRow>
                             ))}
