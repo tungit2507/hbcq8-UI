@@ -31,8 +31,8 @@ const BirdManagement = () => {
       return;
     }
 
-    if (!/^[a-zA-Z0-9]{16}$/.test(currentBird.code)) {
-      showErrorNotification("Mã kiềng phải chứa đúng 16 ký tự bao gồm chữ cái và số.");
+    if (!/^[a-zA-Z0-9]{3,16}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng phải chứa từ 3 đến 16 ký tự bao gồm chữ cái và số.");
       return;
     }
 
@@ -56,11 +56,11 @@ const BirdManagement = () => {
       return;
     }
 
-
-    if (!/^[a-zA-Z0-9]{16}$/.test(currentBird.code)) {
-      showErrorNotification("Mã kiềng phải chứa đúng 16 ký tự bao gồm chữ cái và số.");
+    if (!/^[a-zA-Z0-9]{3,16}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng phải chứa từ 3 đến 16 ký tự bao gồm chữ cái và số.");
       return;
     }
+    
     try {
       const formData = new FormData();
       formData.append('userId', userId);
