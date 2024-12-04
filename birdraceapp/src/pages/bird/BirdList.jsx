@@ -137,7 +137,7 @@ const BirdList = () => {
                     <CTableHead>
                         <CTableRow>
                             <CTableHeaderCell scope="col">ID</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell> */}
                             <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                         </CTableRow>
@@ -146,7 +146,7 @@ const BirdList = () => {
                         {userBirds.map((bird, index) => (
                             <CTableRow key={bird.id}>
                                 <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                                <CTableDataCell>{bird.name}</CTableDataCell>
+                                {/* <CTableDataCell>{bird.name}</CTableDataCell> */}
                                 <CTableDataCell>{bird.code}</CTableDataCell>
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird(bird); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
@@ -201,14 +201,14 @@ const BirdList = () => {
                             onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
                             disabled
                         /> */}
-                        <CFormInput
+                        {/* <CFormInput
                             className='my-1'
                             type="text"
                             placeholder="Nhập Tên Chim"
                             label="Tên Chim"
                             value={currentBird.name}
                             onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
-                        />
+                        /> */}
                         <CFormInput
                             className='my-1'
                             type="text"
@@ -217,7 +217,6 @@ const BirdList = () => {
                             value={currentBird.description}
                             onChange={(e) => setCurrentBird({ ...currentBird, description: e.target.value })}
                         />
-                        
                     </CForm>
                 </CModalBody>
                 <CModalFooter>
