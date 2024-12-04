@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from "@coreui/react";
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CForm, CFormInput, CButton } from "@coreui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import exampleImage1 from './../../assets/images/avatars/1.jpg';
 import Swal from 'sweetalert2';
@@ -13,13 +13,16 @@ const UserManagementList = () => {
   const currentPage = parseInt(queryParams.get('page') || '1', 10);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [currentPageState, setCurrentPage] = useState(currentPage); // Định nghĩa setCurrentPage
   const usersPerPage = 10;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const users = await getListUser();
+        setUsers(users);
         setFilteredUsers(users);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -29,26 +32,29 @@ const UserManagementList = () => {
     fetchUsers();
   }, []);
 
-  const indexOfLastUser = currentPage * usersPerPage;
+  useEffect(() => {
+    const filtered = users.filter(user =>
+      user.username.includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.phone.includes(searchQuery)
+    );
+    setFilteredUsers(filtered);
+    setCurrentPage(1);
+  }, [searchQuery, users]);
+
+  const indexOfLastUser = currentPageState * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
     navigate(`?page=${pageNumber}`);
   };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
-  };
-
-  const handleSearch = () => {
-    const filtered = filteredUsers.filter(user =>
-      user.username.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-    navigate('?page=1');
   };
 
   const handleDelete = async (id) => {
@@ -68,6 +74,7 @@ const UserManagementList = () => {
         await deleteUser(id);
         Swal.fire('Xóa thành công!', 'Người dùng đã được xóa.', 'success');
         const updatedUsers = await getListUser();
+        setUsers(updatedUsers);
         setFilteredUsers(updatedUsers);
       } catch (error) {
         const errorMessage = error.response.data.errorMessage;
@@ -96,6 +103,7 @@ const UserManagementList = () => {
         await changeRole(id, newRole);
         Swal.fire('Thay đổi thành công!', 'Vai trò của người dùng đã được thay đổi.', 'success');
         const updatedUsers = await getListUser();
+        setUsers(updatedUsers);
         setFilteredUsers(updatedUsers);
       } catch (error) {
         console.error('Error changing user role:', error);
@@ -109,7 +117,7 @@ const UserManagementList = () => {
       {/* Title and Search Form */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h3 className="mb-2 mb-md-0">Danh Sách Thành Viên</h3>
-        {/* <CForm className="d-flex" style={{ maxWidth: "400px", width: "100%" }}>
+        <CForm className="d-flex" style={{ maxWidth: "400px", width: "100%" }}>
           <CFormInput
             type="search"
             placeholder="Tìm kiếm..."
@@ -118,8 +126,7 @@ const UserManagementList = () => {
             style={{ borderRadius: '0.25rem', border: '1px solid #ced4da', padding: '0.375rem 0.75rem' }}
             className="me-2 flex-grow-1"
           />
-          <CButton color="primary" onClick={handleSearch} style={{ borderRadius: '0.25rem', padding: '0.375rem 0.75rem' }}>Tìm Kiếm</CButton>
-        </CForm> */}
+        </CForm>
       </div>
       <hr className="my-4" />
 
@@ -129,12 +136,10 @@ const UserManagementList = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-              {/* <CTableHeaderCell scope="col">Hình Ảnh</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Tên Đăng Nhập</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
               <CTableHeaderCell scope="col">Số Điện Thoại</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Địa Chỉ</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Vai Trò</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Địa Chỉ</CTableHeaderCell> */}
               <CTableHeaderCell scope="col"></CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -142,23 +147,14 @@ const UserManagementList = () => {
             {currentUsers.map((user, index) => (
               <CTableRow key={user.id}>
                 <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                {/* <CTableDataCell>
-                  <img
-                    src={exampleImage1}
-                    alt="Profile"
-                    style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "50%" }}
-                  />
-                </CTableDataCell> */}
                 <CTableDataCell>{user.username}</CTableDataCell>
                 <CTableDataCell>{user.email}</CTableDataCell>
                 <CTableDataCell>{user.phone}</CTableDataCell>
-                <CTableDataCell>{user.address}</CTableDataCell>
-                <CTableDataCell>{user.roleId=== 1?"Admin":"User"}</CTableDataCell>
+                {/* <CTableDataCell>{user.address}</CTableDataCell> */}
                 <CTableDataCell>
                   <Link className="m-1 btn btn-warning" to={`/management/bird/list?user=${user.id}`}>QL Chim Đua</Link>
                   <Link className="m-1 btn btn-success" to={`/management/facility/list?user=${user.id}`}>QL Căn Cứ</Link>
                   <Link className="m-1 btn btn-primary" to={`/management/user/update?id=${user.id}`}>Chỉnh Sửa</Link>
-                  {/* <CButton className='m-1' color="info" onClick={() => handleChangeRole(user.id)}>Phân Quyền</CButton> */}
                   <CButton className='m-1' color="danger" onClick={() => handleDelete(user.id)}>Xóa</CButton>
                 </CTableDataCell>
               </CTableRow>
@@ -171,23 +167,23 @@ const UserManagementList = () => {
       <div className="d-flex justify-content-center mt-4">
         <CPagination aria-label="Page navigation example">
           <CPaginationItem 
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPageState - 1)}
+            disabled={currentPageState === 1}
           >
             Trước
           </CPaginationItem>
           {[...Array(totalPages)].map((_, index) => (
             <CPaginationItem
               key={index}
-              active={currentPage === index + 1}
+              active={currentPageState === index + 1}
               onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}
             </CPaginationItem>
           ))}
           <CPaginationItem
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPageState + 1)}
+            disabled={currentPageState === totalPages}
           >
             Tiếp
           </CPaginationItem>
