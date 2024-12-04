@@ -59,7 +59,7 @@ const Header = () => {
               <Nav.Item as="li">
                 <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Liên Hệ</Nav.Link>
               </Nav.Item>
-              <NavDropdown title="Tài Khoản" id="basic-nav-dropdown custom-dropdown-menu" align="start">
+              <NavDropdown title={`Xin chào, ${currentUser ? currentUser.username : ''}`} id="basic-nav-dropdown custom-dropdown-menu" align="start">
                 {isLoggedIn === "true" ? 
                   <ul>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">
@@ -72,7 +72,7 @@ const Header = () => {
                       <Link to={"/my-tour"}>Giải Đua Của Tôi</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Link to={"/profile"}>Tài Khoản ({currentUser ? currentUser.username : ''}) </Link>
+                      <Link to={"/profile"}> QL Tài Khoản  </Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="li" className="dropdown-item nav-link">
                       <Logout />
