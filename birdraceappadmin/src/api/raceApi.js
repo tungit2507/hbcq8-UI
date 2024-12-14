@@ -120,4 +120,12 @@ export const SortRank = async (tourId) => {
 }
 
 
+export const fetchTourStageResult = async (tourId, stageId) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_RACES}/approve?tourId=${tourId}&&stageId=${stageId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error approve race result :', error);
+        Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+    }
 }
