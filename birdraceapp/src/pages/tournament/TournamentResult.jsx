@@ -8,12 +8,14 @@ import { useLocation } from 'react-router-dom';
 const TournamentResults = () => {
     const [results, setResults] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isFinished, setIsFinished] = useState(false);
     const resultsPerPage = 10;
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const tourId = query.get('tourId');
     const stageId = query.get('stageId');
+    
 
 
     useEffect(() => {
@@ -25,6 +27,18 @@ const TournamentResults = () => {
             console.error('Error fetching tournament results:', error);
             }
         };
+
+        const getStageStatus = async () => {
+            try {
+                const response = await axioInstance.get(`/tour-stage/status?stageId=${stageId}`);
+                setIsFinished(response.data);
+            } catch (error) {
+                console.error('Error fetching tournament stage:', error);
+            }
+        };
+
+
+        getStageStatus();
 
         fetchResults();
     }, []);
@@ -40,7 +54,10 @@ const TournamentResults = () => {
     return (
         <div className='rounded p-5'>
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-                <h3 className="mb-2 mb-md-0">Kết Quả Giải Đấu</h3>
+                <h3 className="mb-2 mb-md-0 text-center">
+                    <label htmlFor="" className=''>Kết Quả Giải Đấu</label>
+                    <label htmlFor="" className='mx-2' style={{color:"red"}}>{isFinished?"Chính Thức":"Tạm Thời"}</label>
+                </h3>
             </div>
             <hr className="my-4" />
             <div className="table-responsive">
