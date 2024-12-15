@@ -26,7 +26,7 @@ const UserManagementUpdate = () => {
         setValue('email', fetchedUser.email);
         setValue('address', fetchedUser.address);
         setValue('phone', fetchedUser.phone);
-        setValue('birthday', moment(fetchedUser.birthday, ['MM/DD/YYYY', 'YYYY-MM-DD', 'DD/MM/YYYY']).format('YYYY-MM-DD'));
+        setValue('birthday', moment(fetchedUser.birthday, ['DD/MM/YYYY']).format('YYYY-MM-DD')); 
       } catch (error) {
         showErrorNotification("Lỗi xảy ra khi lấy thông tin thành viên");
         console.log(error);
@@ -36,7 +36,6 @@ const UserManagementUpdate = () => {
     fetchUser();
   }, [userId]);
 
-  // Form submission handler
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
