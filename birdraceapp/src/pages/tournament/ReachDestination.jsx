@@ -48,17 +48,17 @@ const ReachDestination = () => {
                     .then( async response => {
                         const file = new Blob([response.data], { type: 'application/pdf' });
                         const image = await convertPdfToImages(file);
-                        // const pdfWindow = window.open('', '_blank');
-                        // pdfWindow.document.write('<html><head><title>Report Images</title></head><body>');
-                        // pdfWindow.document.write(`
-                        //     <div style="margin-bottom: 20px; text-align: center;">
-                        //       <img src="${image}" alt="Report Image" style="width: 100%; max-width: 800px;"/>
-                        //       <br/>
-                        //       <a href="${image}" download="report_image.png" style="text-decoration: none; color: blue;">Download Image</a>
-                        //     </div>
-                        //   `);
-                        //   pdfWindow.document.write('</body></html>');
-                        //   pdfWindow.document.close();
+                        const pdfWindow = window.open('', '_blank');
+                        pdfWindow.document.write('<html><head><title>Report Images</title></head><body>');
+                        pdfWindow.document.write(`
+                            <div style="margin-bottom: 20px; text-align: center;">
+                              <img src="${image}" alt="Report Image" style="width: 100%; max-width: 800px;"/>
+                              <br/>
+                              <a href="${image}" download="report_image.png" style="text-decoration: none; color: blue;">Download Image</a>
+                            </div>
+                          `);
+                          pdfWindow.document.write('</body></html>');
+                          pdfWindow.document.close();
                         const link = document.createElement('a');
                         link.href = image;
                         link.download = 'report_image.png';
