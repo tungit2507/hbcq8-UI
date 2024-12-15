@@ -30,6 +30,8 @@ import StartPointList from "./pages/facility/StartPointList";
 import BirdManagement from "./pages/bird/BirdManagementList";
 import DetailRaceForm from "./pages/race/RacemanagementDetail";
 import TourAccepResult from "./pages/race/RaceAcceptResult";
+import TournamentResults from "./pages/race/RaceResult";
+import TournamentStageResults from "./pages/race/RaceStageResult";
 
 const routes = createBrowserRouter([
     {
@@ -54,7 +56,9 @@ const routes = createBrowserRouter([
             { path: "/management/start-point/list", element: <StartPointList/>, name: "Facility Management" },
             { path: "/management/bird/list", element: <BirdManagement/>, name: "Facility Management" },
             { path: "/management/race/tour-accept-result", element: <TourAccepResult/>, name: "Facility Management" },
-            
+            { path: "/management/race/result", element: <TournamentResults/>, name: "Facility Management" },
+            { path: "/management/race/stage/result", element: <TournamentStageResults/>, name: "Facility Management" },
+
         ]
     },
     { path: "*", element: <NotFoundPage/>, name: "Not Found" },

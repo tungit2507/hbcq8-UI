@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { fetchRaceDetail, approveResult, rejectResult, fetchRaceById, fetchTourStageResult, cancelResult } from '../../api/raceApi';
 import Swal from 'sweetalert2';
 import { finishStage, getTourStageStatus } from '../../api/raceStage';
+import { Link } from 'react-router-dom';
 
 const TourAcceptResult = () => {
     const location = useLocation();
@@ -271,7 +272,9 @@ const TourAcceptResult = () => {
                         <option key={index} value={stage.stageId}>{stage.startPointCode + ' - ' + stage.startPointName}</option>
                     ))}
                 </CFormSelect>
-                <CButton className='m-1' color="warning" onClick={handleClickEndStage} hidden={selectedStageStatus}>Kết Thúc Chặng Đua</CButton>
+                <div >
+                <CButton className='m-1' color="warning" as={Link} to={`/management/race/stage/result?tourId=${tourId}&stageId=${selectedStage}`}>Bảng Xếp Hạng</CButton>                    <CButton className='m-1' color="danger" onClick={handleClickEndStage} hidden={selectedStageStatus}>Kết Thúc Chặng Đua</CButton>
+                </div>
             </div>
             <div className="table-responsive">
                 <CTable className="table-bordered rounded table-striped text-center">
