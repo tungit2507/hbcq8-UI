@@ -19,7 +19,7 @@ const RecentPosts = () => {
   return (
     <section id="recent-posts" className="recent-posts section dark-background">
       <div className="container section-title" data-aos="fade-up">
-        <h2>BÀI VIẾT MỚI</h2>
+        <h2><Link to={'/blogs'}>BÀI VIẾT MỚI</Link></h2>
       </div>
 
       <div className="container">
@@ -56,11 +56,11 @@ const RecentPosts = () => {
             </div>
           ))}
         </div>
-        <div className="container text-end mt-4">
+        {/* <div className="container text-end mt-4">
           <Link to="/blogs" className="btn btn-primary">
             Xem Tất Cả
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );
