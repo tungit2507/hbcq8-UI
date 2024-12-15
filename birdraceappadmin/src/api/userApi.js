@@ -105,3 +105,14 @@ export const changeRole =  async (id, role) =>{
     console.log(id);
     console.log(role);
 }
+
+
+export const updatePassword = async (id, password) => {
+    try {
+        const response = await axiosInstance.put(`${BASE_URL_USERS}/reset-pw/${id}`, {password});
+        return response.data;
+    } catch (error) {
+        console.error('Error adding user:', error);
+        throw error;
+    }
+}

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CForm, CFormInput, CButton } from "@coreui/react";
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CForm, CFormInput, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter } from "@coreui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import exampleImage1 from './../../assets/images/avatars/1.jpg';
 import Swal from 'sweetalert2';
-import { deleteUser, changeRole, getListUser } from '../../api/userApi';
+import { deleteUser, changeRole, getListUser, updatePassword } from '../../api/userApi';
 import { showErrorNotification } from '../../api/sweetAlertNotify';
 
 const UserManagementList = () => {
@@ -15,7 +14,11 @@ const UserManagementList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [currentPageState, setCurrentPage] = useState(currentPage); // Định nghĩa setCurrentPage
+  const [currentPageState, setCurrentPage] = useState(currentPage);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentUserId, setCurrentUserId] = useState(null);
   const usersPerPage = 10;
 
   useEffect(() => {
@@ -112,6 +115,30 @@ const UserManagementList = () => {
     }
   };
 
+  const handlePasswordChange = async () => {
+
+    if(password === '' || confirmPassword === '') {
+      showErrorNotification("Mật khẩu không được để trống.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showErrorNotification("Mật khẩu và xác nhận mật khẩu không khớp.");
+      return;
+    }
+
+    try {
+      await updatePassword(currentUserId, password);
+      Swal.fire('Thành công!', 'Mật khẩu đã được cập nhật.', 'success');
+      setShowPasswordModal(false);
+      setPassword('');
+      setConfirmPassword('');
+    } catch (error) {
+      const errorMessage = error.response.data.errorMessage;
+      showErrorNotification(errorMessage || "Lỗi! Không thể cập nhật mật khẩu.");
+    }
+  };
+
   return (
     <div className="p-3 rounded">
       {/* Title and Search Form */}
@@ -139,7 +166,6 @@ const UserManagementList = () => {
               <CTableHeaderCell scope="col">Tên Đăng Nhập</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
               <CTableHeaderCell scope="col">Số Điện Thoại</CTableHeaderCell>
-              {/* <CTableHeaderCell scope="col">Địa Chỉ</CTableHeaderCell> */}
               <CTableHeaderCell scope="col"></CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -150,11 +176,11 @@ const UserManagementList = () => {
                 <CTableDataCell>{user.username}</CTableDataCell>
                 <CTableDataCell>{user.email}</CTableDataCell>
                 <CTableDataCell>{user.phone}</CTableDataCell>
-                {/* <CTableDataCell>{user.address}</CTableDataCell> */}
                 <CTableDataCell>
                   <Link className="m-1 btn btn-warning" to={`/management/bird/list?user=${user.id}`}>QL Chim Đua</Link>
                   <Link className="m-1 btn btn-success" to={`/management/facility/list?user=${user.id}`}>QL Căn Cứ</Link>
                   <Link className="m-1 btn btn-primary" to={`/management/user/update?id=${user.id}`}>Chỉnh Sửa</Link>
+                  <CButton className="m-1" color="primary" onClick={() => { setCurrentUserId(user.id); setShowPasswordModal(true); }}>Cấp Mật Khẩu</CButton>
                   <CButton className='m-1' color="danger" onClick={() => handleDelete(user.id)}>Xóa</CButton>
                 </CTableDataCell>
               </CTableRow>
@@ -189,6 +215,35 @@ const UserManagementList = () => {
           </CPaginationItem>
         </CPagination>
       </div>
+
+      {/* Modal for Changing Password */}
+      <CModal visible={showPasswordModal} onClose={() => setShowPasswordModal(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Cấp Mật Khẩu</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CForm>
+            <CFormInput
+              className='my-1'
+              type="password"
+              placeholder="Nhập Mật Khẩu"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <CFormInput
+              className='my-1'
+              type="password"
+              placeholder="Xác Nhận Mật Khẩu"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setShowPasswordModal(false)}>Hủy</CButton>
+          <CButton color="primary" onClick={handlePasswordChange}>Xác Nhận</CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   );
 };
