@@ -145,7 +145,8 @@ const RaceList = () => {
                   <Link className="btn btn-secondary m-1" to={`/management/race/tour-accept-result?id=${race.id}`}>Xét Duyệt Kết Quả Chặng</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/detail?id=${race.id}`}>Chi Tiết</Link>
-                  <CButton className="btn btn-success text-white m-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton>
+                  <CButton className="btn btn-danger text-white m-1" onClick={() => handleSortRank(race.id)}>Kết Thúc Giải Đua</CButton>
+                  {/* <CButton className="btn btn-success text-white m-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton> */}
                   <CButton className="btn btn-danger text-white m-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
                 </CTableDataCell>
               </CTableRow>
