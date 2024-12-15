@@ -46,43 +46,31 @@ const Header = () => {
                 <Nav.Link as={Link} to="/" className="nav-link" onClick={handleNavLinkClick}>Trang Chủ</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to={"/about-us"} className="nav-link">Về Chúng Tôi</Nav.Link>
+                <Nav.Link as={Link} to={"/about-us"} className="nav-link" onClick={handleNavLinkClick}>Về Chúng Tôi</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to={"/blogs"} className="nav-link">Hoạt Động</Nav.Link>
+                <Nav.Link as={Link} to={"/blogs"} className="nav-link" onClick={handleNavLinkClick}>Hoạt Động</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} 
-                to="/history"
-                 className="nav-link" onClick={handleNavLinkClick}>Lịch Sử Giải Đua</Nav.Link>
+                <Nav.Link as={Link} to="/history" className="nav-link" onClick={handleNavLinkClick}>Lịch Sử Giải Đua</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
                 <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Liên Hệ</Nav.Link>
               </Nav.Item>
-              <NavDropdown title={`Xin chào, ${currentUser ? currentUser.username : ''}`} id="basic-nav-dropdown custom-dropdown-menu" align="start">
+              <NavDropdown title={isLoggedIn === "true" ? `Xin chào, ${currentUser ? currentUser.username : ''}` : 'Tài Khoản'} id="basic-nav-dropdown custom-dropdown-menu" align="start">
                 {isLoggedIn === "true" ? 
-                  <ul>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Link to={"/birds"}>Quản Lý Chim Đua</Link>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Link to={"/facibilitys"}>Quản Lý Căn Cứ</Link>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Link to={"/my-tour"}>Giải Đua Của Tôi</Link>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Link to={"/profile"}> QL Tài Khoản  </Link>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link">
-                      <Logout />
-                    </NavDropdown.Item>
-                  </ul>
+                  <>
+                    <NavDropdown.Item as={Link} to={"/birds"} className="dropdown-item nav-link">Quản Lý Chim Đua</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/facibilitys"} className="dropdown-item nav-link">Quản Lý Căn Cứ</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/my-tour"} className="dropdown-item nav-link">Giải Đua Của Tôi</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/profile"} className="dropdown-item nav-link">QL Tài Khoản</NavDropdown.Item>
+                    <NavDropdown.Item className="dropdown-item nav-link"><Logout /></NavDropdown.Item>
+                  </>
                   :
-                  <ul>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={"/login"} onClick={handleNavLinkClick}>Đăng Nhập</Link></NavDropdown.Item>
-                    <NavDropdown.Item as="li" className="dropdown-item nav-link"><Link to={'/register'} onClick={handleNavLinkClick}>Đăng Ký</Link></NavDropdown.Item>
-                  </ul>
+                  <>
+                    <NavDropdown.Item as={Link} to={"/login"} className="dropdown-item nav-link" onClick={handleNavLinkClick}>Đăng Nhập</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={'/register'} className="dropdown-item nav-link" onClick={handleNavLinkClick}>Đăng Ký</NavDropdown.Item>
+                  </>
                 }
               </NavDropdown>
             </Nav>
@@ -99,9 +87,7 @@ const Header = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      >
-
-      </ToastContainer>
+      />
     </header>
   );
 };
