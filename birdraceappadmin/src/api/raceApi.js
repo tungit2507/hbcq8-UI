@@ -129,3 +129,20 @@ export const fetchTourStageResult = async (tourId, stageId) => {
         Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
     }
 }
+
+
+
+export const cancelResult = async (dto) => {
+    try {
+       const response = await axiosInstance.post(`${BASE_URL_RACES}/cancel-result`, dto, {
+           headers: {
+            'Content-Type': 'application/json'
+           }
+       });
+       return response.data;
+       } catch (error) {
+            console.error('Error approve race result :', error);
+            Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+       }
+}
+
