@@ -3,6 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import { useLocation } from "react-router-dom";
 import { fetchRaceDetail, approveResult, rejectResult, fetchRaceById, fetchTourStageResult, cancelResult } from '../../api/raceApi';
 import Swal from 'sweetalert2';
+import { finishStage } from '../../api/raceStage';
 
 const TourAcceptResult = () => {
     const location = useLocation();
@@ -26,6 +27,7 @@ const TourAcceptResult = () => {
             console.error('Error fetching race details:', error);
         }
     };
+
 
     useEffect(() => {
         fetchTourStage();
@@ -227,17 +229,46 @@ const TourAcceptResult = () => {
         });
     };
 
+    const handleClickEndStage = async () => {
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: `Bạn có muốn kết thúc chặng đua này?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Kết thúc!',
+            cancelButtonText: 'Hủy'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await finishStage(selectedStage);
+                    Swal.fire('Thành công', 'Chặng đua đã kết thúc.', 'success');
+                    fetchTourStage();
+                } catch (error) {
+                    Swal.fire('Từ chối', 'Không thành công', 'error');
+                }
+            }
+        });
+    }
+
     return (
         <div className="p-3 rounded">
             <h3 className="mb-4">Xét Duyệt Kết Quả Chặng Đua</h3>
-            <div className="mb-3">
-                <CButton className='' color="success" onClick={handleConfirmAll} disabled={selectedBirds.length === 0}>Xác nhận tất cả</CButton>
-                <CButton className='mx-2' color="danger" onClick={handleRejectAll} disabled={selectedBirds.length === 0}>Từ chối tất cả</CButton>
-                <CFormSelect className='my-2 w-auto' onChange={(e) => handleOnChangeSelectStage(e.target.value)}>
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <CButton className='m-1' color="success" onClick={handleConfirmAll} disabled={selectedBirds.length === 0}>Xác nhận tất cả</CButton>
+                    <CButton className='m-1' color="danger" onClick={handleRejectAll} disabled={selectedBirds.length === 0}>Từ chối tất cả</CButton>
+                </div>
+                
+            </div>
+            <div className="d-flex justify-content-between align-items-center">
+                <CFormSelect className='m-1 w-auto' onChange={(e) => handleOnChangeSelectStage(e.target.value)}>
                     {tourStages.map((stage, index) => (
                         <option key={index} value={stage.stageId}>{stage.startPointCode + ' - ' + stage.startPointName}</option>
                     ))}
                 </CFormSelect>
+                <CButton className='m-1' color="warning" onClick={handleClickEndStage}>Kết Thúc Chặng Đua</CButton>
             </div>
             <div className="table-responsive">
                 <CTable className="table-bordered rounded table-striped text-center">
@@ -277,8 +308,8 @@ const TourAcceptResult = () => {
                                         {
                                             tourStageResult.status === 'W' ? (
                                                 <>
-                                                    <CButton color="success" onClick={() => handleConfirm(tourStageResult.birdCode)}>Xác nhận</CButton>
-                                                    <CButton color="danger" className="mx-2" onClick={() => handleReject(tourStageResult.birdCode)}>Từ chối</CButton>
+                                                    <CButton color="success" className='m-1' onClick={() => handleConfirm(tourStageResult.birdCode)}>Xác nhận</CButton>
+                                                    <CButton color="danger" className="m-1" onClick={() => handleReject(tourStageResult.birdCode)}>Từ chối</CButton>
                                                 </>
                                             ) : (
                                                 <CButton color="danger" onClick={() => handleCancelStageResult(tourStageResult.birdCode)}>Hủy</CButton>
@@ -294,6 +325,7 @@ const TourAcceptResult = () => {
                         )}
                     </CTableBody>
                 </CTable>
+               
             </div>
         </div>
     );

@@ -27,3 +27,14 @@ export const deActiveStage = async (stageId) => {
         throw error;
     }
 };
+
+
+export const finishStage = async (stageId) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/finished`, { params: { id: stageId } });
+        return response.data;
+    } catch (error) {
+        handleError(error, 'Không thể kết thúc giai đoạn. Vui lòng thử lại sau.');
+        throw error;
+    }
+}
