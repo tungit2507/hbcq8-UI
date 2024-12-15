@@ -82,7 +82,7 @@ const Profile = () => {
                 <img 
                   className="img-account-profile rounded-circle mb-2"
                   src={
-                    // user.imgUrl && user.imgUrl !== '' ? user.imgUrl : 
+                    user.imgUrl && user.imgUrl !== '' ? user.imgUrl : 
                     '/assets/img/logo/Logo_CLBBCQ8.png'}
                   alt="Profile" 
                   style={{ 

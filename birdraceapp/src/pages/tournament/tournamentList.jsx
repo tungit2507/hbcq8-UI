@@ -243,9 +243,9 @@ const TournamentList = () => {
                         });
                       }}>Hủy Đơn</CButton>
                   )}
-                  {tournament.tourStatus === 'Đã kết thúc' && (
+                  {tournament.tourStatus !== 'Đã kết thúc' && (
                     <CButton
-                      color="info" onClick={() => {
+                      color="warning" onClick={() => {
                         navigate(`/tournament-result?id=${tournament.tourId}`);
                       }}>Kết Quả</CButton>
                   )}

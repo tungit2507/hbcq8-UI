@@ -15,7 +15,7 @@ const Footer = () => {
                 <p>Địa Chỉ Cụ Thể </p>
                 <p>Quận 8, Thành Phố Hồ Chí Minh, Việt Nam</p>
                 <p className="mt-3"><strong>Phone:</strong> <span>0123456789 </span></p>
-                <p><strong>Email:</strong> <span>demo@demo.com</span></p>
+                <p><strong>Email:</strong> <span>clbbcduaq8.com@gmail.com</span></p>
               </div>
             </div>
 
@@ -25,8 +25,8 @@ const Footer = () => {
                 <li><Link to="/">Trang Chủ</Link></li>
                 <li><Link to="/about-us">Về Chúng Tôi</Link></li>
                 <li><Link to="/blogs">Hoạt Động</Link></li>
-                <li><Link to="/history">Lịch Sử Giải Đua</Link></li>
-                <li><Link to="/contact">Liên Hệ</Link></li>
+                <li><Link to="/history">Tất Cả Giải Đua</Link></li>
+                <li><Link to="/my-tour">Giải Đua Của Tôi</Link></li>
                 
               </ul>
             </div>
