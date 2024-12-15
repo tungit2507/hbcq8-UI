@@ -54,10 +54,13 @@ const Header = () => {
               <Nav.Item as="li">
                 <Nav.Link as={Link} to="/history" className="nav-link" onClick={handleNavLinkClick}>Tất Cả Giải Đua</Nav.Link>
               </Nav.Item>
-              <Nav.Item as="li">
+              {
+                isLoggedIn === "true" ? <Nav.Item as="li">
                 <Nav.Link as={Link} to={'/my-tour'} className="nav-link">Giải Đua Của Tôi</Nav.Link>
               </Nav.Item>
-              
+              : ''
+              }
+             
               <NavDropdown title={isLoggedIn === "true" ? `Xin chào, ${currentUser ? currentUser.username : ''}` : 'Tài Khoản'} id="basic-nav-dropdown custom-dropdown-menu" align="start">
                 {isLoggedIn === "true" ? 
                   <>

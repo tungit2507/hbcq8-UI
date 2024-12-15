@@ -17,6 +17,7 @@ import AboutUs from "./pages/about/AboutUs";
 import ForgotPassword from "./pages/author/ForgotPassword";
 import ChangePassword from "./pages/author/ChangePassword";
 import TournamentStageToResults from "./pages/tournament/TournamentStageToResult";
+import TournamentStageResults from "./pages/tournament/TournamentStageResult";
 
 const routes = createBrowserRouter([
     
@@ -37,6 +38,7 @@ const routes = createBrowserRouter([
             { path: "/blog-detail/:slug", element: <BlogDetail/> },
             { path: "/blogs", element: <BlogList/> },
             { path: "/tournament-result", element: <TournamentResults/> },
+            { path: "/tournament-stage-result", element: <TournamentStageResults/> },
             { path: "/facibilitys", element: <FacibilityManagement/> },
             { path: "/my-tour", element: <Mytournament/> },
             { path: "/tour-detail", element: <ReachDestination/> },

@@ -52,7 +52,7 @@ const TournamentStageToResults = () => {
                 <CTableHeaderCell scope="row">{stage.startPointCode + ' - ' + stage.startPointName}</CTableHeaderCell>
                 
                 <CTableHeaderCell scope="row">
-                    <CButton as={Link} to={`/tournament-result?tourId=${tourId}&&stageId=${stage.id}`} color="primary" className="m-1">Xem Kết Quả</CButton>
+                    <CButton as={Link} to={`/tournament-stage-result?tourId=${tourId}&&stageId=${stage.id}`} color="primary" className="m-1">Xem Kết Quả</CButton>
                 </CTableHeaderCell>
 
               </CTableRow>

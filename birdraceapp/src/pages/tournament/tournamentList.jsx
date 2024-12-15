@@ -196,11 +196,9 @@ const TournamentList = () => {
                 <CTableDataCell>{tournament.memo}</CTableDataCell>
                 <CTableDataCell>
                   {
-                  // tournament.isActived 
-                  // && !tournament.tourApplyStatusCode 
-                  // && 
                   (
                     <CButton className='me-2'
+                      hidden={tournament.isFinished == true}
                       color="primary" onClick={() => {
                         const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
                         if (isLoggedIn) {
@@ -243,7 +241,7 @@ const TournamentList = () => {
                         });
                       }}>Hủy Đơn</CButton>
                   )}
-                  {tournament.tourStatus !== 'Đã kết thúc' && (
+                  {tournament.isFinished == true && (
                     <CButton
                       color="warning" onClick={() => {
                         navigate(`/tournament-result?id=${tournament.tourId}`);

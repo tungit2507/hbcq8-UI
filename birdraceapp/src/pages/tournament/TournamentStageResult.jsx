@@ -5,43 +5,41 @@ import axioInstance from '../../apiInstance';
 import { useLocation } from 'react-router-dom';
 
 
-const TournamentResults = () => {
+const TournamentStageResults = () => {
     const [results, setResults] = useState([]);
-    const [tour, setTour] = useState([]);
-
     const [currentPage, setCurrentPage] = useState(1);
+    const [isFinished, setIsFinished] = useState(false);
     const resultsPerPage = 10;
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
-    const tourId = query.get('id');
+    const tourId = query.get('tourId');
+    const stageId = query.get('stageId');
     
 
 
     useEffect(() => {
         const fetchResults = async () => {
             try {
-            const response = await axioInstance.get(`/tour/view-rank-of-tour?tourId=${tourId}`);
+            const response = await axioInstance.get(`/tour/view-rank?tourId=${tourId}&&stageId=${stageId}`);
             setResults(response.data);
             } catch (error) {
             console.error('Error fetching tournament results:', error);
             }
         };
 
-
-        const fetchTourInfo = async () => {
+        const getStageStatus = async () => {
             try {
-                const response = await axioInstance.get(`/tour/detail?tourId=${tourId}`);
-                setTour(response.data);
-                console.log(tour);
+                const response = await axioInstance.get(`/tour-stage/status?stageId=${stageId}`);
+                setIsFinished(response.data);
             } catch (error) {
-            console.error('Error fetching tournament results:', error);
+                console.error('Error fetching tournament stage:', error);
             }
         };
-        
 
 
-        fetchTourInfo();
+        getStageStatus();
+
         fetchResults();
     }, []);
 
@@ -57,8 +55,8 @@ const TournamentResults = () => {
         <div className='rounded p-5'>
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
                 <h3 className="mb-2 mb-md-0 text-center">
-                    <label htmlFor="" className=''>Kết Quả Giải Đua : </label>
-                    <label htmlFor="" className='mx-2'>{tour?.tourName}</label>
+                    <label htmlFor="" className=''>Kết Quả Chặng Đua</label>
+                    <label htmlFor="" className='mx-2' style={{color:"red"}}>{isFinished?"Chính Thức":"Tạm Thời"}</label>
                 </h3>
             </div>
             <hr className="my-4" />
@@ -72,9 +70,9 @@ const TournamentResults = () => {
               <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
               <CTableHeaderCell scope="col">Khoảng Cách</CTableHeaderCell>
-              {/* <CTableHeaderCell scope="col">Thời Gian Bay Về</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Thời Gian Bay Về</CTableHeaderCell>
               <CTableHeaderCell scope="col">Thời Gian Thả</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Thời Gian Bay Hoàn Thành</CTableHeaderCell> */}
+              <CTableHeaderCell scope="col">Thời Gian Bay Hoàn Thành</CTableHeaderCell>
               <CTableHeaderCell scope="col">Vận Tốc</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -86,17 +84,17 @@ const TournamentResults = () => {
                 <CTableDataCell>{ranker.userLocationName}</CTableDataCell>
                 <CTableDataCell>{ranker.birdCode}</CTableDataCell>
                 <CTableDataCell>{ranker.userLocationCoor}</CTableDataCell>
-                <CTableDataCell>{ranker.distance.toFixed(3)}</CTableDataCell>
-                {/* <CTableDataCell>{ranker.endTime}</CTableDataCell>
+                <CTableDataCell>{ranker.distance}</CTableDataCell>
+                <CTableDataCell>{ranker.endTime}</CTableDataCell>
                 <CTableDataCell>{ranker.startTime}</CTableDataCell>
-                <CTableDataCell>{ranker.totalTime}</CTableDataCell> */}
-                <CTableDataCell>{ranker.speed.toFixed(6)}</CTableDataCell>
+                <CTableDataCell>{ranker.totalTime}</CTableDataCell>
+                <CTableDataCell>{ranker.speed}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
         </CTable>
             </div>
-            {/* <div className='d-flex justify-content-center mt-4'>
+            <div className='d-flex justify-content-center mt-4'>
                 <CPagination>
                     <CPaginationItem
                         onClick={() => handlePageChange(currentPage - 1)}
@@ -113,10 +111,10 @@ const TournamentResults = () => {
                         Sau
                     </CPaginationItem>
                 </CPagination>
-            </div> */}
+            </div>
         </div>
     );
 };
 
-export default TournamentResults;
+export default TournamentStageResults;
 
