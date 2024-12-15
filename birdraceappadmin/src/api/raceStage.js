@@ -38,3 +38,14 @@ export const finishStage = async (stageId) => {
         throw error;
     }
 }
+
+
+export const getTourStageStatus = async (stageId) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/status`, { params: { stageId } });
+        return response.data;
+    } catch (error) {
+        handleError(error, 'Không thể lấy trạng thái chặng. Vui lòng thử lại sau.');
+        throw error;
+    }
+}
