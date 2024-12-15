@@ -52,17 +52,17 @@ const Header = () => {
                 <Nav.Link as={Link} to={"/blogs"} className="nav-link" onClick={handleNavLinkClick}>Hoạt Động</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} to="/history" className="nav-link" onClick={handleNavLinkClick}>Lịch Sử Giải Đua</Nav.Link>
+                <Nav.Link as={Link} to="/history" className="nav-link" onClick={handleNavLinkClick}>Tất Cả Giải Đua</Nav.Link>
               </Nav.Item>
               <Nav.Item as="li">
-                <Nav.Link as={Link} onClick={handleFeatureUnderDevelopment} className="nav-link">Liên Hệ</Nav.Link>
+                <Nav.Link as={Link} to={'/my-tour'} className="nav-link">Giải Đua Của Tôi</Nav.Link>
               </Nav.Item>
+              
               <NavDropdown title={isLoggedIn === "true" ? `Xin chào, ${currentUser ? currentUser.username : ''}` : 'Tài Khoản'} id="basic-nav-dropdown custom-dropdown-menu" align="start">
                 {isLoggedIn === "true" ? 
                   <>
                     <NavDropdown.Item as={Link} to={"/birds"} className="dropdown-item nav-link">Quản Lý Chim Đua</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to={"/facibilitys"} className="dropdown-item nav-link">Quản Lý Căn Cứ</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to={"/my-tour"} className="dropdown-item nav-link">Giải Đua Của Tôi</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to={"/profile"} className="dropdown-item nav-link">QL Tài Khoản</NavDropdown.Item>
                     <NavDropdown.Item className="dropdown-item nav-link"><Logout /></NavDropdown.Item>
                   </>
