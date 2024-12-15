@@ -4,6 +4,7 @@ import { CButton, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, C
 import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { convertPdfToImages } from '../../assets/util/PdfAsImage';
 
 const ReachDestination = () => {
 
@@ -44,24 +45,27 @@ const ReachDestination = () => {
                     stageId: tourStageReport.stageId
                 };
                 axiosInstance.post('/tour/submit', formData, { responseType: 'blob' })
-                    .then(response => {
+                    .then( async response => {
                         const file = new Blob([response.data], { type: 'application/pdf' });
-                        const fileURL = URL.createObjectURL(file);
+                        const image = await convertPdfToImages(file);
+                        // const pdfWindow = window.open('', '_blank');
+                        // pdfWindow.document.write('<html><head><title>Report Images</title></head><body>');
+                        // pdfWindow.document.write(`
+                        //     <div style="margin-bottom: 20px; text-align: center;">
+                        //       <img src="${image}" alt="Report Image" style="width: 100%; max-width: 800px;"/>
+                        //       <br/>
+                        //       <a href="${image}" download="report_image.png" style="text-decoration: none; color: blue;">Download Image</a>
+                        //     </div>
+                        //   `);
+                        //   pdfWindow.document.write('</body></html>');
+                        //   pdfWindow.document.close();
                         const link = document.createElement('a');
-                        link.href = fileURL;
-                        const date = new Date();
-                        const formattedDate = `${date.getDate().toString().padStart(2, '0')}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getFullYear()}`;
-                        link.download = `phieughinhanthongtin_${formattedDate}.pdf`;
+                        link.href = image;
+                        link.download = 'report_image.png';
                         link.click();
-                        const pdfWindow = window.open();
-                        pdfWindow.location.href = fileURL;
-                        URL.revokeObjectURL(fileURL);
-                        toast.success('Báo cáo thành công!');
-                        setReport({ birdCode: '', secretCode: '', tourCode: '' });
-                        fetchData();
                     })
                     .catch(error => {
-                        if(error.response.status === 408) {
+                        if(error?.response?.status === 408) {
                             const errorMessage = "Quá thời hạn chỉnh sửa lại";
                             toast.error(errorMessage, error);
                         }else{
