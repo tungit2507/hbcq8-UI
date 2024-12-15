@@ -36,7 +36,7 @@ const AppSidebar = () => {
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
           <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <Link to="/" className="custom-link d-flex align-items-center" style={{ textDecoration: 'none', fontSize: '1.5rem', color: 'white' }}>
+          <Link to="/management/user/list" className="custom-link d-flex align-items-center" style={{ textDecoration: 'none', fontSize: '1.5rem', color: 'white' }}>
             <img src={logo} alt="logo" className="sidebar-brand-full" height={32} style={{ marginRight: '8px' }} />
             {/* <span style={{textDecoration:"none"}}>CLB Bồ Câu Đua Q8</span> */}
           </Link>

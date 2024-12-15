@@ -28,6 +28,10 @@ import {
 import AppHeaderDropdown from './appHeaderDropdown'
 
 const Header = () => {
+
+
+
+  const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
@@ -63,23 +67,16 @@ const Header = () => {
             <CNavLink href="#">Settings</CNavLink>
           </CNavItem>
         </CHeaderNav> */}
-        {/* <CHeaderNav className="ms-auto">
+        <CHeaderNav className="ms-auto">
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
+           <label htmlFor="">
+            <CNavLink>
+                Xin chào, {currentUser?.username}
+              </CNavLink>
+           </label>
           </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem>
-        </CHeaderNav> */}
+        
+        </CHeaderNav>
         <CHeaderNav>
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
@@ -102,7 +99,7 @@ const Header = () => {
                 type="button"
                 onClick={() => setColorMode('light')}
               >
-                <CIcon className="me-2" icon={cilSun} size="lg" /> Light
+                <CIcon className="me-2" icon={cilSun} size="lg" /> Sáng 
               </CDropdownItem>
               <CDropdownItem
                 active={colorMode === 'dark'}
@@ -111,7 +108,7 @@ const Header = () => {
                 type="button"
                 onClick={() => setColorMode('dark')}
               >
-                <CIcon className="me-2" icon={cilMoon} size="lg" /> Dark
+                <CIcon className="me-2" icon={cilMoon} size="lg" /> Tối
               </CDropdownItem>
               <CDropdownItem
                 active={colorMode === 'auto'}
@@ -120,7 +117,7 @@ const Header = () => {
                 type="button"
                 onClick={() => setColorMode('auto')}
               >
-                <CIcon className="me-2" icon={cilContrast} size="lg" /> Auto
+                <CIcon className="me-2" icon={cilContrast} size="lg" /> Tự Động
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>

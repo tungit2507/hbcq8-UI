@@ -26,7 +26,7 @@ const LoginForm = () => {
         showErrorNotification("Rất Tiếc Tài Khoản Của Bạn Không Đủ Quyền Hạn, Vui Lòng Đăng Nhập Tài Khoản Khác");
       } else {
         sessionStorage.setItem("currentUser", JSON.stringify(response));
-        navigate('/');
+        navigate('/management/user/list');
       }
     }
   };
