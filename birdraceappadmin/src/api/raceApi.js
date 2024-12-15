@@ -113,11 +113,24 @@ export const SortRank = async (tourId) => {
     try {
        const response = await axiosInstance.get(`${BASE_URL_RACES}/sort?tourId=${tourId}`);
        return response.data;
-       } catch (error) {
-       console.error('Error approve race result :', error);
-       Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
-       }
+    } catch (error) {
+        console.error('Error approve race result :', error);
+        Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+        throw error;
+    }
 }
+
+export const FinishTour = async (tourId) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_RACES}/finished?id=${tourId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error finishing tour:', error);
+        Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình kết thúc giải đua', 'error');
+        throw error;
+    }
+}
+
 
 
 export const fetchTourStageResult = async (tourId, stageId) => {
@@ -127,6 +140,7 @@ export const fetchTourStageResult = async (tourId, stageId) => {
     } catch (error) {
         console.error('Error approve race result :', error);
         Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
+        throw error;
     }
 }
 
@@ -145,4 +159,3 @@ export const cancelResult = async (dto) => {
             Swal.fire('Lỗi', 'Lỗi xảy ra trong quá trình xác nhận', 'error');
        }
 }
-

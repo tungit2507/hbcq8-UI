@@ -2,13 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from "@coreui/react";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
-import { fetchRaces, SortRank, deleteRace } from '../../api/raceApi';
+import { fetchRaces, SortRank, deleteRace, FinishTour } from '../../api/raceApi';
 
 const RaceList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [races, setRaces] = useState([]);
+
+
+  const handleFinishTour = (id) => {
+    Swal.fire({
+      title: "Bạn có chắc muốn kết thúc giải đua này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Kết Thúc",
+      cancelButtonText: "Hủy",
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await FinishTour(id);
+          Swal.fire("Đã kết thúc!", "Giải đua đã được kết thúc.", "success");
+          loadRaces();
+        } catch (error) {
+          Swal.fire("Lỗi", "Không thể kết thúc giải đua. Vui lòng thử lại sau.", "error");
+        }
+      }
+    });
+  };
 
   const handleOnclickRemove = (id) => {
     Swal.fire({
@@ -64,15 +88,17 @@ const RaceList = () => {
     setCurrentPage(1);
   };
 
+  const loadRaces = async () => {
+    try {
+      const fetchedRaces = await fetchRaces();
+      setRaces(fetchedRaces);
+    } catch (error) {
+      console.error('Lỗi khi tải danh sách giải đua:', error);
+    }
+  };
+
   useEffect(() => {
-    const loadRaces = async () => {
-      try {
-        const fetchedRaces = await fetchRaces();
-        setRaces(fetchedRaces);
-      } catch (error) {
-        console.error('Lỗi khi tải danh sách giải đua:', error);
-      }
-    };
+    
     setCurrentPage(1);
     loadRaces();
   }, []);
@@ -145,7 +171,7 @@ const RaceList = () => {
                   <Link className="btn btn-secondary m-1" to={`/management/race/tour-accept-result?id=${race.id}`}>Xét Duyệt Kết Quả Chặng</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/detail?id=${race.id}`}>Chi Tiết</Link>
-                  <CButton className="btn btn-danger text-white m-1" onClick={() => handleSortRank(race.id)}>Kết Thúc Giải Đua</CButton>
+                  <CButton className="btn btn-danger text-white m-1" onClick={() => handleFinishTour(race.id)} hidden={race.isFinished}>Kết Thúc Giải Đua</CButton>
                   {/* <CButton className="btn btn-success text-white m-1" onClick={() => handleSortRank(race.id)}>Duyệt Xếp Hạng</CButton> */}
                   <CButton className="btn btn-danger text-white m-1" onClick={() => handleOnclickRemove(race.id)}>Xóa</CButton>
                 </CTableDataCell>
