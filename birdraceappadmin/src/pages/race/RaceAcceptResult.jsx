@@ -3,7 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import { useLocation } from "react-router-dom";
 import { fetchRaceDetail, approveResult, rejectResult, fetchRaceById, fetchTourStageResult, cancelResult } from '../../api/raceApi';
 import Swal from 'sweetalert2';
-import { finishStage } from '../../api/raceStage';
+import { finishStage, getTourStageStatus } from '../../api/raceStage';
 
 const TourAcceptResult = () => {
     const location = useLocation();
@@ -15,6 +15,7 @@ const TourAcceptResult = () => {
     const [tourStages, setTourStages] = useState([]);
     const [tourStageResults, setTourStageResults] = useState([]);
     const [selectedStage, setSelectedStage] = useState('');
+    const [selectedStageStatus, setSelectedStageStatus] = useState(true);
 
     const fetchTourStage = async () => {
         try {
@@ -200,6 +201,8 @@ const TourAcceptResult = () => {
         setSelectedStage(stageId);
         const tourStageResults = await fetchTourStageResult(tourId, stageId);
         setTourStageResults(tourStageResults);
+        const tourStageStatus = await getTourStageStatus(stageId);
+        setSelectedStageStatus(tourStageStatus);
     };
 
     const handleCancelStageResult = async (birdCode) => {
@@ -244,7 +247,7 @@ const TourAcceptResult = () => {
                 try {
                     await finishStage(selectedStage);
                     Swal.fire('Thành công', 'Chặng đua đã kết thúc.', 'success');
-                    fetchTourStage();
+                    handleOnChangeSelectStage(selectedStage);
                 } catch (error) {
                     Swal.fire('Từ chối', 'Không thành công', 'error');
                 }
@@ -268,7 +271,7 @@ const TourAcceptResult = () => {
                         <option key={index} value={stage.stageId}>{stage.startPointCode + ' - ' + stage.startPointName}</option>
                     ))}
                 </CFormSelect>
-                <CButton className='m-1' color="warning" onClick={handleClickEndStage}>Kết Thúc Chặng Đua</CButton>
+                <CButton className='m-1' color="warning" onClick={handleClickEndStage} hidden={selectedStageStatus}>Kết Thúc Chặng Đua</CButton>
             </div>
             <div className="table-responsive">
                 <CTable className="table-bordered rounded table-striped text-center">
