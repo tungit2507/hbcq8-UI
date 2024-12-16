@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://103.69.84.147:8080',
+  baseURL: 'https://clbbcduaq8.com',
   withCredentials: true,
 });
 
