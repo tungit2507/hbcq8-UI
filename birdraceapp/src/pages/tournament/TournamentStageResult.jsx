@@ -84,11 +84,11 @@ const TournamentStageResults = () => {
                 <CTableDataCell>{ranker.userLocationName}</CTableDataCell>
                 <CTableDataCell>{ranker.birdCode}</CTableDataCell>
                 <CTableDataCell>{ranker.userLocationCoor}</CTableDataCell>
-                <CTableDataCell>{ranker.distance}</CTableDataCell>
+                <CTableDataCell>{ranker.distance.toFixed(6)}</CTableDataCell>
                 <CTableDataCell>{ranker.endTime}</CTableDataCell>
                 <CTableDataCell>{ranker.startTime}</CTableDataCell>
                 <CTableDataCell>{ranker.totalTime}</CTableDataCell>
-                <CTableDataCell>{ranker.speed}</CTableDataCell>
+                <CTableDataCell>{ranker.speed.toFixed(6)}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>

@@ -139,7 +139,7 @@ const BirdList = () => {
                             <CTableHeaderCell scope="col">ID</CTableHeaderCell>
                             {/* <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell> */}
                             <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell> */}
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -148,43 +148,14 @@ const BirdList = () => {
                                 <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                                 {/* <CTableDataCell>{bird.name}</CTableDataCell> */}
                                 <CTableDataCell>{bird.code}</CTableDataCell>
-                                <CTableDataCell>
+                                {/* <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird(bird); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    {/* <CButton className='mx-1' color="danger" onClick={() => handleDeleteBird(bird.code)}>Xóa</CButton> */}
-                                </CTableDataCell>
+                                </CTableDataCell> */}
                             </CTableRow>
                         ))}
                     </CTableBody>
                 </CTable>
             </div>
-
-            {/* <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
-                <CModalHeader closeButton>
-                    <CModalTitle>Thêm Chim Đua</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                    <CForm>
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Mã Kiềng"
-                            label="Mã Kiềng"
-                            onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
-                        />
-                        <CFormInput
-                            className='my-1'
-                            type="text"
-                            placeholder="Nhập Tên Chim"
-                            label="Tên Chim"
-                            onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
-                        />
-                    </CForm>
-                </CModalBody>
-                <CModalFooter>
-                    <CButton color="secondary" onClick={() => setShowAddModal(false)}>Hủy</CButton>
-                    <CButton color="primary" onClick={handleAddBird}>Thêm</CButton>
-                </CModalFooter>
-            </CModal> */}
 
             <CModal visible={showEditModal} onClose={() => {setCurrentBird({id:"",code:"", name:""});  setShowEditModal(false)}}>
                 <CModalHeader closeButton>

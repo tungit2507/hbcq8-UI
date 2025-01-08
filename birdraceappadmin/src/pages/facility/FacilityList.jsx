@@ -35,7 +35,7 @@ const FacilityManagement = () => {
             return;
         }
 
-        if (!/^\d{1,3}\.\d{1,6};\d{1,3}\.\d{1,6}$/.test(currentFacility.pointCoor)) {
+        if (!/^\d{1,3}\.\d{1,77};\d{1,3}\.\d{1,7}$/.test(currentFacility.pointCoor)) {
             showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }
@@ -66,7 +66,7 @@ const FacilityManagement = () => {
             return;
         }
 
-        if (!/^\d{1,3}\.\d{1,6};\d{1,3}\.\d{1,6}$/.test(currentFacility.pointCoor)) {
+        if (!/^\d{1,3}\.\d{1,7};\d{1,3}\.\d{1,7}$/.test(currentFacility.pointCoor)) {
             showErrorNotification("Định dạng tọa độ không đúng. Vui lòng nhập lại.");
             return;
         }

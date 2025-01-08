@@ -26,13 +26,14 @@ const BirdManagement = () => {
   };
 
   const handleAddBird = async () => {
+
     if (!currentBird.name || !currentBird.code) {
       showErrorNotification("Tên chim và mã kiềng không được bỏ trống.");
       return;
     }
 
-    if (!/^[a-zA-Z0-9]{3,16}$/.test(currentBird.code)) {
-      showErrorNotification("Mã kiềng phải chứa từ 3 đến 16 ký tự bao gồm chữ cái và số.");
+    if (!/^[a-zA-Z0-9]{3,6}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng phải chứa từ 3 đến 6 ký tự bao gồm chữ cái và số.");
       return;
     }
 
@@ -56,8 +57,8 @@ const BirdManagement = () => {
       return;
     }
 
-    if (!/^[a-zA-Z0-9]{3,16}$/.test(currentBird.code)) {
-      showErrorNotification("Mã kiềng phải chứa từ 3 đến 16 ký tự bao gồm chữ cái và số.");
+    if (!/^[a-zA-Z0-9]{3,6}$/.test(currentBird.code)) {
+      showErrorNotification("Mã kiềng phải chứa từ 3 đến 6 ký tự bao gồm chữ cái và số.");
       return;
     }
     

@@ -18,15 +18,19 @@ const ReachDestination = () => {
     const [tourStageReport, setTourStageReport] = useState('');
 
     const handleAddReport = () => {
+        
         if (!report.birdCode || !report.secretCode) {
             toast.error('Vui lòng nhập đầy đủ thông tin.');
             return;
         }
         
-        if (!/^\d{5}$/.test(report.secretCode)) {
-            toast.error('Mã bí mật phải có 5 số.');
-            return;
-        }
+        // if (!/^\d{5}$/.test(report.secretCode)) {
+        //     toast.error('Mã bí mật phải có 5 số.');
+        //     return;
+        // }
+
+
+
         Swal.fire({
             title: 'Xác Nhận Báo Cáo',
             html: `Vui Lòng Xác Nhận Trước Khi Báo Cáo<p>${tourStageReport.endPointCode} ${report.birdCode} ${report.secretCode}</p>`,
