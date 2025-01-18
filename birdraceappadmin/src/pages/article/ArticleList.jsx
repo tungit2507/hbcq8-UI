@@ -95,7 +95,7 @@ const ArticleList = () => {
                 <CTableDataCell>
                   <CButton color="danger" onClick={() => handleDelete(article.id)}>Xóa</CButton>
                   <Link to={`/article/${article.id}`} style={{ marginLeft: '8px' }}><CButton color="success">Xem</CButton></Link>
-                  <Link to={`/edit-article/${article.id}`} style={{ marginLeft: '8px' }}><CButton color="info">Chỉnh Sửa</CButton></Link>
+                  <Link to={`/management/edit-article?article-id=${article.id}`} style={{ marginLeft: '8px' }}><CButton color="info">Chỉnh Sửa</CButton></Link>
                 </CTableDataCell>
               </CTableRow>
             ))}
