@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem, CButton, CForm, CFormInput } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import { fetchArticles } from '../../api/articleApi';
+import { fetchArticles, deleteArticle } from '../../api/articleApi';
 
 const ArticleList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,18 +11,18 @@ const ArticleList = () => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    const fetchArticleData = async () => {
-      try {
-        const data = await fetchArticles();
-        setArticles(data);
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-        Swal.fire('Lỗi', 'Không thể lấy danh sách bài viết. Vui lòng thử lại sau.', 'error');
-      }
-    };
-
     fetchArticleData();
   }, []);
+
+  const fetchArticleData = async () => {
+    try {
+      const data = await fetchArticles();
+      setArticles(data);
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+      Swal.fire('Lỗi', 'Không thể lấy danh sách bài viết. Vui lòng thử lại sau.', 'error');
+    }
+  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -46,8 +46,8 @@ const ArticleList = () => {
       cancelButtonText: 'Hủy',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        // await deleteArticle(articleId);
-        // setArticles(articles.filter(article => article.id !== articleId));
+        await deleteArticle(articleId);
+        fetchArticleData();
         Swal.fire('Đã xóa!', 'Bài viết đã bị xóa.', 'success');
       }
     });
@@ -94,7 +94,6 @@ const ArticleList = () => {
                 <CTableDataCell>{article.authorUserName}</CTableDataCell>
                 <CTableDataCell>
                   <CButton color="danger" onClick={() => handleDelete(article.id)}>Xóa</CButton>
-                  <Link to={`/article/${article.id}`} style={{ marginLeft: '8px' }}><CButton color="success">Xem</CButton></Link>
                   <Link to={`/management/edit-article?article-id=${article.id}`} style={{ marginLeft: '8px' }}><CButton color="info">Chỉnh Sửa</CButton></Link>
                 </CTableDataCell>
               </CTableRow>
