@@ -9,7 +9,7 @@ import '../../assets/css/main.css';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 const ChangePassword = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false); // Thêm biến trạng thái
 
@@ -27,20 +27,34 @@ const ChangePassword = () => {
 
 
     if (isSubmitting) return;
+
     setIsSubmitting(true);
+
     try {
-      // const response = await axioInstance.post('/change-password', data,{ withCredentials: true});
-      // const user = response.data;
-      const user = [];
-      sessionStorage.setItem("currentUser", JSON.stringify(user));
-      sessionStorage.setItem("isLoggedIn", "true");
-      sessionStorage.setItem("token", user.token);
-      sessionStorage.setItem("userId", user.id);
+      let currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+      // create form data
+      const formData = new FormData();
+      formData.append('currentPass', data.currentPassword);
+      formData.append('newPass', data.newPassword);
+      formData.append('username', currentUser.username);
+
+      // call api change password
+      await axioInstance.post('/user/change-pass', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       toast.success("Đổi mật khẩu thành công");
-      setTimeout( navigate('/'), 1000);
+      
+      // remove session storage
       sessionStorage.setItem("isLoggedIn", "false");
       sessionStorage.removeItem("currentUser");
-      navigate('/login');
+      
+      // navigate to login page
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
+
     } catch (error) {
       const errorMessage = error.response?.data?.errorMessage || "Đã xảy ra lỗi";
       if (error.response?.data?.errorCode === "401") {
@@ -111,7 +125,7 @@ const ChangePassword = () => {
                 
                 <div className="text-center">
                   <button type="submit" className="btn btn-primary btn-color px-5 mb-5 w-100" disabled={isSubmitting}>
-                    Xác nhận mật khẩu
+                    Thay đổi mật khẩu
                   </button>
                 </div>
               </form>
