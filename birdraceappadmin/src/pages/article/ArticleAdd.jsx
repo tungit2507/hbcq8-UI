@@ -142,6 +142,7 @@ const ArticleAdd = () => {
         },
       },
       imageResize: {
+        parchment: Quill.import('parchment'),
         modules: ['Resize', 'DisplaySize', 'Toolbar'],
       },
     }),
