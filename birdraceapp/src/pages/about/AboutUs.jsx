@@ -60,7 +60,7 @@ const TeamAboutUs = () => {
     return (
         <section className="team-15 team section" id="team">
             <div className="container section-title" data-aos="fade-up">
-                <h2>Ban Quản Lý Câu Lạc Bộ</h2>
+                <h2>Ban Chủ Nhiệm</h2>
                 {/* <p>Necessitatibus eius consequatur</p> */}
             </div>
 

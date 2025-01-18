@@ -154,7 +154,7 @@ const FacilityManagement = () => {
                             <CTableHeaderCell scope="col">Tên Căn Cứ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Mã Căn Cứ</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Ngày Tạo</CTableHeaderCell> */}
                             {/* <CTableHeaderCell scope="col">Người Tạo</CTableHeaderCell> */}
                             {/* <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell> */}
                         </CTableRow>
@@ -165,7 +165,7 @@ const FacilityManagement = () => {
                                 <CTableDataCell>{facility.name}</CTableDataCell>
                                 <CTableDataCell>{facility.code}</CTableDataCell>
                                 <CTableDataCell>{facility.pointCoor}</CTableDataCell>
-                                <CTableDataCell>{facility.createdAt}</CTableDataCell>
+                                {/* <CTableDataCell>{facility.createdAt}</CTableDataCell> */}
                                 {/* <CTableDataCell>{facility.createdBy}</CTableDataCell> */}
                                 {/* <CTableDataCell>
                                 <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>

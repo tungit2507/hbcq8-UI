@@ -166,9 +166,9 @@ const RaceList = () => {
                 <CTableDataCell>{race.startDateInfo}</CTableDataCell>
                 <CTableDataCell>{race.endDateInfo}</CTableDataCell>
                 <CTableDataCell>
-                  <Link className="btn btn-info m-1" to={`/management/race/registration-list?id=${race.id}`}>Kiểm Duyệt</Link>
+                  <Link className="btn btn-info m-1" to={`/management/race/registration-list?id=${race.id}`}>Duyệt Đơn</Link>
                   {/* <Link className="btn btn-warning m-1" to={`/management/race/tour-result-set?id=${race.id}`}>Kiểm Tra Xếp Hạng</Link> */}
-                  <Link className="btn btn-secondary m-1" to={`/management/race/tour-accept-result?id=${race.id}`}>Xét Duyệt Kết Quả Chặng</Link>
+                  <Link className="btn btn-secondary m-1" to={`/management/race/tour-accept-result?id=${race.id}`}> Duyệt Kết Quả</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/update?id=${race.id}`}>Chỉnh Sửa</Link>
                   <Link className="btn btn-primary m-1" to={`/management/race/detail?id=${race.id}`}>Chi Tiết</Link>
                   <CButton className="btn btn-danger text-white m-1" onClick={() => handleFinishTour(race.id)} hidden={race.isFinished}>Kết Thúc Giải Đua</CButton>

@@ -283,14 +283,14 @@ const TournamentList = () => {
 
       <CModal visible={showPopup} onClose={() => setShowPopup(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Chọn chim để đăng ký</CModalTitle>
+          <CModalTitle>Đăng ký chiến binh</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {userBirds.map(bird => (
             <CFormCheck
               key={bird.id}
               id={`bird-${bird.id}`}
-              label={bird.name}
+              label={bird.code}
               checked={selectedBirds.includes(bird.code)}
               onChange={() => handleBirdSelection(bird.code)}
             />
@@ -301,7 +301,7 @@ const TournamentList = () => {
             Hủy
           </CButton>
           <CButton color="primary" onClick={handleRegister} disabled={selectedBirds.length === 0}>
-            Xác nhận đăng ký
+            Đăng ký
           </CButton>
         </CModalFooter>
       </CModal>

@@ -5,19 +5,20 @@ import {
   cilSpeedometer,
   cilPeople,
   cilSpreadsheet,
-  cilLocationPin
+  cilLocationPin,
+  cilPhone
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 import Swal from 'sweetalert2'
 
 const _nav = [
-  {
-    component: CNavItem,
-    name: 'Thống Kê',
-    to: '#',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    onClick: () => Swal.fire('Thông báo', 'Tính năng đang phát triển', 'info').then(() => setTimeout(() => Swal.close(), 2000)),
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Thống Kê',
+  //   to: '#',
+  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+  //   onClick: () => Swal.fire('Thông báo', 'Tính năng đang phát triển', 'info').then(() => setTimeout(() => Swal.close(), 2000)),
+  // },
   {
     component: CNavGroup,
     name: 'Quản Lý Thành Viên',
@@ -75,6 +76,17 @@ const _nav = [
         to: '/management/article/add',
       },
     ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Quản Lý Thông Tin',
+    icon: <CIcon icon={cilPhone} customClassName="nav-icon" />,
+    items: [  
+      {
+        component: CNavItem,
+        name: 'Danh Sách SĐT',
+        to: '/management/info/phonenumber',
+      },   ],
   }
 ]
 

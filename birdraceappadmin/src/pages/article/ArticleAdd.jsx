@@ -21,6 +21,14 @@ const ArticleAdd = () => {
 
     const handleAddArticle = async (e) => {
         e.preventDefault();
+
+
+        console.log(newArticle.image);
+        
+        if (!newArticle.image) {
+            Swal.fire('Lỗi', 'Hình ảnh không được bỏ trống.', 'error');
+            return;
+        }
         // Validate title
         if (!newArticle.title) {
             Swal.fire('Lỗi', 'Tiêu đề không được bỏ trống.', 'error');
@@ -74,6 +82,15 @@ const ArticleAdd = () => {
                             value={newArticle.title}
                             onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })}
                         />
+
+                        <CFormLabel htmlFor="title">Hình Ảnh</CFormLabel>
+                        <CFormInput
+                            type="file"
+                            placeholder="Hình ảnh"
+                            accept="image/*"
+                            onChange={(e) => setNewArticle({ ...newArticle, image: e.target.files[0] })}
+                        />
+
                         <CFormLabel htmlFor="description">Nội Dung Bài Viết</CFormLabel>                
                         <ReactQuill 
                             className="quill-editor"

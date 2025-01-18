@@ -32,6 +32,7 @@ import DetailRaceForm from "./pages/race/RacemanagementDetail";
 import TourAccepResult from "./pages/race/RaceAcceptResult";
 import TournamentResults from "./pages/race/RaceResult";
 import TournamentStageResults from "./pages/race/RaceStageResult";
+import UserPhonenumberList from "./pages/info/ListUserPhonenumber";
 
 const routes = createBrowserRouter([
     {
@@ -58,6 +59,7 @@ const routes = createBrowserRouter([
             { path: "/management/race/tour-accept-result", element: <TourAccepResult/>, name: "Facility Management" },
             { path: "/management/race/result", element: <TournamentResults/>, name: "Facility Management" },
             { path: "/management/race/stage/result", element: <TournamentStageResults/>, name: "Facility Management" },
+            { path: "/management/info/phonenumber", element: <UserPhonenumberList/>, name: "Facility Management" },
 
         ]
     },

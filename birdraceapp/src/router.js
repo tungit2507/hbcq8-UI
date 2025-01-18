@@ -43,6 +43,7 @@ const routes = createBrowserRouter([
             { path: "/my-tour", element: <Mytournament/> },
             { path: "/tour-detail", element: <ReachDestination/> },
             { path: "/tour-stage", element: <TournamentStageToResults/> },
+            { path: "/change-password", element: <ChangePassword/> },
         ]
     },
     { path: "*", element: <Page404/> },

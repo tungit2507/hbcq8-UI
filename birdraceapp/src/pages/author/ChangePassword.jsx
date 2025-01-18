@@ -14,6 +14,44 @@ const ChangePassword = () => {
   const [isSubmitting, setIsSubmitting] = useState(false); // Thêm biến trạng thái
 
   const onSubmit = async (data) => {
+  
+    if(data.newPassword.length < 6){
+      toast.error("Mật khẩu mới phải có ít nhất 6 ký tự");
+      return;
+    }
+
+    if(data.newPassword !== data.confirmNewPassword){
+      toast.error("Mật khẩu xác nhận không khớp");
+      return;
+    }
+
+
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      // const response = await axioInstance.post('/change-password', data,{ withCredentials: true});
+      // const user = response.data;
+      const user = [];
+      sessionStorage.setItem("currentUser", JSON.stringify(user));
+      sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("token", user.token);
+      sessionStorage.setItem("userId", user.id);
+      toast.success("Đổi mật khẩu thành công");
+      setTimeout( navigate('/'), 1000);
+      sessionStorage.setItem("isLoggedIn", "false");
+      sessionStorage.removeItem("currentUser");
+      navigate('/login');
+    } catch (error) {
+      const errorMessage = error.response?.data?.errorMessage || "Đã xảy ra lỗi";
+      if (error.response?.data?.errorCode === "401") {
+        toast.error(errorMessage);
+      } else {
+        toast.error(errorMessage);
+      }
+    } finally {
+      setIsSubmitting(false
+      );
+    }
   };
 
   return (
@@ -39,9 +77,20 @@ const ChangePassword = () => {
                 <h2 className="text-center text-dark mt-3">Thay Đổi Mật Khẩu</h2>
                 <div className="mb-3">
                   <input
-                    type="text"
+                    type="password"
                     className="form-control"
                     id="newPassword"
+                    aria-describedby="emailHelp"
+                    placeholder="Nhập mật khẩu hiện tại của bạn."
+                    {...register('currentPassword', { required: 'Vui lòng nhập mật khẩu hiện tại.' })}
+                  />
+                  {errors.currentPassword && <p className="error">{errors.currentPassword.message}</p>}
+                </div>
+                <div className="mb-3">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
                     aria-describedby="emailHelp"
                     placeholder="Nhập mật khẩu mới của bạn."
                     {...register('newPassword', { required: 'Vui lòng nhập mật khẩu mới.' })}
@@ -50,7 +99,7 @@ const ChangePassword = () => {
                 </div>
                 <div className="mb-3">
                   <input
-                    type="text"
+                    type="password"
                     className="form-control"
                     id="confirmNewPassword"
                     aria-describedby="emailHelp"

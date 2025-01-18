@@ -178,7 +178,7 @@ const AddRaceForm = () => {
                           }}
                           invalid={!!errors.tourStages?.[index]?.startPointCode}
                         >
-                          <option value="">Chọn Mã Điểm Xuất Phát</option>
+                          <option value="" disabled>Chọn Mã Điểm Xuất Phát</option>
                           {systemLocations.map(location => (
                             <option key={location.code} value={location.code}>{location.code + ' - ' + location.name }</option>
                           ))}
@@ -232,6 +232,8 @@ const AddRaceForm = () => {
                     <CFormInput
                       type="number"
                       step={0.1}
+                      value={12}
+                      disabled
                       id={`tourStages[${index}].restTimePerDay`}
                       {...register(`tourStages[${index}].restTimePerDay`, { required: 'Thời gian nghỉ là bắt buộc' })}
                       invalid={!!errors.tourStages?.[index]?.restTimePerDay}

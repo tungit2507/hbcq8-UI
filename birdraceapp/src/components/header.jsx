@@ -67,6 +67,7 @@ const Header = () => {
                     <NavDropdown.Item as={Link} to={"/birds"} className="dropdown-item nav-link">Quản Lý Chim Đua</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to={"/facibilitys"} className="dropdown-item nav-link">Quản Lý Căn Cứ</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to={"/profile"} className="dropdown-item nav-link">QL Tài Khoản</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/change-password"} className="dropdown-item nav-link">Đổi Mật Khẩu</NavDropdown.Item>
                     <NavDropdown.Item className="dropdown-item nav-link"><Logout /></NavDropdown.Item>
                   </>
                   :

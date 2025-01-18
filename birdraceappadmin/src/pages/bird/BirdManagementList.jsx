@@ -27,8 +27,8 @@ const BirdManagement = () => {
 
   const handleAddBird = async () => {
 
-    if (!currentBird.name || !currentBird.code) {
-      showErrorNotification("Tên chim và mã kiềng không được bỏ trống.");
+    if (!currentBird.code) {
+      showErrorNotification("Mã kiềng không được bỏ trống.");
       return;
     }
 
@@ -52,8 +52,8 @@ const BirdManagement = () => {
   };
 
   const handleEditBird = async () => {
-    if (!currentBird.name || !currentBird.code) {
-      showErrorNotification("Tên chim và mã kiềng không được bỏ trống.");
+    if (!currentBird.code) {
+      showErrorNotification("Mã kiềng không được bỏ trống.");
       return;
     }
 
@@ -113,18 +113,18 @@ const BirdManagement = () => {
           <CTableHead>
             <CTableRow>
               
-              <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Tên Chim</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Mô Tả</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
             {birds?.map(bird => (
               <CTableRow key={bird.id}>
-                <CTableDataCell>{bird.name}</CTableDataCell>
+                {/* <CTableDataCell>{bird.name}</CTableDataCell> */}
                 <CTableDataCell>{bird.code}</CTableDataCell>
-                <CTableDataCell>{bird.description}</CTableDataCell>
+                {/* <CTableDataCell>{bird.description}</CTableDataCell> */}
                 <CTableDataCell>
                   <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird({ ...bird, id: bird.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                   <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(bird.code)}>Xóa</CButton>
@@ -149,13 +149,13 @@ const BirdManagement = () => {
               placeholder="Nhập Mã Kiềng "
               onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
             />
-            <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
+            {/* <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
             <CFormInput
               className='my-1'
               type="text"
               placeholder="Nhập Tên Chim"
               onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
-            />
+            /> */}
           </CForm>
         </CModalBody>
         <CModalFooter>
@@ -179,15 +179,14 @@ const BirdManagement = () => {
               value={currentBird.code}
               onChange={(e) => setCurrentBird({ ...currentBird, code: e.target.value })}
             />
-            <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
+            {/* <CFormLabel htmlFor="name">Tên Chim</CFormLabel>
             <CFormInput
               className='my-1'
               type="text"
               placeholder="Nhập Tên Chim"
               value={currentBird.name}
               onChange={(e) => setCurrentBird({ ...currentBird, name: e.target.value })}
-            />
-            
+            /> */}
           </CForm>
         </CModalBody>
         <CModalFooter>
