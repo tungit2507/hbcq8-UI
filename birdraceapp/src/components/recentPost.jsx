@@ -28,7 +28,7 @@ const RecentPosts = () => {
             <div className="col-xl-4 col-md-6" key={index} data-aos="fade-up" data-aos-delay={post.aosDelay}>
               <div className="post-item position-relative h-100">
                 <div className="post-img position-relative overflow-hidden">
-                  <img src="/assets/img/carousel/carousel-6.jpg" className="img-fluid" alt={`Post ${index + 1}`} />
+                  <img src={post.imgUrl} className="img-fluid" alt={`Post ${index + 1}`} />
                   <span className="post-date">{post.date}</span>
                 </div>
 
