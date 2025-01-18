@@ -31,39 +31,40 @@ export const addArticle = async (articleData) => {
     }
 };
 
+
+// xóa bài viết
+export const deleteArticle = async (id) => {
+    try {
+        const response = await axiosInstance.delete(`${BASE_URL_ARTICLES}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting article:', error);
+        Swal.fire('Lỗi', 'Không thể xóa bài viết. Vui lòng thử lại sau.', 'error');
+    }
+};
+
 // // Lấy bài viết theo ID
-// export const fetchArticleById = async (id) => {
-//     try {
-//         const response = await axiosInstance.get(`${BASE_URL_ARTICLES}/${id}`);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error fetching article:', error);
-//         Swal.fire('Lỗi', 'Không thể lấy thông tin bài viết. Vui lòng thử lại sau.', 'error');
-//     }
-// };
+export const fetchArticleById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL_ARTICLES}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching article:', error);
+        Swal.fire('Lỗi', 'Không thể lấy thông tin bài viết. Vui lòng thử lại sau.', 'error');
+    }
+};
 
-// // Cập nhật bài viết
-// export const updateArticle = async (id, articleData) => {
-//     try {
-//         const response = await axiosInstance.put(`${BASE_URL_ARTICLES}/${id}`, articleData, {
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         });
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error updating article:', error);
-//         Swal.fire('Lỗi', 'Không thể cập nhật bài viết. Vui lòng thử lại sau.', 'error');
-//     }
-// };
-
-// // Xóa bài viết
-// export const deleteArticle = async (id) => {
-//     try {
-//         const response = await axiosInstance.delete(`${BASE_URL_ARTICLES}/${id}`);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error deleting article:', error);
-//         Swal.fire('Lỗi', 'Không thể xóa bài viết. Vui lòng thử lại sau.', 'error');
-//     }
-// };
+// Cập nhật bài viết
+export const updateArticle = async (id, articleData) => {
+    try {
+        const response = await axiosInstance.put(`${BASE_URL_ARTICLES}`, articleData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating article:', error);
+        Swal.fire('Lỗi', 'Không thể cập nhật bài viết. Vui lòng thử lại sau.', 'error');
+    }
+};
