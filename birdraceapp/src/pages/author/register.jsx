@@ -132,7 +132,7 @@ const RegistrationForm = () => {
                     </button>
                   </div>
                   <div id="emailHelp" className="form-text text-end text-dark">
-                  <Link to={'/forgot-password'} className=''>Quên mật khẩu?</Link>
+                  {/* <Link to={'/forgot-password'} className=''>Quên mật khẩu?</Link> */}
                 </div>
                   <div id="emailHelp" className="form-text text-center mb-5 text-dark">
                     Đã có tài khoản? Đăng nhập

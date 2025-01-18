@@ -60,6 +60,7 @@ const routes = createBrowserRouter([
             { path: "/management/race/result", element: <TournamentResults/>, name: "Facility Management" },
             { path: "/management/race/stage/result", element: <TournamentStageResults/>, name: "Facility Management" },
             { path: "/management/info/phonenumber", element: <UserPhonenumberList/>, name: "Facility Management" },
+            { path: "/management/edit-article", element: <UserPhonenumberList/>, name: "Facility Management" },
 
         ]
     },

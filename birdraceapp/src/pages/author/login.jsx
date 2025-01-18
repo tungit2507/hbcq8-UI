@@ -91,9 +91,9 @@ const LoginForm = () => {
                     Đăng Nhập
                   </button>
                 </div>
-                <div id="emailHelp" className="form-text text-end text-dark">
+                {/* <div id="emailHelp" className="form-text text-end text-dark">
                   <Link to={'/forgot-password'} className=''>Quên mật khẩu?</Link>
-                </div>
+                </div> */}
                 <div id="emailHelp" className="form-text text-center mb-5 text-dark">
                   Chưa có tài khoản? Đăng ký
                   <Link to={'/register'} className=''> tại đây</Link>

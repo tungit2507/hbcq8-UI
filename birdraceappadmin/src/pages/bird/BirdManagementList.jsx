@@ -40,7 +40,7 @@ const BirdManagement = () => {
     try {
       const formData = new FormData();
       formData.append('userId', userId);
-      formData.append('name', currentBird.name);
+      // formData.append('name', currentBird.name);
       formData.append('code', currentBird.code);
       await addBird(formData);
       fetchData();
