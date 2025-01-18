@@ -48,7 +48,7 @@ const BlogList = () => {
                         <div className="col-lg-4" key={blog.id} data-aos="fade-up">
                             <article className="position-relative h-100">
                                 <div className="post-img position-relative overflow-hidden">
-                                    <img src="/assets/img/carousel/carousel-6.jpg" className="img-fluid" alt="" />
+                                    <img src={blog.imgUrl} className="img-fluid" alt="" />
                                 </div>
                                 <div className="meta d-flex align-items-end">
                                     <div className="d-flex align-items-center">
