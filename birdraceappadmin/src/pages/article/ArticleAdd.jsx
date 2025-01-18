@@ -63,7 +63,11 @@ const ArticleAdd = () => {
         formData.append('title', newArticle.title);
         formData.append('content', newArticle.content);
         formData.append('imgUrl', imageURL);
-        await addArticle(formData);
+        try {
+            await addArticle(formData);
+        } catch (error) {
+            console.error('Error adding article:', error);
+        }
         navigate('/management/article/list');
     };
 
