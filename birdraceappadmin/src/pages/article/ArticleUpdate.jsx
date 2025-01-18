@@ -18,6 +18,9 @@ const ArticleUpdate = () => {
     const id = query.get('article-id');
     const quillRef = useRef(null);
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+
     const [article, setArticle] = useState({
         title: '',
         description: '',
@@ -65,12 +68,19 @@ const ArticleUpdate = () => {
 
     const handleUpdateArticle = async (e) => {
         e.preventDefault();
+
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+
         if (article.title.length > 255) {
             Swal.fire('Lỗi', 'Tiêu đề không được quá 255 ký tự.', 'error');
+            setIsSubmitting(false);
             return;
         }
         if (!article.content || article.content.trim() === '') {
             Swal.fire('Lỗi', 'Nội dung không được bỏ trống.', 'error');
+            setIsSubmitting(false);
             return;
         }
         let imageURL = article.previewImage;
@@ -81,6 +91,7 @@ const ArticleUpdate = () => {
         } catch (error) {
             console.error('Error uploading image:', error);
             Swal.fire('Lỗi', 'Không thể tải ảnh lên. Vui lòng thử lại sau.', 'error');
+            setIsSubmitting(false);
             return;
         }
         const updatedArticle = {
@@ -94,6 +105,8 @@ const ArticleUpdate = () => {
         } catch (error) {
             console.error('Error updating article:', error);
             Swal.fire('Lỗi', 'Không thể cập nhật bài viết. Vui lòng thử lại sau.', 'error');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -202,8 +215,8 @@ const ArticleUpdate = () => {
                         />
 
                         <div className="d-flex justify-content-center my-4">
-                            <CButton type="submit" color="primary">
-                                Cập Nhật Bài Viết
+                            <CButton type="submit" color="primary" disabled={isSubmitting}>
+                                {isSubmitting ? 'Đang xử lý...' : 'Cập Nhật Bài Viết'}
                             </CButton>
                         </div>
                     </CForm>
