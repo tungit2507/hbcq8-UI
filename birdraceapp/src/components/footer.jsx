@@ -30,7 +30,7 @@ const Footer = () => {
               <div className="footer-contact pt-3">
                 <p>Địa Chỉ</p>
                 <p>{contactInfo.address}</p>
-                <p className="mt-3"><strong>số điện thoại:</strong> </p>
+                <p className="mt-3"><strong>Điện thoại:</strong> </p>
                 <p><span><span>{contactInfo.name1}</span>: {contactInfo.phone1}</span></p>
                 <p><span><span>{contactInfo.name2}</span>: {contactInfo.phone2}</span></p>
 

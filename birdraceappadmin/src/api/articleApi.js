@@ -66,5 +66,6 @@ export const updateArticle = async (id, articleData) => {
     } catch (error) {
         console.error('Error updating article:', error);
         Swal.fire('Lỗi', 'Không thể cập nhật bài viết. Vui lòng thử lại sau.', 'error');
+        throw error;
     }
 };
