@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CFormLabel, CInputGroup, CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput } from '@coreui/react';
+import { CFormLabel, CInputGroup, CInputGroupText, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput, CFormSelect } from '@coreui/react';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchBirds, updateBird, addBird, deleteBird } from '../../api/BirdApi';
@@ -10,7 +10,7 @@ const UserPhonenumberList = () => {
     const [birds, setBirds] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [currentBird, setCurrentBird] = useState({ name: '', phoneNumber: '', id: '' });
+    const [currentBird, setCurrentBird] = useState({ name: '', phoneNumber: '', infoType: '', id: '' });
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const userId = queryParams.get('user');
@@ -26,8 +26,8 @@ const UserPhonenumberList = () => {
     };
 
     const handleAddBird = async () => {
-        if (!currentBird.name || !currentBird.phoneNumber) {
-            showErrorNotification("Tên và số điện thoại không được bỏ trống.");
+        if (!currentBird.name || !currentBird.phoneNumber || !currentBird.infoType) {
+            showErrorNotification("Tên, số điện thoại và loại thông tin không được bỏ trống.");
             return;
         }
 
@@ -36,6 +36,7 @@ const UserPhonenumberList = () => {
             formData.append('userId', userId);
             formData.append('name', currentBird.name);
             formData.append('phoneNumber', currentBird.phoneNumber);
+            formData.append('infoType', currentBird.infoType);
             await addBird(formData);
             fetchData();
             setShowAddModal(false);
@@ -46,8 +47,8 @@ const UserPhonenumberList = () => {
     };
 
     const handleEditBird = async () => {
-        if (!currentBird.name || !currentBird.phoneNumber) {
-            showErrorNotification("Tên và số điện thoại không được bỏ trống.");
+        if (!currentBird.name || !currentBird.phoneNumber || !currentBird.infoType) {
+            showErrorNotification("Tên, số điện thoại và loại thông tin không được bỏ trống.");
             return;
         }
 
@@ -56,6 +57,7 @@ const UserPhonenumberList = () => {
             formData.append('userId', userId);
             formData.append('name', currentBird.name);
             formData.append('phoneNumber', currentBird.phoneNumber);
+            formData.append('infoType', currentBird.infoType);
             formData.append('id', currentBird.id);
             await updateBird(formData);
             fetchData();
@@ -70,10 +72,10 @@ const UserPhonenumberList = () => {
         try {
             await deleteBird(id);
             fetchData();
-            Swal.fire('Thành công', 'Thông tin  đã được xóa thành công.', 'success');
+            Swal.fire('Thành công', 'Thông tin đã được xóa thành công.', 'success');
         } catch (error) {
             const errorMessage = error.response.data.errorMessage;
-            showErrorNotification(errorMessage || "Không thể xóa Thông tin . Vui lòng thử lại sau.");
+            showErrorNotification(errorMessage || "Không thể xóa Thông tin. Vui lòng thử lại sau.");
         }
     };
 
@@ -95,14 +97,15 @@ const UserPhonenumberList = () => {
 
     return (
         <div className="p-3 rounded">
-            <h4>Quản Lý Thông tin </h4>
-            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Thông tin </CButton>
+            <h4>Quản Lý Thông tin</h4>
+            <CButton color="primary" onClick={() => setShowAddModal(true)}>Thêm Thông tin</CButton>
             <div className="table-responsive mt-4">
                 <CTable className="table-bordered rounded table-striped text-center">
                     <CTableHead>
                         <CTableRow>
                             <CTableHeaderCell scope="col">Tên</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Số điện thoại</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Loại Thông tin</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Hành Động</CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
@@ -111,6 +114,7 @@ const UserPhonenumberList = () => {
                             <CTableRow key={bird.id}>
                                 <CTableDataCell>{bird.name}</CTableDataCell>
                                 <CTableDataCell>{bird.phoneNumber}</CTableDataCell>
+                                <CTableDataCell>{bird.infoType}</CTableDataCell>
                                 <CTableDataCell>
                                     <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird({ ...bird, id: bird.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
                                     <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(bird.id)}>Xóa</CButton>
@@ -121,10 +125,10 @@ const UserPhonenumberList = () => {
                 </CTable>
             </div>
 
-            {/* Modal Thêm Thông tin  */}
+            {/* Modal Thêm Thông tin */}
             <CModal visible={showAddModal} onClose={() => setShowAddModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Thêm Thông tin </CModalTitle>
+                    <CModalTitle>Thêm Thông tin</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
@@ -142,6 +146,16 @@ const UserPhonenumberList = () => {
                             placeholder="Nhập Số điện thoại"
                             onChange={(e) => setCurrentBird({ ...currentBird, phoneNumber: e.target.value })}
                         />
+                        <CFormLabel htmlFor="infoType" className="mt-3">Loại Thông tin</CFormLabel>
+                        <CFormSelect
+                            className='my-1'
+                            onChange={(e) => setCurrentBird({ ...currentBird, infoType: e.target.value })}
+                        >
+                            <option value="" disabled>Chọn Loại Thông tin</option>
+                            <option value="Địa chỉ">Địa chỉ</option>
+                            <option value="Email">Email</option>
+                            <option value="Số điện thoại">Số điện thoại</option>
+                        </CFormSelect>
                     </CForm>
                 </CModalBody>
                 <CModalFooter>
@@ -150,10 +164,10 @@ const UserPhonenumberList = () => {
                 </CModalFooter>
             </CModal>
 
-            {/* Modal Chỉnh Sửa Thông tin  */}
+            {/* Modal Chỉnh Sửa Thông tin */}
             <CModal visible={showEditModal} onClose={() => setShowEditModal(false)}>
                 <CModalHeader closeButton>
-                    <CModalTitle>Chỉnh Sửa Thông tin </CModalTitle>
+                    <CModalTitle>Chỉnh Sửa Thông tin</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
@@ -173,6 +187,17 @@ const UserPhonenumberList = () => {
                             value={currentBird.phoneNumber}
                             onChange={(e) => setCurrentBird({ ...currentBird, phoneNumber: e.target.value })}
                         />
+                        <CFormLabel htmlFor="infoType" className="mt-3">Loại Thông tin</CFormLabel>
+                        <CFormSelect
+                            className='my-1'
+                            value={currentBird.infoType}
+                            onChange={(e) => setCurrentBird({ ...currentBird, infoType: e.target.value })}
+                        >
+                            <option value="" disabled>Chọn Loại Thông tin</option>
+                            <option value="Địa chỉ">Địa chỉ</option>
+                            <option value="Email">Email</option>
+                            <option value="Số điện thoại">Số điện thoại</option>
+                        </CFormSelect>
                     </CForm>
                 </CModalBody>
                 <CModalFooter>
