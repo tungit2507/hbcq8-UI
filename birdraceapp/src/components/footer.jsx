@@ -32,8 +32,9 @@ const Footer = () => {
                 <p>{contactInfo.address}</p>
                 <p className="mt-3"><strong>Điện thoại:</strong> </p>
                 <p><span><span>{contactInfo.name1}</span>: {contactInfo.phone1}</span></p>
-                <p><span><span>{contactInfo.name2}</span>: {contactInfo.phone2}</span></p>
-
+                {contactInfo.name2 && contactInfo.phone2 && (
+                  <p><span><span>{contactInfo.name2}</span>: {contactInfo.phone2}</span></p>
+                )}
                 <p><strong>Email:</strong> <span>{contactInfo.email}</span></p>
               </div>
             </div>
