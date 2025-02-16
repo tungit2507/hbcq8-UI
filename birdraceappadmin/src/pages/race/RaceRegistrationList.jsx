@@ -157,9 +157,8 @@ const RaceRegistrationList = () => {
         <CTable className="table-bordered rounded table-striped text-center">
           <CTableHead>
             <CTableRow>
-              {/* <CTableHeaderCell scope="col">Chọn</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Tên Người Đăng Ký</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Chim</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Đăng Ký</CTableHeaderCell>
               <CTableHeaderCell scope="col">Trạng Thái</CTableHeaderCell>
               <CTableHeaderCell scope="col">Người Phê Duyệt</CTableHeaderCell>
@@ -170,14 +169,6 @@ const RaceRegistrationList = () => {
           <CTableBody>
             {currentItems.map(registration => (
               <CTableRow key={registration.tourid}>
-                {/* <CTableDataCell>
-                  {registration.birdApplied === "W" && (
-                    <CFormCheck
-                      checked={selectedRegistrations.some(selected => selected === registration.requesterId)}
-                      onChange={() => handleSelect(registration.requesterId)}
-                    />
-                  )}
-                </CTableDataCell> */}
                 <CTableDataCell>{registration.requesterName}</CTableDataCell>
                 <CTableDataCell>
                   {registration.birdCodes && registration.birdCodes.length > 0 ? (

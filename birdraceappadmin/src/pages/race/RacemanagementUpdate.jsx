@@ -99,7 +99,7 @@ const UpdateRaceForm = () => {
             <CForm onSubmit={handleSubmit(onSubmit)}>
               {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />}
               <CRow className="mb-3">
-                <CCol md={6}>
+                <CCol md={12}>
                   <CFormLabel htmlFor="name">Tên Giải Đua</CFormLabel>
                   <CFormInput
                     placeholder='Tên giải đua'
@@ -110,7 +110,7 @@ const UpdateRaceForm = () => {
                   />
                   {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                 </CCol>
-                <CCol md={6}>
+                {/* <CCol md={6}>
                   <CFormLabel htmlFor="birdsNum">Số lượng chim đua tối đa</CFormLabel>
                   <CFormInput
                     placeholder='Nhập Số Chim'
@@ -120,7 +120,7 @@ const UpdateRaceForm = () => {
                     invalid={!!errors.birdsNum}
                   />
                   {errors.birdsNum && <div className="invalid-feedback">{errors.birdsNum.message}</div>}
-                </CCol>
+                </CCol> */}
               </CRow>
               <CRow className="mb-3">
                 <CCol md={6}>
@@ -248,6 +248,7 @@ const UpdateRaceForm = () => {
                     <CFormInput
                       type="number"
                       step={0.1}
+                      readOnly
                       id={`tourStages[${index}].restTimePerDay`}
                       {...register(`tourStages[${index}].restTimePerDay`, { required: 'Thời gian nghỉ là bắt buộc' })}
                       invalid={!!errors.tourStages?.[index]?.restTimePerDay}

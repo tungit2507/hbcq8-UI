@@ -232,7 +232,7 @@ const AddRaceForm = () => {
                     <CFormInput
                       type="number"
                       step={0.1}
-                      value={12}
+                      defaultValue={12.0}
                       disabled
                       id={`tourStages[${index}].restTimePerDay`}
                       {...register(`tourStages[${index}].restTimePerDay`, { required: 'Thời gian nghỉ là bắt buộc' })}
@@ -248,9 +248,9 @@ const AddRaceForm = () => {
               <CRow className="mb-3">
                 <CCol>
                   {fields.length < 10 && (
-                    <CButton className='my-2' type="button" color="secondary" onClick={() => append({ startPointCode: '', startPointName: '', startPointCoor: '', startTime: '' })}>
-                      Thêm Chặng
-                    </CButton>
+                    <CButton className='my-2' type="button" color="secondary" onClick={() => append({ startPointCode: '', startPointName: '', startPointCoor: '', startTime: '', restTimePerDay: 12.0 })}>
+                    Thêm Chặng
+                  </CButton>
                   )}
                 </CCol>
               </CRow>

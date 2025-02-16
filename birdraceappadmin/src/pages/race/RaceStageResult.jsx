@@ -74,6 +74,8 @@ const TournamentStageResults = () => {
               <CTableHeaderCell scope="col">Thời Gian Thả</CTableHeaderCell>
               <CTableHeaderCell scope="col">Thời Gian Bay Hoàn Thành</CTableHeaderCell>
               <CTableHeaderCell scope="col">Vận Tốc</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã Số Bí Mật</CTableHeaderCell>
+
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -92,6 +94,8 @@ const TournamentStageResults = () => {
                   <CTableDataCell>{ranker.startTime}</CTableDataCell>
                   <CTableDataCell>{ranker.totalTime}</CTableDataCell>
                   <CTableDataCell>{ranker.speed}</CTableDataCell>
+                  <CTableDataCell>{ranker.pointKey}</CTableDataCell>
+
                 </CTableRow>
               );
             })}

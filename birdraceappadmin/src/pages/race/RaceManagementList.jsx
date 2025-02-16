@@ -147,7 +147,7 @@ const RaceList = () => {
             <CTableRow>
               <CTableHeaderCell scope="col">ID</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tên Giải Đua</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Số Chim</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">Số Chim</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Ngày Mở Đơn</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Đóng Đơn</CTableHeaderCell>
               <CTableHeaderCell scope="col">Ngày Bắt Đầu</CTableHeaderCell>
@@ -160,7 +160,7 @@ const RaceList = () => {
               <CTableRow key={race.id}>
                 <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                 <CTableDataCell>{race.name}</CTableDataCell>
-                <CTableDataCell>{race.birdsNum}</CTableDataCell>
+                {/* <CTableDataCell>{race.birdsNum}</CTableDataCell> */}
                 <CTableDataCell>{race.startDateReceive}</CTableDataCell>
                 <CTableDataCell>{race.endDateReceive}</CTableDataCell>
                 <CTableDataCell>{race.startDateInfo}</CTableDataCell>
