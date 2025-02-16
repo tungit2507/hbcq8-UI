@@ -18,23 +18,19 @@ const ArticleUpdate = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [article, setArticle] = useState({
-    title: '',
-    description: '',
-    content: '',
-    imgUrl: '',
-  });
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
         const response = await fetchArticleById(id);
-        setArticle({
-          title: response.title,
-          description: response.description,
-          content: response.content,
-          imgUrl: response.imgUrl,
-        });
+        setTitle(response.title);
+        setDescription(response.description);
+        setContent(response.content);
+        setImageUrl(response.imgUrl);
       } catch (error) {
         console.error('Error fetching article:', error);
       }
@@ -49,27 +45,29 @@ const ArticleUpdate = () => {
 
     setIsSubmitting(true);
 
-    if (article.title.length > 255) {
+    if (title.length > 255) {
       Swal.fire('Lỗi', 'Tiêu đề không được quá 255 ký tự.', 'error');
       setIsSubmitting(false);
       return;
     }
-    if (!article.content || article.content.trim() === '') {
+    if (!content || content.trim() === '') {
       Swal.fire('Lỗi', 'Nội dung không được bỏ trống.', 'error');
       setIsSubmitting(false);
       return;
     }
-    if (!article.imgUrl) {
+    if (!imageUrl) {
       Swal.fire('Lỗi', 'URL hình ảnh không được bỏ trống.', 'error');
       setIsSubmitting(false);
       return;
     }
 
     const updatedArticle = {
-      ...article,
+      id,
+      title,
+      description,
+      content,
+      imgUrl: imageUrl,
     };
-
-    updatedArticle.id = id;
 
     try {
       await updateArticle(id, updatedArticle);
@@ -139,25 +137,22 @@ const ArticleUpdate = () => {
             <CFormInput
               type="text"
               placeholder="Nhập Tiêu Đề"
-              value={article.title}
-              onChange={(e) =>
-                setArticle({ ...article, title: e.target.value })
-              }
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
 
-            <CFormLabel htmlFor="imgUrl">URL Hình Ảnh</CFormLabel>
+
+            <CFormLabel htmlFor="imageUrl">URL Hình Ảnh</CFormLabel>
             <CFormInput
               type="text"
               placeholder="Nhập URL Hình Ảnh"
-              value={article.imgUrl}
-              onChange={(e) =>
-                setArticle({ ...article, imgUrl: e.target.value })
-              }
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
             />
-            {article.imgUrl && (
+            {imageUrl && (
               <div className="image-preview mt-3">
                 <img
-                  src={article.imgUrl}
+                  src={imageUrl}
                   alt="Preview"
                   style={{
                     maxWidth: '100%',
@@ -172,10 +167,8 @@ const ArticleUpdate = () => {
             <ReactQuill
               ref={quillRef}
               className="quill-editor"
-              value={article.content}
-              onChange={(content) =>
-                setArticle({ ...article, content })
-              }
+              value={content}
+              onChange={(content) => setContent(content)}
               placeholder="Soạn thảo nội dung bài viết..."
               modules={modules}
             />

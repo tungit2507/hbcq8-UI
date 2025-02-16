@@ -1,9 +1,8 @@
 // src/components/TournamentResults.js
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem} from "@coreui/react";
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CPagination, CPaginationItem } from "@coreui/react";
 import axioInstance from '../../apiInstance';
 import { useLocation } from 'react-router-dom';
-
 
 const TournamentResults = () => {
     const [results, setResults] = useState([]);
@@ -15,19 +14,16 @@ const TournamentResults = () => {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const tourId = query.get('id');
-    
-
 
     useEffect(() => {
         const fetchResults = async () => {
             try {
-            const response = await axioInstance.get(`/tour/view-rank-of-tour?tourId=${tourId}`);
-            setResults(response.data);
+                const response = await axioInstance.get(`/tour/view-rank-of-tour?tourId=${tourId}`);
+                setResults(response.data);
             } catch (error) {
-            console.error('Error fetching tournament results:', error);
+                console.error('Error fetching tournament results:', error);
             }
         };
-
 
         const fetchTourInfo = async () => {
             try {
@@ -35,11 +31,9 @@ const TournamentResults = () => {
                 setTour(response.data);
                 console.log(tour);
             } catch (error) {
-            console.error('Error fetching tournament results:', error);
+                console.error('Error fetching tournament results:', error);
             }
         };
-        
-
 
         fetchTourInfo();
         fetchResults();
@@ -63,63 +57,42 @@ const TournamentResults = () => {
             </div>
             <hr className="my-4" />
             <div className="table-responsive">
-            <CTable className="table-bordered rounded table-striped text-center">
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">Hạng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Mã CC</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Căn Cứ</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Kinh Độ</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Vĩ Độ</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Khoảng Cách</CTableHeaderCell>
-              {/* <CTableHeaderCell scope="col">Thời Gian Bay Về</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Thời Gian Thả</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Thời Gian Bay Hoàn Thành</CTableHeaderCell> */}
-              <CTableHeaderCell scope="col">Vận Tốc</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Mã Số Bí Mật</CTableHeaderCell>
-            
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {results.map(ranker => (
-              <CTableRow key={ranker.id}>
-                <CTableHeaderCell scope="row">{ranker.rank}</CTableHeaderCell>
-                <CTableDataCell>{ranker.userLocationCode}</CTableDataCell>
-                <CTableDataCell>{ranker.userLocationName}</CTableDataCell>
-                <CTableDataCell>{ranker.birdCode}</CTableDataCell>
-                <CTableDataCell>{ranker.userLocationCoor}</CTableDataCell>
-                <CTableDataCell>{ranker.distance.toFixed(6)}</CTableDataCell>
-                {/* <CTableDataCell>{ranker.endTime}</CTableDataCell>
-                <CTableDataCell>{ranker.startTime}</CTableDataCell>
-                <CTableDataCell>{ranker.totalTime}</CTableDataCell> */}
-                <CTableDataCell>{ranker.speed.toFixed(6)}</CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
+                <CTable className="table-bordered rounded table-striped text-center">
+                    <CTableHead>
+                        <CTableRow>
+                            <CTableHeaderCell scope="col">Hạng</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Mã CC</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Căn Cứ</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Kinh Độ</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Vĩ Độ</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Khoảng Cách</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Vận Tốc</CTableHeaderCell>
+                            {/* <CTableHeaderCell scope="col">Mã Số Bí Mật</CTableHeaderCell> */}
+                        </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                        {results.map(ranker => {
+                            const [longitude, latitude] = ranker.userLocationCoor.split(';');
+                            return (
+                                <CTableRow key={ranker.id}>
+                                    <CTableHeaderCell scope="row">{ranker.rank}</CTableHeaderCell>
+                                    <CTableDataCell>{ranker.userLocationCode}</CTableDataCell>
+                                    <CTableDataCell>{ranker.userLocationName}</CTableDataCell>
+                                    <CTableDataCell>{ranker.birdCode}</CTableDataCell>
+                                    <CTableDataCell>{longitude}</CTableDataCell>
+                                    <CTableDataCell>{latitude}</CTableDataCell>
+                                    <CTableDataCell>{ranker.distance.toFixed(6)}</CTableDataCell>
+                                    <CTableDataCell>{ranker.speed.toFixed(6)}</CTableDataCell>
+                                    {/* <CTableDataCell>{ranker.secretCode}</CTableDataCell> */}
+                                </CTableRow>
+                            );
+                        })}
+                    </CTableBody>
+                </CTable>
             </div>
-            {/* <div className='d-flex justify-content-center mt-4'>
-                <CPagination>
-                    <CPaginationItem
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                    >
-                        Trước
-                    </CPaginationItem>
-                    {Array.from({ length: Math.ceil(results.length / resultsPerPage) }, (_, i) => (
-                        <CPaginationItem key={i} onClick={() => handlePageChange(i + 1)}>
-                            {i + 1}
-                        </CPaginationItem>
-                    ))}
-                    <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
-                        Sau
-                    </CPaginationItem>
-                </CPagination>
-            </div> */}
         </div>
     );
 };
 
 export default TournamentResults;
-
