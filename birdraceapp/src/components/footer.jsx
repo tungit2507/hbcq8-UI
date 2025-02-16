@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="row gy-4">
             <div className="col-lg-6 col-md-6 footer-about">
               <Link to="/" className="logo d-flex align-items-center">
-                <span className="sitename">Hội Bồ Câu Q8</span>
+                <span className="sitename">CLB Bồ Câu Đua Quận 8</span>
               </Link>
               <div className="footer-contact pt-3">
                 <p>Địa Chỉ</p>

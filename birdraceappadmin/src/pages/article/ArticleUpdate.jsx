@@ -8,6 +8,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { uploadFile } from '../../api/uploadFileApi';
 import { fetchArticleById, updateArticle } from '../../api/articleApi';
 import ImageResize from 'quill-image-resize-module-react';
+import { set } from 'react-hook-form';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -29,23 +30,34 @@ const ArticleUpdate = () => {
         previewImage: null,
     });
 
-
-    const fetchArticle = async () => {
-        try {
-            const response = await fetchArticleById(id);
-            setArticle(() => ({
-                ...response,
-                previewImage: response.imgUrl,
-            }));
-            
-        } catch (error) {
-            console.error('Error fetching article:', error);
-        }
-    };
+    
+    const [articleId, setArticleId] = useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [content, setContent] = useState('');
+    const [image, setImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
+    
 
 
     useEffect(() => {
-       
+        const fetchArticle = async () => {
+            try {
+                const response = await fetchArticleById(id);
+                setArticle({
+                    title: response.title,
+                    description: response.description,
+                    content: response.content,
+                    image: null,
+                    previewImage: response.imgUrl,
+                });
+                setTitle(response.title);
+                setPreviewImage(response.imgUrl);
+                setContent(response.content);
+            } catch (error) {
+                console.error('Error fetching article:', error);
+            }
+        };
         fetchArticle();
     }, [id]);
 
@@ -141,27 +153,27 @@ const ArticleUpdate = () => {
 
     const modules = useMemo(
         () => ({
-            toolbar: {
-                container: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    [{ color: [] }, { background: [] }],
-                    [{ align: [] }],
-                    ['link', 'image'],
-                    ['clean'],
-                ],
-                handlers: {
-                    image: imageHandler,
-                },
+          toolbar: {
+            container: [
+              [{ header: [1, 2, false] }],
+              ['bold', 'italic', 'underline'],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              [{ color: [] }, { background: [] }],
+              [{ align: [] }],
+              ['link', 'image'],
+              ['clean'],
+            ],
+            handlers: {
+              image: imageHandler,
             },
-            imageResize: {
-                parchment: Quill.import('parchment'),
-                modules: ['Resize', 'DisplaySize']
-            }
+          },
+          imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize', 'Toolbar'],
+          },
         }),
         []
-    );
+      );
 
     return (
         <div className="article-update-container mx-2">
@@ -175,7 +187,7 @@ const ArticleUpdate = () => {
                         <CFormInput
                             type="text"
                             placeholder="Nhập Tiêu Đề"
-                            value={article.title}
+                            value={title}
                             onChange={(e) =>
                                 setArticle({ ...article, title: e.target.value })
                             }
@@ -191,7 +203,7 @@ const ArticleUpdate = () => {
                         {article.previewImage && (
                             <div className="image-preview mt-3">
                                 <img
-                                    src={article.previewImage}
+                                    src={previewImage}
                                     alt="Preview"
                                     style={{
                                         maxWidth: '100%',

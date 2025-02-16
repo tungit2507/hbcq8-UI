@@ -35,6 +35,7 @@ import TournamentStageResults from "./pages/race/RaceStageResult";
 import UserPhonenumberList from "./pages/info/Info";
 import ArticleUpdate from "./pages/article/ArticleUpdate";
 import Info from "./pages/info/Info";
+import AboutUsInfoManagement from "./pages/info/AboutUsInfoManagement";
 
 const routes = createBrowserRouter([
     {
@@ -63,7 +64,7 @@ const routes = createBrowserRouter([
             { path: "/management/race/stage/result", element: <TournamentStageResults/>, name: "Facility Management" },
             { path: "/management/info/phonenumber", element: <Info/>, name: "Facility Management" },
             { path: "/management/edit-article", element: <ArticleUpdate/>, name: "Facility Management" },
-
+            { path: "/management/info/about-us", element: <AboutUsInfoManagement/>, name: "Management Info " },
         ]
     },
     { path: "*", element: <NotFoundPage/>, name: "Not Found" },

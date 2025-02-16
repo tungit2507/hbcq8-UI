@@ -144,13 +144,13 @@ const ReachDestination = () => {
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
-                        <CFormLabel htmlFor="birdCode">Chọn Chim Đua</CFormLabel>
+                        <CFormLabel htmlFor="birdCode">Chọn mã kiềng</CFormLabel>
                         <CFormSelect
                             id="birdCode"
                             value={report.birdCode}
                             onChange={(e) => setReport({ ...report, birdCode: e.target.value })}
                         >
-                            <option value="" disabled>Chọn chim đua</option>
+                            <option value="" disabled>Chọn mã kiềng</option>
                             {birds.map((birdCode, index) => (
                                 <option key={index} value={birdCode}>{birdCode}</option>
                             ))}

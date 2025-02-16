@@ -70,12 +70,15 @@ const TournamentResults = () => {
               <CTableHeaderCell scope="col">Mã CC</CTableHeaderCell>
               <CTableHeaderCell scope="col">Căn Cứ</CTableHeaderCell>
               <CTableHeaderCell scope="col">Mã Kiềng</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Tọa Độ</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Kinh Độ</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Vĩ Độ</CTableHeaderCell>
               <CTableHeaderCell scope="col">Khoảng Cách</CTableHeaderCell>
               {/* <CTableHeaderCell scope="col">Thời Gian Bay Về</CTableHeaderCell>
               <CTableHeaderCell scope="col">Thời Gian Thả</CTableHeaderCell>
               <CTableHeaderCell scope="col">Thời Gian Bay Hoàn Thành</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Vận Tốc</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Mã Số Bí Mật</CTableHeaderCell>
+            
             </CTableRow>
           </CTableHead>
           <CTableBody>

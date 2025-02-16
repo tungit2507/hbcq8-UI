@@ -115,7 +115,7 @@ const EditContactForm = () => {
                   />
                   {errors.contactPhone2 && <div className="invalid-feedback">{errors.contactPhone2?.message}</div>}
                 </CCol>
-                <CCol md={6}>
+                <CCol md={6} className='mt-3'>
                   <CFormLabel htmlFor="email">Địa Chỉ Email</CFormLabel>
                   <CFormInput
                     placeholder='Địa chỉ email'

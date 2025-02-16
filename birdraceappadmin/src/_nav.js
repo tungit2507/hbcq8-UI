@@ -86,7 +86,13 @@ const _nav = [
         component: CNavItem,
         name: 'Danh Sách SĐT',
         to: '/management/info/phonenumber',
-      },   ],
+      },
+      {
+        component: CNavItem,
+        name: 'Về Chúng Tôi',
+        to: '/management/info/about-us',
+      },
+       ],
   }
 ]
 

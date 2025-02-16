@@ -1,154 +1,93 @@
-import GLightbox from 'glightbox';
-import 'glightbox/dist/css/glightbox.min.css';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axiosInstance from '../../apiInstance';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const AboutUs = () => {
+    const [aboutData, setAboutData] = useState(null);
 
     useEffect(() => {
-        const lightbox = GLightbox({
-            selector: '.glightbox',
-        });
-
-        return () => {
-            lightbox.destroy();
+        const fetchData = async () => {
+            const response = await axiosInstance.get(`/about-us`);
+            setAboutData(response.data);
         };
+
+        fetchData();
     }, []);
+
+    if (!aboutData) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className='about-page'>
-            <VideoAboutUs />
-            <TeamAboutUs />
-            {/* <ServicesAboutUs /> */}
+            <VideoAboutUs content={aboutData.content} />
+            <TeamAboutUs aboutData={aboutData} />
         </div>
     );
-
 };
 
+const VideoAboutUs = ({ content }) => {
+    const modules = {
+        toolbar: false, // Disable the toolbar for read-only mode
+    };
 
-const VideoAboutUs = () => {
     return (
         <section id="about-3" className="about-3 section">
             <div className="container">
                 <div className="row gy-4 justify-content-between align-items-center">
-                    <div className="col-lg-6 order-lg-2 position-relative" data-aos="zoom-out">
-                        <img src="assets/img/img_sq_1.jpg" alt="Câu Lạc Bộ Chim Bồ Câu" className="img-fluid" />
-                        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" className="glightbox pulsating-play-btn">
-                            <span className="play"><i className="bi bi-play-fill"></i></span>
-                        </a>
-                    </div>
-                    <div className="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
-                        <h2 className="content-title mb-4">Câu Lạc Bộ Bồ Câu Đua Quận 8</h2>
-                        <p className="mb-4">
-                            Chào mừng đến với Câu Lạc Bộ Chim Bồ Câu của chúng tôi! Chúng tôi tận tâm chăm sóc và huấn luyện chim bồ câu.
-                            Câu lạc bộ của chúng tôi cung cấp một cộng đồng cho những người yêu thích chim bồ câu để chia sẻ kiến thức và kinh nghiệm.
-                        </p>
-                        <ul className="list-unstyled">
-                            <li>Tìm hiểu về chăm sóc chim bồ câu</li>
-                            <li>Tham gia các cuộc đua chim bồ câu</li>
-                            <li>Kết nối với những người yêu thích chim bồ câu khác</li>
-                        </ul>
-                        {/* <p className='padding'><a href="#" className="btn-cta">Liên hệ với chúng tôi</a></p> */}
+                    <div className="col-lg-12 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+                        <h2 className="content-title mb-4 text-center">Câu Lạc Bộ Bồ Câu Đua Quận 8</h2>
+                        <ReactQuill 
+                            value={content} 
+                            readOnly={true} 
+                            theme="bubble" 
+                            modules={modules} 
+                        />
                     </div>
                 </div>
             </div>
         </section>
     );
-}
+};
 
+const TeamAboutUs = ({ aboutData }) => {
+    const teamMembers = [
+        { name: aboutData.person1, role: aboutData.role1, img: aboutData.img1 },
+        { name: aboutData.person2, role: aboutData.role2, img: aboutData.img2 },
+        { name: aboutData.person3, role: aboutData.role3, img: aboutData.img3 },
+        { name: aboutData.person4, role: aboutData.role4, img: aboutData.img4 },
+        { name: aboutData.person5, role: aboutData.role5, img: aboutData.img5 },
+        { name: aboutData.person6, role: aboutData.role6, img: aboutData.img6 },
+    ].filter(member => member.name && member.role && member.img);
 
-const TeamAboutUs = () => {
     return (
         <section className="team-15 team section" id="team">
             <div className="container section-title" data-aos="fade-up">
                 <h2>Ban Chủ Nhiệm</h2>
-                {/* <p>Necessitatibus eius consequatur</p> */}
             </div>
 
             <div className="content">
                 <div className="container">
-                    <div className="row">
-                        <div className="col-lg-3 col-md-6 mb-4">
-                            <div className="person">
-                                <figure>
-                                    <img src="assets/img/team/team-1.jpg" alt="Image" className="img-fluid" />
-                                    {/* <div className="social">
-                                        <a href="#"><span className="bi bi-facebook"></span></a>
-                                        <a href="#"><span className="bi bi-twitter-x"></span></a>
-                                        <a href="#"><span className="bi bi-linkedin"></span></a>
-                                    </div> */}
-                                </figure>
-                                <div className="person-contents">
-                                    <h3>Nguyễn Văn A</h3>
-                                    <span className="position">Chủ Tịch Câu Lạc Bộ</span>
+                    <div className="row justify-content-center">
+                        {teamMembers.map((member, index) => (
+                            <div className="col-lg-3 col-md-6 mb-4 d-flex align-items-stretch justify-content-center" key={index}>
+                                <div className="person text-center d-flex flex-column align-items-center">
+                                    <figure>
+                                        <img src={member.img} alt="Image" className="img-fluid fixed-size" />
+                                    </figure>
+                                    <div className="person-contents text-center">
+                                        <h3>{member.name}</h3>
+                                        <span className="position">{member.role}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="col-lg-3 col-md-6 mb-4">
-                            <div className="person">
-                                <figure>
-                                    <img src="assets/img/team/team-2.jpg" alt="Image" className="img-fluid" />
-                                    {/* <div className="social">
-                                        <a href="#"><span className="bi bi-facebook"></span></a>
-                                        <a href="#"><span className="bi bi-twitter-x"></span></a>
-                                        <a href="#"><span className="bi bi-linkedin"></span></a>
-                                    </div> */}
-                                </figure>
-                                <div className="person-contents">
-                                    <h3>Nguyễn Văn B</h3>
-                                    <span className="position">Phó Chủ Tịch</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-3 col-md-6 mb-4">
-                            <div className="person">
-                                <figure>
-                                    <img src="assets/img/team/team-3.jpg" alt="Image" className="img-fluid" />
-                                    {/* <div className="social">
-                                        <a href="#"><span className="bi bi-facebook"></span></a>
-                                        <a href="#"><span className="bi bi-twitter-x"></span></a>
-                                        <a href="#"><span className="bi bi-linkedin"></span></a>
-                                    </div> */}
-                                </figure>
-                                <div className="person-contents">
-                                    <h3>Nguyễn Văn C</h3>
-                                    <span className="position">Bí Thư</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-3 col-md-6 mb-4">
-                            <div className="person">
-                                <figure>
-                                    <img src="assets/img/team/team-4.jpg" alt="Image" className="img-fluid" />
-                                    {/* <div className="social">
-                                        <a href="#"><span className="bi bi-facebook"></span></a>
-                                        <a href="#"><span className="bi bi-twitter-x"></span></a>
-                                        <a href="#"><span className="bi bi-linkedin"></span></a>
-                                    </div> */}
-                                </figure>
-                                <div className="person-contents">
-                                    <h3>Nguyễn Văn D</h3>
-                                    <span className="position">Quản Lý</span>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
         </section>
     );
-}
-
-const ServicesAboutUs = () => {
-    return (
-        <div>
-        <h2>Services</h2>
-        </div>
-    );
-}
-
-
+};
 
 export default AboutUs;
