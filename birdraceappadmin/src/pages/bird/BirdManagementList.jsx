@@ -126,8 +126,8 @@ const BirdManagement = () => {
                 <CTableDataCell>{bird.code}</CTableDataCell>
                 {/* <CTableDataCell>{bird.description}</CTableDataCell> */}
                 <CTableDataCell>
-                  <CButton className='mx-1' color="warning" onClick={() => { setCurrentBird({ ...bird, id: bird.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                  <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(bird.code)}>Xóa</CButton>
+                  <CButton className='mx-1 btn-sm' color="warning" onClick={() => { setCurrentBird({ ...bird, id: bird.id }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                  <CButton className='mx-1 btn-sm' color="danger" onClick={() => handleDeleteModal(bird.code)}>Xóa</CButton>
                 </CTableDataCell>
               </CTableRow>
             ))}

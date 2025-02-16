@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { getAboutUsInfo, updateAboutUsInfo } from '../../api/AboutUsInfoApi';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize-module-react';
+
+Quill.register('modules/imageResize', ImageResize);
 
 const AboutUsInfoManagement = () => {
   const { control, register, handleSubmit, formState: { errors }, setValue, getValues } = useForm();
@@ -13,6 +16,7 @@ const AboutUsInfoManagement = () => {
   const { id } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [managers, setManagers] = useState([]);
+  const quillRef = useRef(null);
 
   useEffect(() => {
     const fetchAboutUsInfo = async () => {
@@ -89,17 +93,55 @@ const AboutUsInfoManagement = () => {
     }
   };
 
+  const imageHandler = useCallback(() => {
+    Swal.fire({
+      title: 'Chèn Đường Dẫn Hình Ảnh',
+      input: 'url',
+      inputPlaceholder: 'Nhập đường dẫn hình ảnh...',
+      showCancelButton: true,
+      confirmButtonText: 'Chèn',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+      const url = result.value;
+      if (url && quillRef.current) {
+        const quill = quillRef.current.getEditor();
+        const range = quill.getSelection(true);
+        quill.insertEmbed(range.index, 'image', url, 'user');
+      }
+      }
+    });
+  }, []);
+
+  const formats = [
+    'header', 'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent', 'link', 'image', 'color', 'code-block', 'align'
+  ];
+
+  const toolbarOptions = [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'code-block'],
+    ['link', 'image'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ indent: '-1' }, { indent: '+1' }],
+    [{ direction: 'rtl' }],
+    [{ color: [] }, { background: [] }],
+    [{ font: [] }],
+    [{ align: [] }],
+    ['clean']
+  ];
+
   const modules = {
-    toolbar: [
-      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-      [{size: []}],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link'],
-      [{ 'align': [] }],
-      [{ 'color': [] }, { 'background': [] }],
-      ['clean']
-    ],
+    toolbar: {
+      container: toolbarOptions,
+      handlers: {
+        image: imageHandler,
+      },
+    },
+    imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize', 'Toolbar'],
+    },
   };
 
   return (
@@ -115,10 +157,12 @@ const AboutUsInfoManagement = () => {
                 <CCol md={12}>
                   <CFormLabel htmlFor="content">Nội Dung</CFormLabel>
                   <ReactQuill
+                    ref={quillRef}
                     theme="snow"
                     value={getValues('content')}
                     onChange={(content) => setValue('content', content)}
                     modules={modules}
+                    formats={formats}
                   />
                   {errors.content && <div className="invalid-feedback">{errors.content?.message}</div>}
                 </CCol>
@@ -161,7 +205,7 @@ const AboutUsInfoManagement = () => {
                 </CRow>
               ))}
               {managers.length < 6 && (
-                <div className="d-flex justify-content-center my-4">
+                <div className="d-flex justify-content-end my-4">
                   <CButton type="button" color="success" onClick={addManager}>Thêm Thành Viên Quản Trị</CButton>
                 </div>
               )}

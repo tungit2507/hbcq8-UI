@@ -93,8 +93,8 @@ const ArticleList = () => {
                 <CTableDataCell>{article.createdAt}</CTableDataCell>
                 <CTableDataCell>{article.authorUserName}</CTableDataCell>
                 <CTableDataCell>
-                  <CButton color="danger" onClick={() => handleDelete(article.id)}>Xóa</CButton>
-                  <Link to={`/management/edit-article?article-id=${article.id}`} style={{ marginLeft: '8px' }}><CButton color="info">Chỉnh Sửa</CButton></Link>
+                  <CButton className='btn-sm' color="danger" onClick={() => handleDelete(article.id)}>Xóa</CButton>
+                  <Link to={`/management/edit-article?article-id=${article.id}`} style={{ marginLeft: '8px' }}><CButton color="info" className='btn-sm'>Chỉnh Sửa</CButton></Link>
                 </CTableDataCell>
               </CTableRow>
             ))}

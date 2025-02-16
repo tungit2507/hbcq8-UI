@@ -3,10 +3,8 @@ import { CForm, CFormInput, CButton, CFormLabel, CCard, CCardBody, CCardHeader }
 import Swal from 'sweetalert2';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useDropzone } from 'react-dropzone';
 import { addArticle } from '../../api/articleApi';
 import { useNavigate } from 'react-router-dom';
-import { uploadFile } from '../../api/uploadFileApi';
 import ImageResize from 'quill-image-resize-module-react';
 
 Quill.register('modules/imageResize', ImageResize);
@@ -19,25 +17,10 @@ const ArticleAdd = () => {
     title: '',
     description: '',
     content: '',
-    image: null,
-    previewImage: null,
+    imgUrl: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const onDrop = (acceptedFiles) => {
-    setNewArticle({ ...newArticle, image: acceptedFiles[0] });
-  };
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const previewUrl = URL.createObjectURL(file);
-      setNewArticle({ ...newArticle, image: file, previewImage: previewUrl });
-    }
-  };
 
   const handleAddArticle = async (e) => {
     e.preventDefault();
@@ -46,11 +29,6 @@ const ArticleAdd = () => {
 
     setIsSubmitting(true);
 
-    if (!newArticle.image) {
-      Swal.fire('Lỗi', 'Hình ảnh không được bỏ trống.', 'error');
-      setIsSubmitting(false);
-      return;
-    }
     if (!newArticle.title) {
       Swal.fire('Lỗi', 'Tiêu đề không được bỏ trống.', 'error');
       setIsSubmitting(false);
@@ -66,22 +44,14 @@ const ArticleAdd = () => {
       setIsSubmitting(false);
       return;
     }
-
-    let imgUrl = newArticle.previewImage;
-    if (newArticle.image) {
-      try {
-        imgUrl = await uploadFile(newArticle.image);
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        Swal.fire('Lỗi', 'Không thể tải ảnh lên. Vui lòng thử lại sau.', 'error');
-        setIsSubmitting(false);
-        return;
-      }
+    if (!newArticle.imgUrl) {
+      Swal.fire('Lỗi', 'URL hình ảnh không được bỏ trống.', 'error');
+      setIsSubmitting(false);
+      return;
     }
 
     const articleData = {
       ...newArticle,
-      imgUrl,
     };
 
     try {
@@ -96,33 +66,24 @@ const ArticleAdd = () => {
     }
   };
 
-  const handleImageUpload = async (file) => {
-    const link = await uploadFile(file);
-    return link;
-  };
-
   const imageHandler = () => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-
-    input.onchange = async () => {
-      const file = input.files[0];
-      const link = await handleImageUpload(file);
-      if (quillRef.current) {
-        const quill = quillRef.current.getEditor();
-        const range = quill.getSelection(true);
-        if (range) {
-          quill.insertEmbed(range.index, 'image', link);
-          quill.setSelection(range.index + 1);
-        } else {
-          Swal.fire('Lỗi', 'Không thể chèn hình ảnh vào vị trí hiện tại.', 'error');
+    Swal.fire({
+      title: 'Chèn Đường Dẫn Hình Ảnh',
+      input: 'url',
+      inputPlaceholder: 'Nhập đường dẫn hình ảnh...',
+      showCancelButton: true,
+      confirmButtonText: 'Chèn',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const url = result.value;
+        if (url && quillRef.current) {
+          const quill = quillRef.current.getEditor();
+          const range = quill.getSelection(true);
+          quill.insertEmbed(range.index, 'image', url, 'user');
         }
-      } else {
-        Swal.fire('Lỗi', 'Quill editor chưa được khởi tạo.', 'error');
       }
-    };
+    });
   };
 
   const modules = useMemo(
@@ -167,17 +128,19 @@ const ArticleAdd = () => {
               }
             />
 
-            <CFormLabel htmlFor="image">Hình Ảnh</CFormLabel>
+            <CFormLabel htmlFor="imgUrl">URL Hình Ảnh</CFormLabel>
             <CFormInput
-              type="file"
-              placeholder="Hình ảnh"
-              accept="image/*"
-              onChange={handleImageChange}
+              type="text"
+              placeholder="Nhập URL Hình Ảnh"
+              value={newArticle.imgUrl}
+              onChange={(e) =>
+                setNewArticle({ ...newArticle, imgUrl: e.target.value })
+              }
             />
-            {newArticle.previewImage && (
+            {newArticle.imgUrl && (
               <div className="image-preview mt-3">
                 <img
-                  src={newArticle.previewImage}
+                  src={newArticle.imgUrl}
                   alt="Preview"
                   style={{
                     maxWidth: '100%',

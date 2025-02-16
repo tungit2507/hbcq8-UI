@@ -141,8 +141,8 @@ const StartPointList = () => {
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 {/* <CTableDataCell>{facility.createdBy}</CTableDataCell> */}
                                 <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, code: facility.code.replace(/^P/, ''), id: facility.id}); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.id)}>Xóa</CButton>
+                                    <CButton size='sm' className='m-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, code: facility.code.replace(/^P/, ''), id: facility.id}); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                                    <CButton size='sm' className='m-1' color="danger" onClick={() => handleDeleteModal(facility.id)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
                         ))}

@@ -198,9 +198,9 @@ const RaceRegistrationList = () => {
                 <CTableDataCell>
                   {registration.statusCode  === 'W' && (
                     <>
-                      <Link to={`/management/race/registration-list/approve?requesterId=${registration.requesterId}&tourId=${raceId}`} className="btn btn-success me-2 mb-2 mb-md-0">Duyệt</Link>
+                      <Link to={`/management/race/registration-list/approve?requesterId=${registration.requesterId}&tourId=${raceId}`} className="btn btn-success me-2 mb-2 mb-md-0 btn-sm">Duyệt</Link>
                       <CButton color="danger" onClick={() => handleReject(registration.requesterId)}
-                        className="me-2 mb-2 mb-md-0"
+                        className="me-2 mb-2 mb-md-0 btn-sm"
                       >Từ Chối</CButton>
                     </>
                   )}

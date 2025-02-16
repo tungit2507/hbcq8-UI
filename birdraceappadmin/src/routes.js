@@ -32,7 +32,6 @@ import DetailRaceForm from "./pages/race/RacemanagementDetail";
 import TourAccepResult from "./pages/race/RaceAcceptResult";
 import TournamentResults from "./pages/race/RaceResult";
 import TournamentStageResults from "./pages/race/RaceStageResult";
-import UserPhonenumberList from "./pages/info/Info";
 import ArticleUpdate from "./pages/article/ArticleUpdate";
 import Info from "./pages/info/Info";
 import AboutUsInfoManagement from "./pages/info/AboutUsInfoManagement";

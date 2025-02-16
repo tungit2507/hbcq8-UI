@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { CForm, CFormLabel, CFormInput, CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { getContact, updateContact } from '../../api/contactApi';
 
 const EditContactForm = () => {
-  const { control, register, handleSubmit, formState: { errors }, setValue } = useForm();
-  const navigate = useNavigate();
+  const {register, handleSubmit, formState: { errors }, setValue } = useForm();
   const { id } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
 

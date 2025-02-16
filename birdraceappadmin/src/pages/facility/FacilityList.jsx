@@ -137,8 +137,8 @@ const FacilityManagement = () => {
                                 <CTableDataCell>{facility.createdAt}</CTableDataCell>
                                 <CTableDataCell>{facility.createdBy}</CTableDataCell>
                                 <CTableDataCell>
-                                    <CButton className='mx-1' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
-                                    <CButton className='mx-1' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
+                                    <CButton className='mx-1 btn-sm' color="warning" onClick={() => { setCurrentFacility({ ...facility, id: facility.id, code: facility.code.replace(/^Z/, '') }); setShowEditModal(true); }}>Chỉnh Sửa</CButton>
+                                    <CButton className='mx-1 btn-sm' color="danger" onClick={() => handleDeleteModal(facility.code)}>Xóa</CButton>
                                 </CTableDataCell>
                             </CTableRow>
                         ))}
