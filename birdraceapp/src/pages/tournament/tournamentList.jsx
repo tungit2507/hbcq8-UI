@@ -198,7 +198,7 @@ const TournamentList = () => {
                   {
                   (
                     <CButton className='me-2'
-                      hidden={tournament.isFinished == true}
+                      hidden={tournament.isActivedForRegister == false}
                       color="primary" onClick={() => {
                         const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
                         if (isLoggedIn) {

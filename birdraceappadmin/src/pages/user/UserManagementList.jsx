@@ -177,7 +177,7 @@ const UserManagementList = () => {
                 <CTableDataCell>{user.email}</CTableDataCell>
                 <CTableDataCell>{user.phone}</CTableDataCell>
                 <CTableDataCell>
-                  <Link className="m-1 btn btn-warning btn-sm" to={`/management/bird/list?user=${user.id}`}>QL Chim Đua</Link>
+                  <Link className="m-1 btn btn-warning btn-sm" to={`/management/bird/list?user=${user.id}`}>QL Chiến Binh</Link>
                   <Link className="m-1 btn btn-success btn-sm" to={`/management/facility/list?user=${user.id}`}>QL Căn Cứ</Link>
                   <Link className="m-1 btn btn-primary btn-sm" to={`/management/user/update?id=${user.id}`}>Chỉnh Sửa</Link>
                   <CButton className="m-1 btn-sm" color="primary" onClick={() => { setCurrentUserId(user.id); setShowPasswordModal(true); }}>Cấp Mật Khẩu</CButton>

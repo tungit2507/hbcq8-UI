@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AOS from 'aos';
 import { List } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { useEffect } from 'react';
 import Logout from '../pages/author/logout';
 import 'aos/dist/aos.css';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import LogoImage from '../assets/img/Logo_CLBBCQ8.png';
 
 const Header = () => {
   useEffect(() => {
@@ -34,7 +35,9 @@ const Header = () => {
       <Navbar expand="lg" className="bg-light">
         <Container fluid className='container-xl position-relative d-flex align-items-center justify-content-between'>
           <Navbar.Brand as={Link} to={"/"} className="logo d-flex align-items-center">
-            <Link to={"/"}><img src="./assets/img/logo/Logo_CLBBCQ8.png" alt="AgriCulture" /></Link>
+            <Link to={"/"}>
+              <img src={LogoImage} alt="Logo" className="img-fluid" /> {/* Use the imported image */}
+            </Link>
             <span className='logo-span'>CLB Bồ Câu Đua Q8</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navmenu" className="mobile-nav-toggle d-xl-none">

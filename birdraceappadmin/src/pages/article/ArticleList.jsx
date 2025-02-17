@@ -57,16 +57,6 @@ const ArticleList = () => {
     <div className="p-3 rounded">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h3 className="mb-2 mb-md-0">Danh Sách Bài Viết</h3>
-        {/* <CForm className="d-flex flex-grow-1" style={{ maxWidth: "500px" }}>
-          <CFormInput
-            type="text"
-            placeholder="Tìm kiếm theo tiêu đề bài viết..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="me-2"
-          />
-          <CButton color="primary">Tìm Kiếm</CButton>
-        </CForm> */}
       </div>
       <hr />
 

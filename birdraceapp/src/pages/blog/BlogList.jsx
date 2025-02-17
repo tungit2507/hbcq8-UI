@@ -48,7 +48,12 @@ const BlogList = () => {
                         <div className="col-lg-4" key={blog.id} data-aos="fade-up">
                             <article className="position-relative h-100">
                                 <div className="post-img position-relative overflow-hidden">
-                                    <img src={blog.imgUrl} className="img-fluid" alt="" />
+                                    <img 
+                                        src={blog.imgUrl} 
+                                        className="img-fluid" 
+                                        alt={blog.title} 
+                                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV_OrYxXCdX4FRUtPL8g0jyzIy9jRXIbUuLsYovBDpNCZ2O3gWJDkvqiDyoSnrqysbv3E&usqp=CAU'; }} // Set default image on error
+                                    />
                                 </div>
                                 <div className="meta d-flex align-items-end">
                                     <div className="d-flex align-items-center">

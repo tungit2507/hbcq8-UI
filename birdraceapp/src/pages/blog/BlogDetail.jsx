@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import axioInstance from '../../apiInstance';
-import { render } from 'react-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const BlogDetail = () => {
     const [post, setPost] = useState(null);
@@ -26,20 +27,29 @@ const BlogDetail = () => {
         return <div>Bài Viết Không Tồn Tại</div>;
     }
 
+    const modules = {
+        toolbar: false, // Disable the toolbar for read-only mode
+    };
+
     return (
         <div className='container'>
-            <div class="row">
-                <div class="col-lg-12">
-                <section id="blog-details" class="blog-details section">
-                    <div class="container">
-                        <article class="article">
-                            <h2 class="title">{post.title}</h2>
-                            <div class="content">
-                                <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
+            <div className="row">
+                <div className="col-lg-12">
+                    <section id="blog-details" className="blog-details section">
+                        <div className="container">
+                            <article className="article">
+                                <h2 className="title text-center">{post.title}</h2>
+                                <div className="content">
+                                    <ReactQuill 
+                                        value={post.content} 
+                                        readOnly={true} 
+                                        theme="bubble" 
+                                        modules={modules} 
+                                    />
+                                </div>
+                            </article>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
